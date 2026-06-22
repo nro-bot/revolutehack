@@ -1,18 +1,96 @@
-<h1><p>REVOLUTE</p></h1>
 
-<p>Boston Embodied AI Hackathon</p>
-<p>For builders, by builders</p>
-<p></p>
-<p>Aug 1st and 2nd</p>
-<p>(weekend after FabLab 2026)</p>
-<p></p>
-  
-<p>Sponsors:</p>
-<p>Seeedstudios</p>
-<p></p>
-<p>Organizers:</p>
-<p>Boston Robot Hackers</p>
-<p></p>
-<p>Interested?</p>
-<p><a href="https://docs.google.com/forms/d/e/1FAIpQLSeVBl7Q7HjIDip8C7H7l2KwT6T9Buy4RfkJa64CLngNDVa9xw/viewform">Sign up here.</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Boston Embodied AI Hackathon</title>
+<style>
+  :root{
+    --ink:#1a1a1a;
+    --muted:#777;
+    --rule:#e0e0e0;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{
+    background:#fcfcfb;
+    color:var(--ink);
+    font-family:ui-monospace,"SF Mono","SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace;
+    line-height:1.6;
+    padding:7vh 24px 80px;
+  }
+  main{max-width:620px;margin:0 auto;}
 
+  /* working title — small, quiet */
+  .eyebrow{
+    font-size:.8rem;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin:0 0 14px;
+  }
+
+  /* the emphasis */
+  h1{
+    margin:0;
+    font-size:clamp(2rem,7vw,3.4rem);
+    line-height:1.12;
+    font-weight:700;
+    letter-spacing:-.01em;
+  }
+
+  .tagline{
+    margin:14px 0 0;
+    font-size:1rem;
+    color:var(--muted);
+  }
+
+  hr{border:0;border-top:1px solid var(--rule);margin:32px 0;}
+
+  /* small details */
+  .details{font-size:.95rem;}
+  .details p{margin:0;}
+  .details .block{margin-bottom:18px;}
+  .details .label{color:var(--muted);}
+  .note{color:var(--muted);font-size:.85rem;}
+
+  a{color:var(--ink);text-underline-offset:3px;}
+  a:hover{text-decoration-thickness:2px;}
+
+  .signup{margin-top:6px;}
+</style>
+</head>
+<body>
+  <main>
+    <p class="eyebrow">REVOLUTE</p>
+
+    <h1>Boston Embodied AI Hackathon</h1>
+    <p class="tagline">For builders, by builders</p>
+
+    <hr>
+
+    <div class="details">
+      <div class="block">
+        <p>Aug 1st and 2nd</p>
+        <p class="note">(weekend after FabLab 2026)</p>
+      </div>
+
+      <div class="block">
+        <p class="label">Sponsors:</p>
+        <p>Seeedstudios</p>
+      </div>
+
+      <div class="block">
+        <p class="label">Organizers:</p>
+        <p>Boston Robot Hackers</p>
+      </div>
+
+      <div class="block">
+        <p class="label">Interested?</p>
+        <p class="signup"><a href="https://docs.google.com/forms/d/e/1FAIpQLSeVBl7Q7HjIDip8C7H7l2KwT6T9Buy4RfkJa64CLngNDVa9xw/viewform">Sign up here.</a></p>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
