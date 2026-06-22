@@ -23,42 +23,8 @@
   }
   main{max-width:620px;margin:0 auto;}
 
-  /* the emphasis */
-  h1{
-    margin:0;
-    font-size:clamp(2rem,7vw,3.4rem);
-    line-height:1.12;
-    font-weight:700;
-    letter-spacing:-.01em;
-  }
-
-  .tagline{
-    margin:14px 0 0;
-    font-size:1rem;
-    color:var(--muted);
-  }
-
-  hr{border:0;border-top:1px solid var(--rule);margin:32px 0;}
-
-  /* small details */
-  .details{font-size:.95rem;}
-  .details p{margin:0;}
-  .details .block{margin-bottom:18px;}
-  .details .label{color:var(--muted);}
-  .note{color:var(--muted);font-size:.85rem;}
-
-  a{color:var(--ink);text-underline-offset:3px;}
-  a:hover{text-decoration-thickness:2px;}
-
-  .signup{margin-top:6px;}
-
-  /* footer — the REVOLUTE mark: a revolute-joint logo lockup */
-  footer{
-    max-width:620px;
-    margin:56px auto 0;
-    padding-top:22px;
-    border-top:1px solid var(--rule);
-  }
+  /* top — the REVOLUTE mark: a revolute-joint logo lockup, centered */
+  .top{text-align:center;margin-bottom:34px;}
   .brand{
     display:inline-flex;
     align-items:center;
@@ -85,6 +51,35 @@
     color:var(--muted);
   }
 
+  /* the emphasis */
+  h1{
+    margin:0;
+    font-size:clamp(1.9rem,6.3vw,3.05rem);
+    line-height:1.12;
+    font-weight:700;
+    letter-spacing:-.01em;
+  }
+
+  .tagline{
+    margin:14px 0 0;
+    font-size:1rem;
+    color:var(--muted);
+  }
+
+  hr{border:0;border-top:1px solid var(--rule);margin:32px 0;}
+
+  /* small details */
+  .details{font-size:.95rem;}
+  .details p{margin:0;}
+  .details .block{margin-bottom:18px;}
+  .details .label{color:var(--muted);}
+  .note{color:var(--muted);font-size:.85rem;}
+
+  a{color:var(--ink);text-underline-offset:3px;}
+  a:hover{text-decoration-thickness:2px;}
+
+  .signup{margin-top:6px;}
+
   @media (prefers-reduced-motion:reduce){
     .brand .mark .ring{animation:none;}
   }
@@ -92,6 +87,22 @@
 </head>
 <body>
   <main>
+    <header class="top">
+      <p class="brand">
+        <svg class="mark" viewBox="0 0 100 100" aria-hidden="true">
+          <g class="ring">
+            <circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" stroke-width="6"
+                    stroke-dasharray="17 13" stroke-linecap="round"/>
+            <circle cx="50" cy="6" r="6" fill="currentColor"/>
+          </g>
+          <line x1="50" y1="50" x2="94" y2="50" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+          <circle cx="50" cy="50" r="15" fill="#fcfcfb" stroke="currentColor" stroke-width="7"/>
+          <circle cx="50" cy="50" r="5" fill="currentColor"/>
+        </svg>
+        <span class="lockup"><span class="word">REVOLUTE</span><span class="ver">v1.08</span></span>
+      </p>
+    </header>
+
     <h1>Boston Embodied AI Hackathon</h1>
     <p class="tagline">For builders, by builders</p>
 
@@ -99,26 +110,22 @@
 
     <div class="details">
       <div class="block">
-        <p class="label">When:</p>
-        <p>Aug 1st and 2nd</p>
+        <p><b></b>Aug 1st and 2nd, 2026</b></p>
         <p class="note">(weekend after FabLab 2026)</p>
       </div>
 
       <div class="block">
-        <p class="label">Where:</p>
-        <p>TBD: Likely FabLab in Kendall Square or other MIT location</p>
+        <p>Location TBD -- likely FabLab in Kendall Square or other MIT location</p>
       </div>
 
       <div class="block">
         <p class="label">Sponsors:</p>
         <p>Seeedstudios</p>
-        <p>More coming soon</p>
       </div>
 
       <div class="block">
         <p class="label">Organizers:</p>
         <p>Boston Robot Hackers</p>
-        <p>and others</p>
       </div>
 
       <div class="block">
@@ -127,21 +134,5 @@
       </div>
     </div>
   </main>
-
-  <footer>
-    <p class="brand">
-      <svg class="mark" viewBox="0 0 100 100" aria-hidden="true">
-        <g class="ring">
-          <circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" stroke-width="6"
-                  stroke-dasharray="17 13" stroke-linecap="round"/>
-          <circle cx="50" cy="6" r="6" fill="currentColor"/>
-        </g>
-        <line x1="50" y1="50" x2="94" y2="50" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
-        <circle cx="50" cy="50" r="15" fill="#fcfcfb" stroke="currentColor" stroke-width="7"/>
-        <circle cx="50" cy="50" r="5" fill="currentColor"/>
-      </svg>
-      <span class="lockup"><span class="word">REVOLUTE</span><span class="ver">v1.08</span></span>
-    </p>
-  </footer>
 </body>
 </html>
