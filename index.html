@@ -10,6 +10,7 @@
     --ink:#1a1a1a;
     --muted:#777;
     --rule:#e0e0e0;
+    --accent:#ce4827;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;}
@@ -22,13 +23,31 @@
   }
   main{max-width:620px;margin:0 auto;}
 
-  /* working title — small, quiet */
-  .eyebrow{
-    font-size:.8rem;
-    letter-spacing:.18em;
+  /* working title — small but stylized: a revolute-joint logo lockup */
+  .brand{
+    display:inline-flex;
+    align-items:center;
+    gap:11px;
+    margin:0 0 18px;
+  }
+  .brand .mark{width:1.3em;height:1.3em;flex:0 0 auto;color:var(--accent);}
+  .brand .mark .ring{transform-origin:50% 50%;animation:spin 8s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .brand .word{
+    font-weight:700;
+    font-size:1.5rem;
+    letter-spacing:.26em;
     text-transform:uppercase;
+    color:var(--accent);
+    /* nudge to optically balance the tracking */
+    padding-left:.04em;
+  }
+  .brand .lockup{display:inline-flex;align-items:baseline;gap:.5em;}
+  .brand .ver{
+    font-size:.72rem;
+    font-weight:400;
+    letter-spacing:.04em;
     color:var(--muted);
-    margin:0 0 14px;
   }
 
   /* the emphasis */
@@ -59,31 +78,56 @@
   a:hover{text-decoration-thickness:2px;}
 
   .signup{margin-top:6px;}
+
+  @media (prefers-reduced-motion:reduce){
+    .brand .mark .ring{animation:none;}
+  }
 </style>
 </head>
 <body>
   <main>
-    <p class="eyebrow">REVOLUTE</p>
+    <p class="brand">
+      <svg class="mark" viewBox="0 0 100 100" aria-hidden="true">
+        <g class="ring">
+          <circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" stroke-width="6"
+                  stroke-dasharray="17 13" stroke-linecap="round"/>
+          <circle cx="50" cy="6" r="6" fill="currentColor"/>
+        </g>
+        <line x1="50" y1="50" x2="94" y2="50" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+        <circle cx="50" cy="50" r="15" fill="#fcfcfb" stroke="currentColor" stroke-width="7"/>
+        <circle cx="50" cy="50" r="5" fill="currentColor"/>
+      </svg>
+      <span class="lockup"><span class="word">REVOLUTE</span><span class="ver">v1.08</span></span>
+    </p>
 
     <h1>Boston Embodied AI Hackathon</h1>
     <p class="tagline">For builders, by builders</p>
 
     <hr>
 
-    <div class="details">
+    <div class="block">
+      
       <div class="block">
+      <p class="label">When:</p>
         <p>Aug 1st and 2nd</p>
         <p class="note">(weekend after FabLab 2026)</p>
+      </div>
+
+       <div class="block">
+      <p class="label">Where:</p>
+        <p>TBD: Likely FabLab in Kendall Square or other MIT location</p>
       </div>
 
       <div class="block">
         <p class="label">Sponsors:</p>
         <p>Seeedstudios</p>
+        <p>More coming soon...</p>
       </div>
 
       <div class="block">
         <p class="label">Organizers:</p>
         <p>Boston Robot Hackers</p>
+        <p>& others</p>
       </div>
 
       <div class="block">
