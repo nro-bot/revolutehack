@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Boston Embodied / Physical AI Robot Hackathon</title>
+<title>Boston Embodied / Physical AI Hackathon</title>
 <style>
   :root{
     --ink:#1a1a1a;
@@ -68,6 +67,60 @@
 
   hr{border:0;border-top:1px solid var(--rule);margin:32px 0;}
 
+  /* collapsed sections at the bottom */
+  details{margin-top:22px;}
+  details > summary{
+    cursor:pointer;
+    color:var(--muted);
+    font-size:.9rem;
+    list-style:none;
+    padding:6px 0;
+    user-select:none;
+  }
+  details > summary::-webkit-details-marker{display:none;}
+  details > summary::before{
+    content:"▸ ";
+    color:var(--accent);
+    display:inline-block;
+    transition:transform .15s ease;
+  }
+  details[open] > summary::before{content:"▾ ";}
+  details > summary:hover{color:var(--ink);}
+
+  /* image strip inside the collapsed section */
+  .imgstrip{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:4px;
+    margin:14px 0 4px;
+  }
+  .imgstrip figure{margin:0;}
+  .imgstrip img{
+    display:block;
+    width:100%;
+    height:120px;
+    object-fit:cover;
+    filter:grayscale(.18);
+    transition:filter .25s ease;
+  }
+  .imgstrip img:hover{filter:grayscale(0);}
+  .imgstrip figcaption{
+    margin-top:6px;
+    font-size:.72rem;
+    color:var(--muted);
+    letter-spacing:.02em;
+  }
+  @media (max-width:480px){
+    .imgstrip img{height:88px;}
+  }
+
+  /* links list inside collapsed section */
+  .citylinks{margin:12px 0 4px;font-size:.85rem;}
+  .citylinks li{margin:0 0 8px;list-style:none;}
+  .citylinks ul{margin:0;padding:0;}
+  .citylinks a{word-break:break-all;}
+  .citylinks .place{color:var(--muted);white-space:nowrap;}
+
   /* small details */
   .details{font-size:.95rem;}
   .details p{margin:0;}
@@ -103,7 +156,7 @@
       </p>
     </header>
 
-    <h1>Boston Embodied / Physical AI Robot Hackathon</h1>
+    <h1>Boston Embodied Physical / AI Hackathon</h1>
     <h2>Release v1.08: Aug. 1–2, 2026</h2>
     <p class="tagline">For builders, by builders</p>
 
@@ -156,6 +209,39 @@
           final details. Release v1.08 since the plan is for this to be
           recurring (year/month). Contact email is in the signup form.</p>
       </div>
+
+      <hr>
+
+      <details>
+        <summary>Pictures from Shenzhen Embodied AI Hackathon</summary>
+        <div class="imgstrip">
+          <figure>
+            <img src="hackathon.png" alt="Builders at work during the Shenzhen embodied AI hackathon">
+            <figcaption>the room</figcaption>
+          </figure>
+          <figure>
+            <img src="robotarm.png" alt="A robot arm ladling sauce onto a plate of pasta">
+            <figcaption>the arm</figcaption>
+          </figure>
+          <figure>
+            <img src="pasta.jpg" alt="Plates of shrimp pasta plated by robot arms">
+            <figcaption>the payoff</figcaption>
+          </figure>
+        </div>
+      </details>
+
+      <details class="citylinks">
+        <summary>Links to other cities</summary>
+        <ul>
+          <li><a href="https://www.joinef.com/events/https-lu-ma-roboticshack/">joinef.com/events/https-lu-ma-roboticshack</a> <span class="place">— Paris (Apr 11 2025)</span></li>
+          <li><a href="https://robothackathon.devpost.com/">robothackathon.devpost.com</a> <span class="place">— NYC (Apr 20 2025)</span></li>
+          <li><a href="https://www.betaworks.com/event/nyc-lerobot-hackathon">betaworks.com/event/nyc-lerobot-hackathon</a> <span class="place">— NYC (June 14 2025)</span></li>
+          <li><a href="https://forums.developer.nvidia.com/t/join-the-seeed-studio-hugging-face-embodied-ai-hackathon/344162">forums.developer.nvidia.com/.../embodied-ai-hackathon</a> <span class="place">— Shenzhen (Oct 18 2025)</span></li>
+          <li><a href="https://www.seeedstudio.com/blog/2025/11/06/2025-embodied-ai-hackathon-recap-we-built-home-cooking-robot/">seeedstudio.com/blog/.../home-cooking-robot</a> <span class="place">— (Oct 21 2025)</span></li>
+          <li><a href="https://luma.com/zsaa3r3d">luma.com/zsaa3r3d</a> <span class="place">— Santa Clara (Mar 21 2026)</span></li>
+          <li><a href="https://luma.com/embodied-metal">luma.com/embodied-metal</a> <span class="place">— San Francisco (July 17 2026)</span></li>
+        </ul>
+      </details>
     </div>
   </main>
 </body>
