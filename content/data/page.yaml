@@ -23,7 +23,7 @@ kicker: "Aug. 1-2, 2026 // FabLab Kendall, Cambridge"
 dek: "$15k of real robot hardware, <br>30 real-life participants, <br>2 days of real fun."
 #description: "Revolute is Boston's first physical AI hackathon."
 # og_image: "hackathon.png"
-apply_url: "https://docs.google.com/forms/d/e/1FAIpQLSeVBl7Q7HjIDip8C7H7l2KwT6T9Buy4RfkJa64CLngNDVa9xw/viewform"
+apply_url: "https://luma.com/kxq4yxr8"
 
 # Footer lines, shown at the very bottom of the page. One paragraph per item.
 footer:
@@ -163,13 +163,13 @@ sections:
       #- "Prizes are TBA — expect practical maker rewards such as hardware, credits, gift cards, and tools."
 
   - id: apply
-    title: Sign-Up Form 
+    title: Apply/Register 
     type: prose
     body:
-      - "Interested in attending, sponsoring, mentoring, or judging? Fill out the form below while we set up Luma."
+      - "Interested in attending, sponsoring, mentoring, or judging? Visit our Events page at Luma!"
     button:
-      label: "Sign-up Form"
-      url: "https://docs.google.com/forms/d/e/1FAIpQLSeVBl7Q7HjIDip8C7H7l2KwT6T9Buy4RfkJa64CLngNDVa9xw/viewform"
+      label: "Apply"
+      url: "https://luma.com/kxq4yxr8"
     #note_box:
       #- '<strong>Confirmed sponsor:</strong> <a href="https://www.seeedstudio.com/?__vid=260630">Seeed Studio</a>. Sponsor benefits include logo placement and a short speaking slot.'
 
