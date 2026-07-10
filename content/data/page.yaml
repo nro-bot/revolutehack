@@ -157,7 +157,7 @@ sections:
         #a: "Yes — apply solo, with friends, or as a preformed team. Teams can also form at the event."
         #open: true
       - q: "What is Revolute?"
-        a: 'A revolute joint is a 1 degree-of-freedom rotating joint. Revolute isn't a company, the phrase "Boston Embodied / Physical AI Robot Hackathon" was just too much of a mouthful.'
+        a: "A revolute joint is a 1 degree-of-freedom rotating joint. Revolute isn't a company, the phrase 'Boston Embodied / Physical AI Robot Hackathon' was just too much of a mouthful."
         open: true
 
   - id: credits
