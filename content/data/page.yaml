@@ -59,12 +59,12 @@ apply_url: "https://docs.google.com/forms/d/e/1FAIpQLSeVBl7Q7HjIDip8C7H7l2KwT6T9
 sections:
 
   - id: overview
-    title: The Hackathon
+    title: Overview
     type: prose
     body:
       - "Bring AI into the physical world!"
-      - "Revolute is a two-day in-person hackathon where each team of 4-5 will be given one robot arm. The theme for v1.08 is: Cooking!"
-      - "The goals: 1. have fun 2. learn something new and 3. build something awesome."
+      - "Revolute is a two-day in-person hackathon where each team of four to five will be given one robot arm."
+      - "The theme for v1.08 is: cooking with robot arms. The goals are to 1. have fun 2. learn something new and 3. build something awesome! Or at least somewhat edible 😋"
       - "Teams should have at least one person familiar with hardware, software, and/or robotics."
 
   - id: hardware
@@ -80,12 +80,14 @@ sections:
         title: "reComputer Jetson Orin Nano, 8GB"
         url: "https://www.seeedstudio.com/reComputer-J3011-p-5590.html"
         note: "Edge compute for inference, one per team."
-      - tag: "1x"
+      - tag: "2x"
         # `title_html` lets you use links/markup inside the title when needed.
-        title_html: '<a href="https://www.seeedstudio.com/X10-USB-wired-camera-p-6506.html">X10 USB Camera</a> and <a href="https://www.seeedstudio.com/ET-S231-90-USB-Camera-p-6684.html">ET-S231 Webcam Module</a>'
+        #title_html: '<a href="https://www.seeedstudio.com/X10-USB-wired-camera-p-6506.html">X10 USB Camera</a> and <a href="https://www.seeedstudio.com/ET-S231-90-USB-Camera-p-6684.html">ET-S231 Webcam Module</a>'
+        title: USB camera
         note: "Overhead and wrist cameras"
-      - tag: "Possibly"
-        title: "Star leader arm"
+      - tag: "1x"
+        title: "Leader arm for reBot"
+        note: For teleoperations and imitation learning.
 
   - id: schedule
     title: Schedule
@@ -155,7 +157,7 @@ sections:
         #a: "Yes — apply solo, with friends, or as a preformed team. Teams can also form at the event."
         #open: true
       - q: "What is Revolute?"
-        a: 'The name for this recurring Boston physical AI hackathon — "Boston Embodied / Physical AI Robot Hackathon" was too much of a mouthful.'
+        a: 'A revolute joint is a 1 degree-of-freedom rotating joint. Revolute isn't a company, the phrase "Boston Embodied / Physical AI Robot Hackathon" was just too much of a mouthful.'
         open: true
 
   - id: credits
