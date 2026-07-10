@@ -20,39 +20,39 @@
 title: "Boston's first physical AI hackathon"
 version: "v1.08"
 kicker: "Aug. 1-2, 2026 // FabLab Kendall, Cambridge"
-dek: "Bring AI into the physical world through robot cooking demos."
-description: "Revolute is Boston's first physical AI hackathon, a two-day build weekend for robot cooking demos at FabLab Kendall."
+#dek: "$15k of real robot hardware"
+#description: "Revolute is Boston's first physical AI hackathon."
 # og_image: "hackathon.png"
 apply_url: "https://docs.google.com/forms/d/e/1FAIpQLSeVBl7Q7HjIDip8C7H7l2KwT6T9Buy4RfkJa64CLngNDVa9xw/viewform"
 
 # One supporting line under the dek.
-intro:
-  - "A two-day, in-person weekend for builders, engineers, researchers, and the robotics-curious. No robotics background required."
+#intro:
+#  - "A two-day, in-person weekend for builders, engineers, researchers, and the robotics-curious. No robotics background required."
 
 # The fact tiles. Add or remove a `- label: / value:` pair.
-facts:
-  - label: "Where"
-    value: '<a href="https://fabhubkendall.fabfoundation.org/">FabLab Kendall</a>, Cambridge, MA'
-  - label: "When"
-    value: "Sat-Sun, Aug. 1-2, 2026"
-  - label: "Teams"
-    value: "Solo, with friends, or preformed"
-  - label: "Bring"
-    value: "A laptop. Setup notes sent beforehand."
+#facts:
+  #- label: "Where"
+    #value: '<a href="https://fabhubkendall.fabfoundation.org/">FabLab Kendall</a>, Cambridge, MA'
+  #- label: "When"
+    #value: "Aug. 1-2, 2026"
+  #- label: "Teams"
+    #value: "Solo, with friends, or preformed"
+  #- label: "Bring"
+    #value: "A laptop. Setup notes sent beforehand."
 
 # Photo strip. Point `src` at files in content/images/. Remove an entry to drop
-# a photo.
-photos:
-  - src: "robotarm.jpg"
-    alt: "Robot arm pouring sauce onto pasta"
-    caption: "same family of arm, cooking task"
-  - src: "pasta.jpg"
-    alt: "Plates of pasta from a robot cooking hackathon"
-    caption: "cooking demo inspiration"
-  - src: "shenzhenhackathon.jpg"
-    alt: "Builders working at robot stations"
-    caption: "room inspiration"
-photo_credit: "Photos from Seeed Studio's 2025 Embodied AI Hackathon recap, used here as inspiration for the format."
+## a photo.
+#photos:
+  #- src: "robotarm.jpg"
+    #alt: "Robot arm pouring sauce onto pasta"
+    #caption: "same family of arm, cooking task"
+  #- src: "pasta.jpg"
+    #alt: "Plates of pasta from a robot cooking hackathon"
+    #caption: "cooking demo inspiration"
+  #- src: "shenzhenhackathon.jpg"
+    #alt: "Builders working at robot stations"
+    #caption: "room inspiration"
+#photo_credit: "Photos from Seeed Studio's 2025 Embodied AI Hackathon recap, used here as inspiration for the format."
 
 # ---- Sections ---------------------------------------------------------------
 #  Order here = order on the page = order in the sidebar ToC.
@@ -62,84 +62,87 @@ sections:
     title: The Hackathon
     type: prose
     body:
-      - "Revolute is a two-day hackathon built around one theme — cooking with robot arms — where a camera sees the scene, a model or script decides, and an arm tries to do the task."
-      - "It's for builders, engineers, researchers, and anyone curious about physical AI, with no prior robotics experience needed."
-      - "We provide the robot arms, edge compute, cameras, mentors, food, demo space, and science-fair style judging; you bring a laptop and something to build."
+      - "Bring AI into the physical world!"
+      - "Revolute is a two-day in-person hackathon where each team of 4-5 will be given one robot arm. The theme for v1.08 is: Cooking!"
+      - "The goals: 1. have fun 2. learn something new and 3. build something awesome."
+      - "Teams should have at least one person familiar with hardware, software, and/or robotics."
 
   - id: hardware
     title: Hardware
     type: cards
-    intro: '<a href="https://www.seeedstudio.com/?__vid=260630">Seeed Studio</a> is supporting the event with robot hardware and compute. Final inventory may expand before the event.'
+    intro: '<a href="https://www.seeedstudio.com/?__vid=260630">Seeed Studio</a> is providing the robot hardware. Approximate inventory (subject to change):'
     cards:
-      - tag: "7x"
+      - tag: "1x"
         title: "reBot Arm B601 DM"
         url: "https://www.seeedstudio.com/reBot-Arm-B601-DM-p-6740.html"
-        note: "Robot arms for teams to build with, with organizers coordinating post-event use."
-      - tag: "7x"
+        note: "One robot arm per team."
+      - tag: "1x"
         title: "reComputer Jetson Orin Nano, 8GB"
         url: "https://www.seeedstudio.com/reComputer-J3011-p-5590.html"
-        note: "Edge compute for perception, control, and model inference."
-      - tag: "Likely"
-        title: "XIAO ESP32S3 Sense"
-        url: "https://www.seeedstudio.com/XIAO-ESP32S3-Sense-p-5639.html"
-        note: "Small camera and microphone modules for auxiliary sensing."
-      - tag: "Likely"
+        note: "Edge compute for inference, one per team."
+      - tag: "1x"
         # `title_html` lets you use links/markup inside the title when needed.
-        title_html: '<a href="https://www.seeedstudio.com/X10-USB-wired-camera-p-6506.html">X10 USB Camera</a> / <a href="https://www.seeedstudio.com/ET-S231-90-USB-Camera-p-6684.html">ET-S231 Webcam Module</a>'
-        note: "Camera options for data collection and scene monitoring."
+        title_html: '<a href="https://www.seeedstudio.com/X10-USB-wired-camera-p-6506.html">X10 USB Camera</a> and <a href="https://www.seeedstudio.com/ET-S231-90-USB-Camera-p-6684.html">ET-S231 Webcam Module</a>'
+        note: "Overhead and wrist cameras"
+      - tag: "Possibly"
+        title: "Star leader arm"
 
   - id: schedule
     title: Schedule
     type: schedule
-    intro: "Subject to small shifts as food, mentors, and hardware logistics settle."
+    intro: "Subject to change."
     days:
       - label: "Saturday, Aug. 1"
         rows:
-          - when: "10:00 AM"
-            what: "Check-in, intro tutorial, snacks"
-            note: "Find a table, meet people, get oriented, and get started."
+          - when: "9:00 AM"
+            what: "Intro tutorial"
+            #note: "Find a table, meet people, get oriented, and get started."
           - when: "12:01 PM"
             what: "Opening ceremony"
-            note: "Theme, safety, judging, and hardware rules."
+            #note: "Theme, safety, judging, and hardware rules."
           - when: "1:00 PM"
             what: "Lunch and office hours"
-            note: "Mentors available for robot bring-up and project scope."
+            note: "Form teams, mentors available for setup."
           - when: "2:00 PM"
             what: "Hacking begins"
-            note: "Setup, data collection, scripts, fixtures, training, and demos."
+            #note: "Setup, data collection, scripts, fixtures, training, and demos."
           - when: "6:15 PM"
-            what: "Dinner"
+            what: "Intermission: Dinner"
           - when: "10:00 PM"
-            what: "Close and go home"
+            what: "Hacking ends for the day"
       - label: "Sunday, Aug. 2"
         rows:
           - when: "8:00 AM"
             what: "Doors open, breakfast bites"
-          - when: "12:00 PM"
+          - when: "12:01 PM"
             what: "Lunch"
           - when: "3:00 PM"
-            what: "Science-fair demos and judging"
-            note: "Judges tour tables. Keep the demo running if you can."
+            what: "Science-fair style demos and judging"
+            note: "Judges will go around to tables for demos."
           - when: "4:00 PM"
             what: "Final submissions"
-            note: "Submit a one-minute video online."
+            note: "Github, project documentation, and one-minute video submitted online"
           - when: "4:15 PM"
-            what: "Awards, closing, and cleanup"
+            what: "Awards"
+          - when: "4:30 PM"
+            what: "Light snacks and social"
+          - when: "5 PM"
+            what: "That's a wrap!"
 
-  - id: judging
-    title: Judging and Prizes
-    type: prose
-    body:
-      - "Science-fair style: judges walk around, talk with teams, and watch demos, scoring on completion, technical implementation, creativity, and what the team learned."
-      - "Prizes are TBA — expect practical maker rewards such as hardware, credits, gift cards, and tools."
+  #- id: judging
+    #title: Judging and Prizes
+    #type: prose
+    #body:
+      #- "Science-fair style: judges walk around, talk with teams, and watch demos, scoring on completion, technical implementation, creativity, and what the team learned."
+      #- "Prizes are TBA — expect practical maker rewards such as hardware, credits, gift cards, and tools."
 
   - id: apply
-    title: Apply, Sponsor, Mentor, Judge
+    title: Sign-Up Form 
     type: prose
     body:
-      - "Applications are open. Use the same form to take part, or to help as a mentor, judge, food sponsor, or hardware sponsor."
+      - "Interested in attending, sponsoring, mentoring, or judging? Fill out the form below while we set up Luma."
     button:
-      label: "Open application form"
+      label: "Sign-up Form"
       url: "https://docs.google.com/forms/d/e/1FAIpQLSeVBl7Q7HjIDip8C7H7l2KwT6T9Buy4RfkJa64CLngNDVa9xw/viewform"
     note_box:
       - '<strong>Confirmed sponsor:</strong> <a href="https://www.seeedstudio.com/?__vid=260630">Seeed Studio</a>. Sponsor benefits include logo placement and a short speaking slot.'
@@ -148,13 +151,12 @@ sections:
     title: FAQ
     type: faq
     items:
-      - q: "Can I apply without a team?"
-        a: "Yes — apply solo, with friends, or as a preformed team. Teams can also form at the event."
-        open: true
-      - q: "What is the format?"
-        a: "Two days of building, mentoring, food, and hardware bring-up, ending in a science-fair style showcase where judges visit each team."
+      #- q: "Can I apply without a team?"
+        #a: "Yes — apply solo, with friends, or as a preformed team. Teams can also form at the event."
+        #open: true
       - q: "What is Revolute?"
         a: 'The name for this recurring Boston physical AI hackathon — "Boston Embodied / Physical AI Robot Hackathon" was too much of a mouthful.'
+        open: true
 
   - id: credits
     title: Credits and Inspiration
@@ -163,14 +165,14 @@ sections:
       - tag: "Format"
         title: "Robot Hackathon NYC"
         url: "https://www.robothackathon.com/"
-        note: "Schedule and science-fair judging structure were useful references."
+        #note: "Schedule and science-fair judging structure were useful references."
       - tag: "Photos"
         title: "Seeed Studio 2025 Embodied AI Hackathon recap"
         url: "https://www.seeed.cc/post/2025-embodied-ai-hackathon-recap"
-        note: "Robot cooking photos and prior-event context."
-      - tag: "Tools"
-        title_html: '<a href="https://github.com/huggingface/lerobot/blob/main/examples/10_use_so100.md">LeRobot</a> / <a href="https://docs.phospho.ai/welcome">Phospho</a>'
-        note: "Likely starting points for setup, data collection, training, and inference."
+        #note: "Robot cooking photos and prior-event context."
+      #- tag: "Tools"
+        #title_html: '<a href="https://github.com/huggingface/lerobot/blob/main/examples/10_use_so100.md">LeRobot</a> / <a href="https://docs.phospho.ai/welcome">Phospho</a>'
+        #note: "Likely starting points for setup, data collection, training, and inference."
     # `links` attaches an optional disclosure block after the cards.
     links:
       summary: "Similar hackathons in other cities"
