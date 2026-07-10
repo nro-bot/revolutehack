@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+
+{% block meta %}
+<meta name="description" content="{{ page.description | default('') }}">
+<meta property="og:title" content="{{ page.title }} | Revolute">
+<meta property="og:description" content="{{ page.dek | default('') }}">
+{% if page.og_image %}<meta property="og:image" content="{{ page.og_image }}">{% endif %}
+{% endblock %}
+
+{% block title %}{{ page.title }} | Revolute{% endblock %}
+
+{#
+   ---------------------------------------------------------------------------
+   Section renderers, one macro per `type` in page.yaml. To support a new
+   section type, add a macro here and a branch in the dispatcher at the bottom.
+   ---------------------------------------------------------------------------
+#}
+
+{% macro prose(s) %}
+  {% for p in s.body %}<p class="copy">{{ p }}</p>{% endfor %}
+  {% if s.button %}
+  <div class="actions"><a class="button" href="{{ s.button.url }}">{{ s.button.label }}</a></div>
+  {% endif %}
+  {% if s.note_box %}
+  <div class="note-box">{% for p in s.note_box %}<p>{{ p }}</p>{% endfor %}</div>
+  {% endif %}
+{% endmacro %}
+
+{% macro simple_list(s) %}
+  <ul class="plain-list">{% for i in s['items'] %}<li>{{ i }}</li>{% endfor %}</ul>
+{% endmacro %}
+
+{% macro cards(s) %}
+  {% if s.intro %}<p class="copy">{{ s.intro }}</p>{% endif %}
+  <div class="list">
+    {% for c in s.cards %}
+    <div class="item">
+      <div class="tag">{{ c.tag }}</div>
+      <div>
+        <h3>{% if c.title_html %}{{ c.title_html }}{% elif c.url %}<a href="{{ c.url }}">{{ c.title }}</a>{% else %}{{ c.title }}{% endif %}</h3>
+        {% if c.note %}<p>{{ c.note }}</p>{% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% if s.links %}{{ links_block(s.links) }}{% endif %}
+{% endmacro %}
+
+{% macro schedule(s) %}
+  {% if s.intro %}<p class="copy">{{ s.intro }}</p>{% endif %}
+  {% for d in s.days %}
+  <div class="day">
+    <h3 class="day-label">{{ d.label }}</h3>
+    <div class="rows">
+      {% for r in d.rows %}
+      <div class="row">
+        <div class="when">{{ r.when }}</div>
+        <div><h3>{{ r.what }}</h3>{% if r.note %}<p>{{ r.note }}</p>{% endif %}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+{% endmacro %}
+
+{% macro faq(s) %}
+  {% for qa in s['items'] %}
+  <details{% if qa.open %} open{% endif %}>
+    <summary>{{ qa.q }}</summary>
+    <p>{{ qa.a }}</p>
+  </details>
+  {% endfor %}
+{% endmacro %}
+
+{% macro links_block(l) %}
+  <details class="citylinks">
+    <summary>{{ l.summary }}</summary>
+    <ul>
+      {% for i in l['items'] %}
+      <li><a href="{{ i.url }}">{{ i.label }}</a>{% if i.place %} <span class="place">— {{ i.place }}</span>{% endif %}</li>
+      {% endfor %}
+    </ul>
+  </details>
+{% endmacro %}
+
+{% macro render_section(s) %}
+  {% if s.type == 'prose' %}{{ prose(s) }}
+  {% elif s.type == 'list' %}{{ simple_list(s) }}
+  {% elif s.type == 'cards' %}{{ cards(s) }}
+  {% elif s.type == 'schedule' %}{{ schedule(s) }}
+  {% elif s.type == 'faq' %}{{ faq(s) }}
+  {% endif %}
+{% endmacro %}
+
+{% block content %}
+<header class="topbar" id="top">
+  <div class="topbar-inner wrap">
+    <a class="brand" href="#top" aria-label="Revolute home">
+      <svg class="mark" viewBox="0 0 100 100" aria-hidden="true">
+        <g class="ring">
+          <circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" stroke-width="6" stroke-dasharray="17 13" stroke-linecap="round"/>
+          <circle cx="50" cy="6" r="6" fill="currentColor"/>
+        </g>
+        <line x1="50" y1="50" x2="94" y2="50" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+        <circle cx="50" cy="50" r="15" fill="var(--bg)" stroke="currentColor" stroke-width="7"/>
+        <circle cx="50" cy="50" r="5" fill="currentColor"/>
+      </svg>
+      <span class="word">Revolute</span>
+      {% if page.version %}<span class="version">{{ page.version }}</span>{% endif %}
+    </a>
+    {% if page.apply_url %}<a class="button topbar-cta" href="{{ page.apply_url }}">Apply / register</a>{% endif %}
+  </div>
+</header>
+
+<div class="layout wrap">
+  <div class="sidebar">
+    <nav class="toc" aria-label="Table of contents">
+      <p class="toc-label">On this page</p>
+      <ol>
+        {% for item in page.toc %}
+        <li><a href="#{{ item.id }}">{{ item.title }}</a></li>
+        {% endfor %}
+      </ol>
+    </nav>
+  </div>
+
+  <main class="page">
+    <section class="hero" aria-labelledby="hero-title">
+      {% if page.kicker %}<p class="kicker">{{ page.kicker }}</p>{% endif %}
+      <h1 id="hero-title">{{ page.title }}</h1>
+      {% if page.dek %}<p class="dek">{{ page.dek }}</p>{% endif %}
+      {% for line in page.intro %}<p class="dek">{{ line }}</p>{% endfor %}
+
+      {% if page.facts %}
+      <div class="facts" aria-label="Event facts">
+        {% for f in page.facts %}
+        <div class="fact"><p class="label">{{ f.label }}</p><p class="value">{{ f.value }}</p></div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </section>
+
+    {% if page.photos %}
+    <div class="photo-strip" aria-label="Hackathon photos">
+      {% for ph in page.photos %}
+      <figure>
+        <img src="{{ SITEURL }}/images/{{ ph.src }}" alt="{{ ph.alt }}">
+        {% if ph.caption %}<figcaption>{{ ph.caption }}</figcaption>{% endif %}
+      </figure>
+      {% endfor %}
+    </div>
+    {% if page.photo_credit %}<p class="credit-note">{{ page.photo_credit }}</p>{% endif %}
+    {% endif %}
+
+    <div class="content">
+      {% for s in page.sections %}
+      <section id="{{ s.id }}">
+        <h2>{{ s.title }}</h2>
+        {{ render_section(s) }}
+      </section>
+      {% endfor %}
+    </div>
+
+    <footer class="footer">
+      <p>Revolute {{ page.version | default('') }}</p>
+      <p>Organized by Boston Robot Hackers</p>
+      <p>Contact is in the application form.</p>
+      <p>More details will be added as judges, food, prizes, and hardware logistics settle.</p>
+    </footer>
+  </main>
+</div>
+{% endblock %}
