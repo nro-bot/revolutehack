@@ -1,0 +1,59 @@
+# Builds the Pelican site and publishes it to GitHub Pages.
+#
+# One-time setup in the repo:
+#   Settings -> Pages -> Build and deployment -> Source: "GitHub Actions"
+#
+# After that, every push to the default branch rebuilds and deploys the site.
+name: Build and deploy
+
+on:
+  push:
+    branches: [main]
+  # Allow running the workflow by hand from the Actions tab.
+  workflow_dispatch:
+
+# Permissions the deploy job needs to publish to Pages.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only keep the most recent deploy running; cancel superseded ones.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Build site
+        run: pelican content -o output -s pelicanconf.py
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: output
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
