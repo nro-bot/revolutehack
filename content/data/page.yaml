@@ -144,8 +144,8 @@ sections:
     button:
       label: "Sign-up Form"
       url: "https://docs.google.com/forms/d/e/1FAIpQLSeVBl7Q7HjIDip8C7H7l2KwT6T9Buy4RfkJa64CLngNDVa9xw/viewform"
-    note_box:
-      - '<strong>Confirmed sponsor:</strong> <a href="https://www.seeedstudio.com/?__vid=260630">Seeed Studio</a>. Sponsor benefits include logo placement and a short speaking slot.'
+    #note_box:
+      #- '<strong>Confirmed sponsor:</strong> <a href="https://www.seeedstudio.com/?__vid=260630">Seeed Studio</a>. Sponsor benefits include logo placement and a short speaking slot.'
 
   - id: faq
     title: FAQ
