@@ -17,13 +17,17 @@
 # =============================================================================
 
 # ---- Masthead / hero --------------------------------------------------------
-title: "Boston physical AI hackathon"
+title: "Boston's first physical AI hackathon"
 version: "v1.08"
 kicker: "Aug. 1-2, 2026 // FabLab Kendall, Cambridge"
-#dek: "$15k of real robot hardware"
+dek: "$15k of real robot hardware, <br>30 real-life participants, <br>2 days of real fun."
 #description: "Revolute is Boston's first physical AI hackathon."
 # og_image: "hackathon.png"
 apply_url: "https://docs.google.com/forms/d/e/1FAIpQLSeVBl7Q7HjIDip8C7H7l2KwT6T9Buy4RfkJa64CLngNDVa9xw/viewform"
+
+# Footer lines, shown at the very bottom of the page. One paragraph per item.
+footer:
+  - "Revolute v1.08"
 
 # One supporting line under the dek.
 #intro:
@@ -41,7 +45,7 @@ apply_url: "https://docs.google.com/forms/d/e/1FAIpQLSeVBl7Q7HjIDip8C7H7l2KwT6T9
     #value: "A laptop. Setup notes sent beforehand."
 
 # Photo strip. Point `src` at files in content/images/. Remove an entry to drop
-## a photo.
+# a photo.
 #photos:
   #- src: "robotarm.jpg"
     #alt: "Robot arm pouring sauce onto pasta"
@@ -58,14 +62,34 @@ apply_url: "https://docs.google.com/forms/d/e/1FAIpQLSeVBl7Q7HjIDip8C7H7l2KwT6T9
 #  Order here = order on the page = order in the sidebar ToC.
 sections:
 
-  - id: overview
-    title: Overview
+  - id: details 
+    title: Details
     type: prose
     body:
-      - "Bring AI into the physical world!"
-      - "Revolute is a two-day in-person hackathon where each team of four to five will be given one robot arm."
-      - "The theme for v1.08 is: cooking with robot arms. The goals are to 1. have fun 2. learn something new and 3. build something awesome! Or at least somewhat edible 😋"
+      - "The theme of the hackathon? Cooking with robot arms!" 
+      - "Your team of four to five people gets one reBot arm and one leader arm, along with two cameras and an edge compute. The goals are to first, have fun; second, learn something new; and third, build something awesome! Or at least somewhat edible 😋"
       - "Teams should have at least one person familiar with hardware, software, and/or robotics."
+    # Logo band shown at the end of this section. Each group has a small-caps
+    # `label` and one or more logos; a logo is either an image (`img`, on a
+    # white chip) or an inline SVG (`svg`, tinted to the accent color).
+    # `url` and `sub` (a subtitle line) are optional.
+    partners:
+      - label: "Hosted by"
+        logos:
+          - img: "fabfoundation.png"
+            alt: "Fab Foundation"
+            url: "https://fabfoundation.org/"
+      - label: "Sponsored by"
+        logos:
+          - img: "seeedstudio.png"
+            alt: "Seeed Studio"
+            url: "https://www.seeedstudio.com/?__vid=260630"
+      - label: "Partners"
+        logos:
+          - svg: "miters.svg"
+            alt: "MITERS"
+            url: "https://miters.mit.edu/"
+            sub: "Boston Robot Hackers"
 
   - id: hardware
     title: Hardware
@@ -157,8 +181,9 @@ sections:
         #a: "Yes — apply solo, with friends, or as a preformed team. Teams can also form at the event."
         #open: true
       - q: "What is Revolute?"
-        a: "A revolute joint is a 1 degree-of-freedom rotating joint. Revolute isn't a company, the phrase 'Boston Embodied / Physical AI Robot Hackathon' was just too much of a mouthful."
+        a: "Revolute isn't a company, the phrase 'Boston Embodied / Physical AI Robot Hackathon' was just too much of a mouthful. The word comes from 'revolute joint', a type of rotating joint."
         open: true
+
 
   - id: credits
     title: Credits and Inspiration
@@ -185,3 +210,27 @@ sections:
         - { label: "Shenzhen", url: "https://forums.developer.nvidia.com/t/join-the-seeed-studio-hugging-face-embodied-ai-hackathon/344162", place: "Oct 18 2025" }
         - { label: "Santa Clara", url: "https://luma.com/zsaa3r3d", place: "Mar 21 2026" }
         - { label: "San Francisco", url: "https://luma.com/embodied-metal", place: "July 17 2026" }
+
+  # ---- Sponsors -------------------------------------------------------------
+  #  A `sponsors` section shows logos, optionally grouped into tiers. Each tier
+  #  has an optional `label` (e.g. "Gold") and a `size` controlling how large
+  #  the logos render: "lg", "md" (default), or "sm". A logo is an image
+  #  (`img`, white chip), an inline SVG (`svg`, accent-tinted), or just a
+  #  `name` (text) when there's no logo yet. `url` is optional on any of them.
+  #  To skip tiers entirely, use a single tier with no `label`.
+  - id: sponsors
+    title: Sponsors
+    type: sponsors
+    intro: "Revolute is made possible by our sponsors. Interested in joining them? Reach out through the sign-up form."
+    tiers:
+      - label: "Gold"
+        size: lg
+        logos:
+          - img: "seeedstudio.png"
+            alt: "Seeed Studio"
+            url: "https://www.seeedstudio.com/?__vid=260630"
+      #- label: "Supporting"
+        #size: md
+        #logos:
+          #- name: "Your company here"
+    #note: "Tiers and logos are examples — edit the `sponsors` section in page.yaml to update them."

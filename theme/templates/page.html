@@ -16,6 +16,37 @@
    ---------------------------------------------------------------------------
 #}
 
+{#
+   A single logo: an inline SVG (accent-tinted), an image on a white chip, or
+   plain text when no artwork exists yet. Wrapped in a link if `url` is set.
+   `class_name` is the wrapper class; `extra` is optional markup after the mark
+   (e.g. a subtitle). Shared by the partner band and the sponsors section.
+#}
+{% macro logo_item(logo, class_name, extra='') %}
+  {% set mark %}
+    {% if logo.svg_markup %}<span class="partner-svg">{{ logo.svg_markup }}</span>
+    {% elif logo.img %}<span class="partner-chip"><img src="{{ SITEURL }}/images/{{ logo.img }}" alt="{{ logo.alt }}" loading="lazy"></span>
+    {% else %}<span class="sponsor-name">{{ logo.name | default(logo.alt) }}</span>{% endif %}
+    {{ extra }}
+  {% endset %}
+  {% if logo.url %}<a class="{{ class_name }}" href="{{ logo.url }}" aria-label="{{ logo.alt | default(logo.name) }}">{{ mark }}</a>
+  {% else %}<span class="{{ class_name }}">{{ mark }}</span>{% endif %}
+{% endmacro %}
+
+{% macro partner_band(groups) %}
+  <div class="partners">
+    {% for group in groups %}
+    <div class="partner-group">
+      <p class="partner-label">{{ group.label }}</p>
+      {% for logo in group.logos %}
+      {% set sub %}{% if logo.sub %}<span class="partner-sub">{{ logo.sub }}</span>{% endif %}{% endset %}
+      {{ logo_item(logo, 'partner-logo', sub) }}
+      {% endfor %}
+    </div>
+    {% endfor %}
+  </div>
+{% endmacro %}
+
 {% macro prose(s) %}
   {% for p in s.body %}<p class="copy">{{ p }}</p>{% endfor %}
   {% if s.button %}
@@ -24,6 +55,7 @@
   {% if s.note_box %}
   <div class="note-box">{% for p in s.note_box %}<p>{{ p }}</p>{% endfor %}</div>
   {% endif %}
+  {% if s.partners %}{{ partner_band(s.partners) }}{% endif %}
 {% endmacro %}
 
 {% macro simple_list(s) %}
@@ -72,6 +104,21 @@
   {% endfor %}
 {% endmacro %}
 
+{% macro sponsors(s) %}
+  {% if s.intro %}<p class="copy">{{ s.intro }}</p>{% endif %}
+  {% for tier in s.tiers %}
+  <div class="sponsor-tier">
+    {% if tier.label %}<p class="tier-label">{{ tier.label }}</p>{% endif %}
+    <div class="sponsor-grid {{ tier.size | default('md') }}">
+      {% for logo in tier.logos %}
+      {{ logo_item(logo, 'sponsor-logo') }}
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+  {% if s.note %}<p class="sponsor-note">{{ s.note }}</p>{% endif %}
+{% endmacro %}
+
 {% macro links_block(l) %}
   <details class="citylinks">
     <summary>{{ l.summary }}</summary>
@@ -89,7 +136,18 @@
   {% elif s.type == 'cards' %}{{ cards(s) }}
   {% elif s.type == 'schedule' %}{{ schedule(s) }}
   {% elif s.type == 'faq' %}{{ faq(s) }}
+  {% elif s.type == 'sponsors' %}{{ sponsors(s) }}
   {% endif %}
+{% endmacro %}
+
+{# The list of section links, shared by the desktop sidebar and the mobile
+   dropdown menu so there is a single source of truth for the ToC markup. #}
+{% macro toc_list() %}
+  <ol>
+    {% for item in page.toc %}
+    <li><a href="#{{ item.id }}">{{ item.title }}</a></li>
+    {% endfor %}
+  </ol>
 {% endmacro %}
 
 {% block content %}
@@ -108,19 +166,23 @@
       <span class="word">Revolute</span>
       {% if page.version %}<span class="version">{{ page.version }}</span>{% endif %}
     </a>
-    {% if page.apply_url %}<a class="button topbar-cta" href="{{ page.apply_url }}">Apply / register</a>{% endif %}
+    <div class="topbar-right">
+      {% if page.apply_url %}<a class="button topbar-cta" href="{{ page.apply_url }}">Apply / register</a>{% endif %}
+      <button class="nav-toggle" aria-label="Toggle page menu" aria-expanded="false" aria-controls="page-nav">
+        <span class="nav-toggle-bars" aria-hidden="true"></span>
+      </button>
+    </div>
   </div>
+  <nav class="nav-menu" id="page-nav" aria-label="On this page">
+    {{ toc_list() }}
+  </nav>
 </header>
 
 <div class="layout wrap">
   <div class="sidebar">
     <nav class="toc" aria-label="Table of contents">
       <p class="toc-label">On this page</p>
-      <ol>
-        {% for item in page.toc %}
-        <li><a href="#{{ item.id }}">{{ item.title }}</a></li>
-        {% endfor %}
-      </ol>
+      {{ toc_list() }}
     </nav>
   </div>
 
@@ -129,7 +191,7 @@
       {% if page.kicker %}<p class="kicker">{{ page.kicker }}</p>{% endif %}
       <h1 id="hero-title">{{ page.title }}</h1>
       {% if page.dek %}<p class="dek">{{ page.dek }}</p>{% endif %}
-      {% for line in page.intro %}<p class="dek">{{ line }}</p>{% endfor %}
+      {% for line in page.intro | default([]) %}<p class="dek">{{ line }}</p>{% endfor %}
 
       {% if page.facts %}
       <div class="facts" aria-label="Event facts">
@@ -161,9 +223,33 @@
       {% endfor %}
     </div>
 
+    {% if page.footer %}
     <footer class="footer">
-      <p>Revolute {{ page.version | default('') }} (Aug. 2026)</p>
+      {% for line in page.footer %}<p>{{ line }}</p>{% endfor %}
     </footer>
+    {% endif %}
   </main>
 </div>
+
+<script>
+  // Mobile "On this page" menu: toggle open/closed, and close after a link tap.
+  (function () {
+    var toggle = document.querySelector('.nav-toggle');
+    var menu = document.getElementById('page-nav');
+    if (!toggle || !menu) return;
+
+    function setOpen(open) {
+      document.body.classList.toggle('nav-open', open);
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+
+    toggle.addEventListener('click', function () {
+      setOpen(!document.body.classList.contains('nav-open'));
+    });
+
+    menu.addEventListener('click', function (e) {
+      if (e.target.closest('a')) setOpen(false);
+    });
+  })();
+</script>
 {% endblock %}

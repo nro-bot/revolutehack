@@ -24,7 +24,26 @@ class YamlPageGenerator(Generator):
         data["toc"] = [
             {"id": s["id"], "title": s["title"]} for s in data.get("sections", [])
         ]
+
+        # Inline any SVG logo referenced by an `svg:` key (partner/sponsor
+        # logos) so it can inherit the accent color via `currentColor`. The
+        # file lives in content/images/. Walk the whole tree so this works
+        # wherever a logo appears.
+        self._inline_svgs(data)
+
         self.page_data = data
+
+    def _inline_svgs(self, node):
+        if isinstance(node, dict):
+            if node.get("svg"):
+                svg_path = os.path.join(self.path, "images", node["svg"])
+                with open(svg_path, encoding="utf-8") as fh:
+                    node["svg_markup"] = fh.read()
+            for value in node.values():
+                self._inline_svgs(value)
+        elif isinstance(node, list):
+            for item in node:
+                self._inline_svgs(item)
 
     def generate_output(self, writer):
         writer.write_file(

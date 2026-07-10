@@ -47,8 +47,6 @@ h1,h2,h3,p{margin:0;}
   transition:background .15s ease,border-color .15s ease,color .15s ease;
 }
 .button:hover{background:var(--accent);border-color:var(--accent);color:var(--paper);}
-.button.ghost{background:transparent;color:var(--ink);}
-.button.ghost:hover{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);}
 
 /* ---------- Brand ---------- */
 .brand{
@@ -79,6 +77,53 @@ h1,h2,h3,p{margin:0;}
   height:var(--header-h);
 }
 .topbar-cta{flex:0 0 auto;}
+.topbar-right{display:flex;align-items:center;gap:14px;}
+
+/* Hamburger button — hidden on desktop, shown on mobile via the media query. */
+.nav-toggle{
+  display:none;
+  width:40px;height:40px;padding:0;
+  background:transparent;border:1px solid var(--rule);border-radius:8px;
+  cursor:pointer;align-items:center;justify-content:center;
+  color:var(--ink);
+}
+.nav-toggle-bars,
+.nav-toggle-bars::before,
+.nav-toggle-bars::after{
+  content:"";display:block;
+  width:18px;height:2px;background:currentColor;border-radius:2px;
+  transition:transform .2s ease,opacity .2s ease;
+}
+.nav-toggle-bars{position:relative;}
+.nav-toggle-bars::before{position:absolute;top:-6px;left:0;}
+.nav-toggle-bars::after{position:absolute;top:6px;left:0;}
+/* Morph to an X when the menu is open. */
+.nav-open .nav-toggle-bars{background:transparent;}
+.nav-open .nav-toggle-bars::before{transform:translateY(6px) rotate(45deg);}
+.nav-open .nav-toggle-bars::after{transform:translateY(-6px) rotate(-45deg);}
+
+/* Dropdown menu panel — collapsed by default, only used on mobile. */
+.nav-menu{
+  display:none;
+  border-top:1px solid var(--rule);
+  background:var(--bg);
+}
+.nav-menu ol{
+  list-style:none;margin:0;padding:10px 0;
+  counter-reset:navtoc;
+  width:min(var(--wrap),calc(100% - 44px));margin-inline:auto;
+}
+.nav-menu li{counter-increment:navtoc;}
+.nav-menu a{
+  display:grid;grid-template-columns:2.4em 1fr;align-items:baseline;
+  padding:11px 4px;color:var(--ink);text-decoration:none;
+  border-bottom:1px solid var(--rule);
+}
+.nav-menu li:last-child a{border-bottom:0;}
+.nav-menu a::before{
+  content:counter(navtoc,decimal-leading-zero);
+  color:var(--accent);font-family:var(--mono);font-size:.72rem;
+}
 
 /* ---------- Two-column layout ---------- */
 .layout{
@@ -218,6 +263,60 @@ details p{margin:0 0 16px 24px;color:var(--muted);}
 .citylinks li{padding:4px 0;color:var(--muted);}
 .citylinks .place{color:var(--muted);font-family:var(--mono);font-size:.78rem;}
 
+/* ---------- Partner logo band (end of a section) ---------- */
+.partners{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:24px;align-items:start;
+  margin-top:32px;padding-top:28px;
+  border-top:1px solid var(--rule);
+}
+.partner-label{
+  margin:0 0 14px;color:var(--muted);
+  font-family:var(--mono);font-size:.7rem;
+  text-transform:uppercase;letter-spacing:.14em;
+}
+.partner-logo{
+  display:inline-flex;flex-direction:column;align-items:flex-start;gap:8px;
+  color:var(--accent);text-decoration:none;
+}
+.partner-logo:hover{color:var(--accent);}
+.partner-chip{
+  display:inline-flex;padding:12px 14px;
+  background:#fff;border:1px solid var(--rule);border-radius:6px;
+}
+.partner-chip img{height:30px;width:auto;display:block;}
+.partner-svg{display:inline-flex;color:var(--accent);}
+.partner-svg svg{height:34px;width:auto;display:block;}
+.partner-sub{
+  color:var(--ink);font-style:italic;font-size:.82rem;
+}
+
+/* ---------- Sponsors section (optional tiers) ---------- */
+.sponsor-tier{margin-top:22px;}
+.sponsor-tier:first-of-type{margin-top:18px;}
+.tier-label{
+  margin:0 0 12px;color:var(--accent);
+  font-family:var(--mono);font-size:.72rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.12em;
+}
+.sponsor-grid{
+  display:flex;flex-wrap:wrap;gap:14px 20px;align-items:center;
+}
+.sponsor-logo{
+  display:inline-flex;color:var(--accent);text-decoration:none;
+}
+.sponsor-logo:hover{color:var(--accent);}
+.sponsor-name{
+  display:inline-flex;align-items:center;
+  padding:12px 16px;border:1px dashed var(--rule);border-radius:6px;
+  color:var(--muted);font-family:var(--mono);font-size:.85rem;
+}
+/* Tier sizes control logo height. */
+.sponsor-grid.lg .partner-chip img,.sponsor-grid.lg .partner-svg svg{height:44px;}
+.sponsor-grid.md .partner-chip img,.sponsor-grid.md .partner-svg svg{height:32px;}
+.sponsor-grid.sm .partner-chip img,.sponsor-grid.sm .partner-svg svg{height:24px;}
+.sponsor-note{margin-top:18px;color:var(--muted);font-family:var(--mono);font-size:.72rem;}
+
 /* ---------- Footer ---------- */
 .footer{margin-top:44px;padding-top:24px;border-top:1px solid var(--rule);color:var(--muted);font-family:var(--mono);font-size:.75rem;}
 .footer p + p{margin-top:8px;}
@@ -225,10 +324,10 @@ details p{margin:0 0 16px 24px;color:var(--muted);}
 /* ---------- Responsive ---------- */
 @media (max-width:860px){
   .layout{grid-template-columns:1fr;gap:0;padding-top:28px;}
-  .sidebar{position:static;margin-bottom:30px;padding-bottom:22px;border-bottom:1px solid var(--rule);}
-  .toc ol{border-left:0;columns:2;column-gap:28px;}
-  .toc ol a{padding-left:0;margin-left:0;border-left:0;}
-  .toc ol a:hover{border-left:0;}
+  /* Replace the stacked sidebar ToC with a hamburger menu in the header. */
+  .sidebar{display:none;}
+  .nav-toggle{display:inline-flex;}
+  .nav-open .nav-menu{display:block;}
 }
 @media (max-width:620px){
   :root{--header-h:62px;}
@@ -237,7 +336,7 @@ details p{margin:0 0 16px 24px;color:var(--muted);}
   .photo-strip{grid-template-columns:1fr;gap:8px;}
   .photo-strip img,.photo-strip figure:first-child img{height:220px;}
   .row,.item{grid-template-columns:1fr;gap:6px;}
-  .toc ol{columns:1;}
+  .partners{grid-template-columns:1fr;gap:28px;}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto;}
