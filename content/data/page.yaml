@@ -67,8 +67,12 @@ sections:
     type: prose
     body:
       - "The theme of the hackathon? Cooking with robot arms!" 
-      - "Your team of four to five people gets one reBot arm and one leader arm, along with two cameras and an edge compute. The goals are to first, have fun; second, learn something new; and third, build something awesome! Or at least somewhat edible 😋"
+      - "Each team of four to five people gets one reBot arm and one leader arm, along with two cameras and an Nvidia edge compute. The goals are to first, have fun; second, learn something new; and third, build something awesome! Or at least somewhat edible 😋"
       - "Teams should have at least one person familiar with hardware, software, and/or robotics."
+      - "The reBot RS features 48V QDD motors, a 2.5 kg rated payload, a 5 kg maximum payload, and a working radius of approximately 29 inches."
+      - "We’ll also have at least $1,000 in prizes, and all food is included."
+      - "Our main goal is not just competition, it’s to bring together and grow Boston’s robotics and physical AI community."
+
     # Logo band shown at the end of this section. Each group has a small-caps
     # `label` and one or more logos; a logo is either an image (`img`, on a
     # white chip) or an inline SVG (`svg`, tinted to the accent color).
@@ -97,8 +101,8 @@ sections:
     intro: '<a href="https://www.seeedstudio.com/?__vid=260630">Seeed Studio</a> is providing the robot hardware. Approximate inventory (subject to change):'
     cards:
       - tag: "1x"
-        title: "reBot Arm B601 DM"
-        url: "https://www.seeedstudio.com/reBot-Arm-B601-DM-p-6740.html"
+        title: "reBot Arm B601 RS"
+        url: "https://www.seeedstudio.com/reBot-Arm-B601-RS-Assembled-Kit-with-Gripper-p-6865.html"
         note: "One robot arm per team."
       - tag: "1x"
         title: "reComputer Jetson Orin Nano, 8GB"
