@@ -5,9 +5,9 @@
 #  add/remove/reorder `sections:` blocks.
 # =============================================================================
 
-title: "Sponsor Revolute"
+title: "Sponsorships"
 kicker: "Aug. 1-2, 2026 // FabLab Kendall, Cambridge"
-dek: "Help us bring $15k of real robot hardware and Boston's robotics community together."
+dek: "Sponsor Revolute and help us make Boston the forefront of Embodied AI."
 apply_url: "https://luma.com/kxq4yxr8"
 
 intro:
@@ -21,15 +21,15 @@ sections:
   - id: tiers
     title: Sponsorship Tiers
     type: table
-    intro: "Interested in sponsoring? Reach out through the sign-up form and we'll follow up."
+    intro: 'Interested in sponsoring? Reach out to <a href="mailto:revolutehack@gmail.com">revolutehack@gmail.com</a> and we''ll follow up.'
     columns:
-      - label: "Bronze"
+      - label: "Amber"
         price: "$2,500"
-      - label: "Silver"
+      - label: "Garnet"
         price: "$3,500"
-      - label: "Gold"
+      - label: "Sapphire"
         price: "$5,000"
-      - label: "Platinum"
+      - label: "Emerald"
         price: "$7,500"
       - label: "Title Sponsor"
         price: "$10,000"

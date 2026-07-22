@@ -48,6 +48,13 @@
 {% endmacro %}
 
 {% macro prose(s) %}
+  {% if s.facts %}
+  <div class="facts" aria-label="Event facts">
+    {% for f in s.facts %}
+    <div class="fact"><p class="label">{{ f.label }}</p><p class="value">{{ f.value }}</p></div>
+    {% endfor %}
+  </div>
+  {% endif %}
   {% for p in s.body %}<p class="copy">{{ p }}</p>{% endfor %}
   {% if s.button %}
   <div class="actions"><a class="button" href="{{ s.button.url }}">{{ s.button.label }}</a></div>
@@ -123,9 +130,10 @@
   {% if s.intro %}<p class="copy">{{ s.intro }}</p>{% endif %}
   <div class="people-grid">
     {% for p in s.people | default([], true) %}
+    {% set name_parts = p.name.split() %}
     <div class="person">
       {% if p.photo %}<img class="person-photo" src="{{ SITEURL }}/images/{{ p.photo }}" alt="{{ p.name }}" loading="lazy">
-      {% else %}<div class="person-photo person-photo-placeholder" aria-hidden="true">{{ p.name[0] }}</div>{% endif %}
+      {% else %}<div class="person-photo person-photo-placeholder" aria-hidden="true">{{ name_parts[0][0] }}{{ name_parts[-1][0] if name_parts | length > 1 else '' }}</div>{% endif %}
       <div class="person-body">
         <h3>{% if p.url %}<a href="{{ p.url }}">{{ p.name }}</a>{% else %}{{ p.name }}{% endif %}</h3>
         <p class="person-role">{{ p.title }}{% if p.affiliation %}, {{ p.affiliation }}{% endif %}</p>
@@ -188,8 +196,7 @@
   {% endif %}
 {% endmacro %}
 
-{# The list of section links, shared by the desktop sidebar and the mobile
-   dropdown menu so there is a single source of truth for the ToC markup. #}
+{# Shared by the desktop sidebar and the mobile dropdown. #}
 {% macro toc_list() %}
   <ol>
     {% for item in page.toc %}
@@ -198,9 +205,7 @@
   </ol>
 {% endmacro %}
 
-{# Site-wide page links (About, Sponsorship, …) from NAV_LINKS in
-   pelicanconf.py — shown below the ToC on every page, minus the page you're
-   already on. Shared by the desktop sidebar and the mobile dropdown. #}
+{# Cross-page links from NAV_LINKS (pelicanconf.py); a page hides its own entry. #}
 {% macro site_nav_list() %}
   <ul>
     {% for link in NAV_LINKS | default([]) %}
@@ -227,6 +232,7 @@
       <span class="word">Revolute</span>
       {% if page.version %}<span class="version">{{ page.version }}</span>{% endif %}
     </a>
+    {% if page.kicker %}<p class="header-kicker">{{ page.kicker }}</p>{% endif %}
     <div class="topbar-right">
       {% if page.apply_url %}<a class="button topbar-cta" href="{{ page.apply_url }}">Apply / register</a>{% endif %}
       <button class="nav-toggle" aria-label="Toggle page menu" aria-expanded="false" aria-controls="page-nav">
@@ -253,7 +259,6 @@
 
   <main class="page">
     <section class="hero" aria-labelledby="hero-title">
-      {% if page.kicker %}<p class="kicker">{{ page.kicker }}</p>{% endif %}
       <h1 id="hero-title">{{ page.title }}</h1>
       {% if page.dek %}<p class="dek">{{ page.dek }}</p>{% endif %}
       {% for line in page.intro | default([]) %}<p class="dek">{{ line }}</p>{% endfor %}
@@ -272,16 +277,10 @@
     {% endif %}
 
     <div class="content">
+      {% for s in page.sections %}{% if s.bg_image %}<img class="content-bg" src="{{ SITEURL }}/images/{{ s.bg_image }}" alt="" aria-hidden="true">{% endif %}{% endfor %}
       {% for s in page.sections %}
       <section id="{{ s.id }}">
         <h2>{{ s.title }}</h2>
-        {% if s.id == 'details' and page.facts %}
-        <div class="facts" aria-label="Event facts">
-          {% for f in page.facts %}
-          <div class="fact"><p class="label">{{ f.label }}</p><p class="value">{{ f.value }}</p></div>
-          {% endfor %}
-        </div>
-        {% endif %}
         {{ render_section(s) }}
       </section>
       {% endfor %}

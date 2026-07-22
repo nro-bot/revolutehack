@@ -14,13 +14,17 @@
 #     faq      – expandable question / answer pairs
 #     table    – comparison grid (`columns` across the top, `rows` down the side)
 #     people   – grid of profiles (name, title, optional affiliation/photo/url/bio)
-#  A `prose` section may also carry an optional `button` and/or `note_box`.
+#     sponsors – logo wall, optionally grouped into tiers
+#  A `prose` section may also carry optional `facts`, `button`, and/or `note_box` blocks.
 #  A `cards` section may also carry an optional `links` disclosure block.
+#  Any section may carry an optional `bg_image` — a faded illustration behind
+#  the page content (desktop only), a filename in content/images/.
 # =============================================================================
 
 # ---- Masthead / hero --------------------------------------------------------
 title: "Boston's first robotics+physical AI hackathon"
 version: "v1.08"
+# `kicker` renders in the header (desktop only), not here.
 kicker: "Aug. 1-2, 2026 // FabLab Kendall, Cambridge"
 dek: "$15k of real robot hardware, <br>30 real-life participants, <br>2 days of real fun."
 #description: "Revolute is Boston's first robotics+physical AI hackathon."
@@ -34,21 +38,6 @@ footer:
 # One supporting line under the dek.
 #intro:
 #  - "A two-day, in-person weekend for builders, engineers, researchers, and the robotics-curious. No robotics background required."
-
-# The fact tiles. Add or remove a `- label: / value:` pair.
-facts:
-  - label: "When"
-    value: "Aug. 1-2, 2026"
-  - label: "Where"
-    value: '<a href="https://fabhubkendall.fabfoundation.org/">FabLab Kendall</a>, Cambridge, MA'
-  - label: "Theme"
-    value: "Cooking with robot arms"
-  - label: "Apply"
-    value: '<a href="https://luma.com/kxq4yxr8">Apply on Luma</a>'
-  #- label: "Teams"
-    #value: "Solo, with friends, or preformed"
-  #- label: "Bring"
-    #value: "A laptop. Setup notes sent beforehand."
 
 # Photo strip. Point `src` at files in content/images/. Remove an entry to drop
 # a photo.
@@ -68,13 +57,26 @@ facts:
 #  Order here = order on the page = order in the sidebar ToC.
 sections:
 
-  - id: details 
+  - id: details
     title: Details
     type: prose
+    # Fact tiles shown at the top of this section. Add/remove a label:/value: pair.
+    facts:
+      - label: "When"
+        value: "Aug. 1-2, 2026"
+      - label: "Where"
+        value: '<a href="https://fabhubkendall.fabfoundation.org/">FabLab Kendall</a>, Cambridge, MA'
+      - label: "Theme"
+        value: "Cooking with robot arms"
+      - label: "Apply"
+        value: '<a href="https://luma.com/kxq4yxr8">Apply on Luma</a>'
+      #- label: "Teams"
+        #value: "Solo, with friends, or preformed"
+      #- label: "Bring"
+        #value: "A laptop. Setup notes sent beforehand."
     body:
       - "Each team of four to five people gets one reBot arm and one leader arm, along with two cameras and an Nvidia edge compute. The goals are to first, have fun; second, learn something new; and third, build something awesome! Or at least somewhat edible 😋"
       - "Teams should have at least one person familiar with hardware, software, and/or robotics."
-      - "The reBot RS features 48V QDD motors, a 2.5 kg rated payload, a 5 kg maximum payload, and a working radius of approximately 29 inches."
       - "We’ll also have at least $1,000 in prizes, and all food is included."
       - "Our main goal is not just competition, it’s to bring together and grow Boston’s robotics and physical AI community."
 
@@ -103,12 +105,13 @@ sections:
   - id: hardware
     title: Hardware
     type: cards
+    bg_image: "rebot_gemini.png"
     intro: '<a href="https://www.seeedstudio.com/?__vid=260630">Seeed Studio</a> is providing the robot hardware. Approximate inventory (subject to change):'
     cards:
       - tag: "1x"
         title: "reBot Arm B601 RS"
         url: "https://www.seeedstudio.com/reBot-Arm-B601-RS-Assembled-Kit-with-Gripper-p-6865.html"
-        note: "One robot arm per team."
+        note: "One robot arm per team. Features 48V QDD motors, a 2.5 kg rated payload, a 5 kg maximum payload, and a working radius of approximately 29 inches."
       - tag: "1x"
         title: "reComputer Jetson Orin Nano, 8GB"
         url: "https://www.seeedstudio.com/reComputer-J3011-p-5590.html"
@@ -129,7 +132,7 @@ sections:
     days:
       - label: "Saturday, Aug. 1"
         rows:
-          - when: "9:00 AM"
+          - when: "10:00 AM"
             what: "Intro tutorial"
             #note: "Find a table, meet people, get oriented, and get started."
           - when: "12:01 PM"
@@ -147,7 +150,7 @@ sections:
             what: "Hacking ends for the day"
       - label: "Sunday, Aug. 2"
         rows:
-          - when: "8:00 AM"
+          - when: "10:00 AM"
             what: "Doors open, breakfast bites"
           - when: "12:01 PM"
             what: "Lunch"
@@ -175,29 +178,33 @@ sections:
     title: Judges
     type: people
     intro: "Meet the judges."
-    # Each judge needs a name and title; affiliation, photo, url, and bio are
-    # all optional. `photo` points at a file in content/images/ — without
-    # one, a monogram is shown instead. Keep bios to one sentence.
-    # The five below are placeholders — swap in the real lineup.
+    # Optional per judge: affiliation, photo (content/images/, else a
+    # monogram), url, one-sentence bio.
     people:
-      - name: "Judge One"
-        title: "Robotics Engineer"
-        affiliation: "Example Co."
-        bio: "One-sentence bio goes here."
-      - name: "Judge Two"
-        title: "Research Scientist"
-        affiliation: "Example Lab"
-        bio: "One-sentence bio goes here."
-      - name: "Judge Three"
+      - name: "Sayam Dhingra"
+        title: "Senior Research and Design Engineer"
+        affiliation: "Autodesk"
+        bio: "Leads research on agentic autonomous robot arm control for machine tending at Autodesk's Boston Technology Center."
+      - name: "Charis Georgiou"
+        title: "Founder & CEO"
+        affiliation: "Minoic Intelligence"
+        url: "https://minoic.ai/"
+        bio: "Building automated rockbreakers that make quarry operations safer and more efficient."
+      - name: "Eric Pan"
+        title: "Founder & CEO"
+        affiliation: "Seeed Studio"
+        url: "https://www.seeedstudio.com/blog/2025/07/17/meet-the-judge-eric-pan/"
+        bio: "Founded Seeed Studio in 2008, now one of the world's largest open-source hardware makers."
+      - name: "Yuki Yamada"
+        title: "Senior Deployment Engineering Manager"
+        affiliation: "Pickle Robot Company"
+        url: "https://www.linkedin.com/in/yamada-hiroyuki/"
+        bio: "Former professional chef who moved into robotics via Dexai Robotics before joining Pickle Robot."
+      - name: "Charles Yong"
         title: "Founder"
-        affiliation: "Example Startup"
-        bio: "One-sentence bio goes here."
-      - name: "Judge Four"
-        title: "Hardware Engineer"
-        bio: "One-sentence bio goes here."
-      - name: "Judge Five"
-        title: "ML Engineer"
-        bio: "One-sentence bio goes here."
+        affiliation: "Vassar Robotics (YC X25)"
+        url: "https://vassarrobotics.com"
+        bio: "MIT engineer building Navrim, a low-cost robot arm that learns new skills by demonstration."
 
   #- id: apply
     #title: Apply/Register 
@@ -210,17 +217,33 @@ sections:
     #note_box:
       #- '<strong>Confirmed sponsor:</strong> <a href="https://www.seeedstudio.com/?__vid=260630">Seeed Studio</a>. Sponsor benefits include logo placement and a short speaking slot.'
 
-  - id: faq
-    title: FAQ
-    type: faq
-    items:
-      #- q: "Can I apply without a team?"
-        #a: "Yes — apply solo, with friends, or as a preformed team. Teams can also form at the event."
-        #open: true
-      - q: "What is Revolute?"
-        a: "Revolute isn't a company, the phrase 'Boston Embodied / Physical AI Robot Hackathon' was just too much of a mouthful. The word comes from 'revolute joint', a type of rotating joint."
-        open: true
-
+  # ---- Sponsors -------------------------------------------------------------
+  #  A `sponsors` section shows logos, optionally grouped into tiers. Each tier
+  #  has an optional `label` (e.g. "Gold") and a `size` controlling how large
+  #  the logos render: "lg", "md" (default), or "sm". A logo is an image
+  #  (`img`, white chip), an inline SVG (`svg`, accent-tinted), or just a
+  #  `name` (text) when there's no logo yet. `url` is optional on any of them.
+  #  To skip tiers entirely, use a single tier with no `label`.
+  - id: sponsors
+    title: Sponsors
+    type: sponsors
+    intro: 'Revolute is made possible by our sponsors. Interested in joining them? See our <a href="/sponsorship/">sponsorship tiers</a> and reach out to <a href="mailto:revolutehack@gmail.com">revolutehack@gmail.com</a>.'
+    tiers:
+      # Tier labels commented out below to hide them on the page while
+      # staying documented for editors.
+      #label: "Gold"
+      - size: lg
+        logos:
+          - img: "seeedstudio.png"
+            alt: "Seeed Studio"
+            url: "https://www.seeedstudio.com/?__vid=260630"
+      # Placeholders — swap in real sponsor logos as they're confirmed (or
+      # delete the tier if there aren't any yet).
+      #label: "Supporting"
+      - size: md
+        logos:
+          - name: "Sponsor [awaiting MIT approval]"
+          - name: "Sponsor [awaiting MIT approval]"
 
   - id: credits
     title: Credits and Inspiration
@@ -248,29 +271,13 @@ sections:
         - { label: "Santa Clara", url: "https://luma.com/zsaa3r3d", place: "Mar 21 2026" }
         - { label: "San Francisco", url: "https://luma.com/embodied-metal", place: "July 17 2026" }
 
-  # ---- Sponsors -------------------------------------------------------------
-  #  A `sponsors` section shows logos, optionally grouped into tiers. Each tier
-  #  has an optional `label` (e.g. "Gold") and a `size` controlling how large
-  #  the logos render: "lg", "md" (default), or "sm". A logo is an image
-  #  (`img`, white chip), an inline SVG (`svg`, accent-tinted), or just a
-  #  `name` (text) when there's no logo yet. `url` is optional on any of them.
-  #  To skip tiers entirely, use a single tier with no `label`.
-  - id: sponsors
-    title: Sponsors
-    type: sponsors
-    intro: 'Revolute is made possible by our sponsors. Interested in joining them? See our <a href="/sponsorship/">sponsorship tiers</a> and reach out through the sign-up form.'
-    tiers:
-      - label: "Gold"
-        size: lg
-        logos:
-          - img: "seeedstudio.png"
-            alt: "Seeed Studio"
-            url: "https://www.seeedstudio.com/?__vid=260630"
-      # The three below are placeholders — swap in real sponsor logos as
-      # they're confirmed (or delete the tier if there aren't any yet).
-      - label: "Supporting"
-        size: md
-        logos:
-          - name: "Sponsor One"
-          - name: "Sponsor Two"
-          - name: "Sponsor Three"
+  - id: faq
+    title: FAQ
+    type: faq
+    items:
+      #- q: "Can I apply without a team?"
+        #a: "Yes — apply solo, with friends, or as a preformed team. Teams can also form at the event."
+        #open: true
+      - q: "What is Revolute?"
+        a: "Revolute isn't a company, the phrase 'Boston Embodied / Physical AI Robot Hackathon' was just too much of a mouthful. The word comes from 'revolute joint', a type of rotating joint."
+        open: true

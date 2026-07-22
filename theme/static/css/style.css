@@ -4,6 +4,7 @@
   --ink:#171716;
   --muted:#6f6b62;
   --rule:#d7d0c3;
+  --rule-strong:#b6ac99;
   --accent:#c94a25;
   --accent-soft:#f3dfd5;
   --green:#3d705b;
@@ -78,6 +79,13 @@ h1,h2,h3,p{margin:0;}
 }
 .topbar-cta{flex:0 0 auto;}
 .topbar-right{display:flex;align-items:center;gap:14px;}
+
+/* Kicker line, shown in the header on desktop only — no room for it on mobile. */
+.header-kicker{
+  margin:0;color:var(--accent);
+  font-family:var(--mono);font-size:.78rem;
+  text-transform:uppercase;letter-spacing:.04em;
+}
 
 /* Hamburger button — hidden on desktop, shown on mobile via the media query. */
 .nav-toggle{
@@ -161,7 +169,7 @@ h1,h2,h3,p{margin:0;}
 }
 .toc ol a:hover{color:var(--ink);border-left-color:var(--accent);}
 
-/* ---------- Site nav (About / Sponsorship, below the ToC) ---------- */
+/* ---------- Site nav (cross-page links, below the ToC) ---------- */
 .site-nav{margin-top:28px;}
 .site-nav ul{margin:0;padding:0;list-style:none;border-left:1px solid var(--rule);}
 .site-nav a{
@@ -190,11 +198,6 @@ h1,h2,h3,p{margin:0;}
 
 /* ---------- Hero ---------- */
 .hero{margin-bottom:36px;}
-.kicker{
-  margin:0 0 14px;color:var(--accent);
-  font-family:var(--mono);font-size:.8rem;
-  text-transform:uppercase;letter-spacing:.04em;
-}
 h1{max-width:680px;font-size:clamp(2.3rem,6.4vw,4.3rem);line-height:.98;}
 .dek{
   max-width:640px;margin:22px 0 0;color:#393733;
@@ -226,7 +229,16 @@ h1{max-width:680px;font-size:clamp(2.3rem,6.4vw,4.3rem);line-height:.98;}
 
 /* ---------- Sections (auto-numbered) ---------- */
 .content{counter-reset:section;}
-.content > section{scroll-margin-top:calc(var(--header-h) + 16px);border-top:1px solid var(--rule);padding-top:34px;margin-top:34px;}
+.content > section{scroll-margin-top:calc(var(--header-h) + 16px);border-top:2px solid var(--rule-strong);padding-top:34px;margin-top:34px;}
+/* A section's bg_image, full-bleed and fixed to the viewport so it stays
+   put behind the page while it scrolls. */
+.content-bg{
+  position:fixed;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;object-position:center top;
+  opacity:.05;z-index:-1;filter:grayscale(1);
+  pointer-events:none;user-select:none;
+}
 .content > section > h2{
   counter-increment:section;
   margin:0 0 17px;
@@ -390,6 +402,7 @@ details p{margin:0 0 16px 24px;color:var(--muted);}
   .sidebar{display:none;}
   .nav-toggle{display:inline-flex;}
   .nav-open .nav-menu{display:block;}
+  .header-kicker{display:none;}
 }
 @media (max-width:620px){
   :root{--header-h:62px;}

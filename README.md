@@ -38,14 +38,17 @@ itself, since each entry's `slug` is compared against the current page's.
 Top-level keys in a page's YAML control its masthead and footer. Most are
 optional — comment one out (prefix lines with `#`) and it simply disappears:
 
-- `title`, `version`, `kicker` — the header/hero text.
+- `title`, `version`, `kicker` — the header/hero text (`kicker` renders in
+  the topbar on desktop, not the hero).
 - `apply_url` — target of the "Apply / register" button in the header.
 - `intro:` — supporting lines under the title (a list).
-- `facts:` — the fact tiles (`label` / `value` pairs). Note: these render
-  inside the section whose `id` is `details`, not in the hero itself — that
-  placement is hardcoded in `page.html`'s section loop.
 - `photos:` — the photo strip (`src` / `alt` / `caption`), plus `photo_credit`.
 - `footer:` — the lines at the bottom of the page (a list).
+
+Two things live on individual *sections*, not the page root: `facts:`
+(fact tiles, `prose` sections only — see the type table below) and
+`bg_image:` (a faded illustration spanning the content column, desktop only,
+any section type — a filename in `content/images/`).
 
 ## Adding, removing, and reordering sections
 
@@ -60,7 +63,7 @@ Each section has a `type` that picks how it renders:
 
 | `type`     | For                          | Key fields                                          |
 |------------|------------------------------|-----------------------------------------------------|
-| `prose`    | paragraphs                   | `body:` (list); optional `button:`, `note_box:`, `partners:` |
+| `prose`    | paragraphs                   | `body:` (list); optional `facts:`, `button:`, `note_box:`, `partners:` |
 | `list`     | simple bullets               | `items:` (list)                                     |
 | `cards`    | tagged items w/ link + note  | `intro:`, `cards:`; optional `links:`               |
 | `schedule` | timed agenda                 | `intro:`, `days:` → `rows:`                         |
