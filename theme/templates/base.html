@@ -3,6 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#fbfaf6" id="theme-color">
+<script>
+(function(){
+  window.applyTheme = function(t, persist){
+    document.documentElement.setAttribute('data-theme', t);
+    document.getElementById('theme-color').content = t === 'dark' ? '#15140f' : '#fbfaf6';
+    if (persist) localStorage.setItem('theme', t);
+  };
+  applyTheme(localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light'));
+})();
+</script>
 {% block meta %}{% endblock %}
 <title>{% block title %}{{ SITENAME }}{% endblock %}</title>
 <link rel="stylesheet" href="{{ SITEURL }}/theme/css/style.css">

@@ -9,6 +9,8 @@
   --accent-soft:#f3dfd5;
   --green:#3d705b;
   --green-soft:#dfece4;
+  --copy:#393733;
+  --placeholder-bg:#ece7de;
   --mono:ui-monospace,"SF Mono","SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace;
   --sans:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   --wrap:1080px;
@@ -200,7 +202,7 @@ h1,h2,h3,p{margin:0;}
 .hero{margin-bottom:36px;}
 h1{max-width:680px;font-size:clamp(2.3rem,6.4vw,4.3rem);line-height:.98;}
 .dek{
-  max-width:640px;margin:22px 0 0;color:#393733;
+  max-width:640px;margin:22px 0 0;color:var(--copy);
   font-size:clamp(1.05rem,2.1vw,1.25rem);line-height:1.42;
 }
 .dek + .dek{margin-top:10px;}
@@ -217,7 +219,7 @@ h1{max-width:680px;font-size:clamp(2.3rem,6.4vw,4.3rem);line-height:.98;}
 
 /* ---------- Photo strip ---------- */
 .photo-strip{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:22px;}
-.photo-strip figure{position:relative;margin:0;overflow:hidden;border:1px solid var(--rule);background:#ece7de;}
+.photo-strip figure{position:relative;margin:0;overflow:hidden;border:1px solid var(--rule);background:var(--placeholder-bg);}
 .photo-strip img{width:100%;height:210px;object-fit:cover;filter:saturate(.92) contrast(1.02);cursor:zoom-in;}
 /* ---------- Lightbox (click a photo-strip image to enlarge) ---------- */
 .lightbox{
@@ -264,12 +266,12 @@ h1{max-width:680px;font-size:clamp(2.3rem,6.4vw,4.3rem);line-height:.98;}
   color:var(--accent);font-family:var(--mono);font-size:.76rem;font-weight:400;
 }
 h3{font-size:1.02rem;line-height:1.25;}
-.copy{color:#393733;font-size:1.03rem;}
+.copy{color:var(--copy);font-size:1.03rem;}
 .copy + .copy{margin-top:13px;}
 
 /* ---------- Plain list ---------- */
 .plain-list{margin:18px 0 0;padding:0;list-style:none;border-top:1px solid var(--rule);}
-.plain-list li{padding:9px 0;border-bottom:1px solid var(--rule);color:#393733;}
+.plain-list li{padding:9px 0;border-bottom:1px solid var(--rule);color:var(--copy);}
 
 /* ---------- Schedule ---------- */
 .rows{border-top:1px solid var(--rule);margin-top:18px;}
@@ -302,7 +304,7 @@ h3{font-size:1.02rem;line-height:1.25;}
 .person{display:flex;flex-direction:column;gap:12px;}
 .person-photo{
   width:60px;height:60px;border-radius:50%;
-  object-fit:cover;border:1px solid var(--rule);background:#ece7de;
+  object-fit:cover;border:1px solid var(--rule);background:var(--placeholder-bg);
 }
 .person-photo-placeholder{
   display:flex;align-items:center;justify-content:center;
@@ -314,7 +316,7 @@ h3{font-size:1.02rem;line-height:1.25;}
    joke) title below it. */
 .person-hackrole{margin-top:3px;color:var(--muted);font-family:var(--mono);font-size:.76rem;}
 .person-role{margin-top:3px;color:var(--muted);font-family:var(--mono);font-size:.76rem;}
-.person-bio{margin-top:7px;color:#393733;font-size:.92rem;line-height:1.42;}
+.person-bio{margin-top:7px;color:var(--copy);font-size:.92rem;line-height:1.42;}
 
 /* ---------- Tier comparison table ---------- */
 .tier-table-wrap{margin-top:18px;overflow-x:auto;border-top:1px solid var(--rule);}
@@ -329,7 +331,7 @@ h3{font-size:1.02rem;line-height:1.25;}
 }
 .tier-table th[scope="row"]{
   min-width:200px;padding-right:20px;
-  text-align:left;font-weight:400;color:#393733;font-size:.92rem;
+  text-align:left;font-weight:400;color:var(--copy);font-size:.92rem;
 }
 .tier-yes{color:var(--green);font-size:1.05rem;}
 .tier-no{color:var(--rule);}
@@ -337,7 +339,7 @@ h3{font-size:1.02rem;line-height:1.25;}
 
 /* ---------- Note box ---------- */
 .note-box{margin-top:18px;padding:15px 16px;border:1px solid var(--rule);background:var(--paper);}
-.note-box p{color:#393733;}
+.note-box p{color:var(--copy);}
 .note-box p + p{margin-top:9px;}
 
 /* ---------- Details / FAQ ---------- */
@@ -436,3 +438,28 @@ details p{margin:0 0 16px 24px;color:var(--muted);}
   html{scroll-behavior:auto;}
   .mark .ring{animation:none;}
 }
+
+/* ---------- Dark mode ----------
+   Applied via [data-theme], set by the inline script in base.html: it
+   defaults to the OS setting and remembers a manual override. */
+:root[data-theme="dark"]{
+  --bg:#15140f;--paper:#1c1a15;--ink:#f0ede4;--muted:#9a9484;
+  --rule:#33302a;--rule-strong:#4a453c;
+  --accent:#e2704a;--accent-soft:#3a2620;
+  --green:#5ea98a;--green-soft:#1f3a2e;
+  --copy:#d8d4c8;--placeholder-bg:#2a271f;
+}
+[data-theme="dark"] .partner-chip{background:#e8e4d8;}
+[data-theme="dark"] .content-bg{filter:invert(1) grayscale(1);}
+
+/* ---------- Theme toggle button ---------- */
+.theme-toggle{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:40px;height:40px;padding:0;
+  border:1px solid var(--rule);border-radius:8px;
+  background:transparent;color:var(--ink);cursor:pointer;
+}
+.theme-toggle svg{width:18px;height:18px;}
+.theme-toggle .icon-sun{display:none;}
+[data-theme="dark"] .theme-toggle .icon-moon{display:none;}
+[data-theme="dark"] .theme-toggle .icon-sun{display:block;}

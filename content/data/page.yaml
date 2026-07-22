@@ -61,7 +61,7 @@ sections:
       #- label: "Bring"
         #value: "A laptop. Setup notes sent beforehand."
     body:
-      - "Each team gets the hardware listed below, worth over $15,000 total."
+      - "Each team gets a robot arm and leader arm -- more details in the Hardware section below.."
       - "The goals: 1. Have fun; 2. Learn something new; and 3. Build something awesome! Or at least somewhat edible 😋"
       - "Teams should include at least one person familiar with hardware, software, or robotics."
       - "We’ll also have at least $1,000 in prizes, and all food is included."
@@ -277,4 +277,7 @@ sections:
         #open: true
       - q: "What is Revolute?"
         a: "Revolute isn't a company, the phrase 'Boston Embodied / Physical AI Robot Hackathon' was just too much of a mouthful. The word comes from 'revolute joint', a type of rotating joint."
+        open: true
+      - q: "What if I still have questions?"
+        a: "Email revolutehack at gmail dot com and we should hopefully answer -- if not try stalking us."
         open: true
