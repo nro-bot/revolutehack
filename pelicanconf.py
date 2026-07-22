@@ -10,11 +10,11 @@ DEFAULT_LANG = "en"
 # Custom theme (templates + static css).
 THEME = "theme"
 
-# The whole page is generated from content/data/page.yaml by our plugin.
+# Every page is generated from a content/data/*.yaml file by our plugin.
 PLUGIN_PATHS = ["plugins"]
 PLUGINS = ["yaml_page"]
 
-# This is a single generated landing page, not a blog: turn off the article and
+# This is a small set of generated pages, not a blog: turn off the article and
 # page machinery so nothing else gets written.
 ARTICLE_PATHS = ["_unused"]
 PAGE_PATHS = ["_unused"]
@@ -31,3 +31,11 @@ AUTHOR_FEED_RSS = None
 STATIC_PATHS = ["images"]
 
 RELATIVE_URLS = True
+
+# Site-wide links shown in the sidebar (and mobile menu) on every page,
+# alongside that page's own Table of Contents. `slug` matches a
+# content/data/<slug>.yaml file so the current page can hide its own link.
+NAV_LINKS = [
+    {"label": "Organizers", "url": "/organizers/", "slug": "organizers"},
+    {"label": "Sponsorship", "url": "/sponsorship/", "slug": "sponsorship"},
+]

@@ -1,9 +1,11 @@
 """Data-driven page generator for Revolute.
 
-Reads content/data/page.yaml and renders it through the `page.html` template,
-then lets Pelican write it as index.html. All editable content lives in that
-one plain-text YAML file — no HTML — so adding, removing, or reordering a
-section is just editing the file.
+Reads every *.yaml file in content/data/ and renders each through the
+`page.html` template. All editable content lives in those plain-text YAML
+files — no HTML — so adding, removing, or reordering a section is just
+editing a file. `page.yaml` is the homepage and writes to index.html; any
+other file, e.g. `sponsorship.yaml`, writes to `<slug>/index.html` so it
+gets a clean URL like `/sponsorship/`.
 """
 
 import os
@@ -15,23 +17,32 @@ from pelican.generators import Generator
 
 class YamlPageGenerator(Generator):
     def generate_context(self):
-        path = os.path.join(self.path, "data", "page.yaml")
-        with open(path, encoding="utf-8") as fh:
-            data = yaml.safe_load(fh)
+        data_dir = os.path.join(self.path, "data")
+        self.pages_data = []
+        for filename in sorted(os.listdir(data_dir)):
+            if not filename.endswith(".yaml"):
+                continue
+            with open(os.path.join(data_dir, filename), encoding="utf-8") as fh:
+                data = yaml.safe_load(fh)
 
-        # The sidebar Table of Contents is just the ordered list of sections,
-        # derived here so it can never drift from the content.
-        data["toc"] = [
-            {"id": s["id"], "title": s["title"]} for s in data.get("sections", [])
-        ]
+            # The sidebar Table of Contents is just the ordered list of
+            # sections, derived here so it can never drift from the content.
+            data["toc"] = [
+                {"id": s["id"], "title": s["title"]} for s in data.get("sections", [])
+            ]
 
-        # Inline any SVG logo referenced by an `svg:` key (partner/sponsor
-        # logos) so it can inherit the accent color via `currentColor`. The
-        # file lives in content/images/. Walk the whole tree so this works
-        # wherever a logo appears.
-        self._inline_svgs(data)
+            # Inline any SVG logo referenced by an `svg:` key (partner/sponsor
+            # logos) so it can inherit the accent color via `currentColor`.
+            # The file lives in content/images/. Walk the whole tree so this
+            # works wherever a logo appears.
+            self._inline_svgs(data)
 
-        self.page_data = data
+            slug = os.path.splitext(filename)[0]
+            is_home = slug == "page"
+            data["is_home"] = is_home
+            data["slug"] = slug
+            output_name = "index.html" if is_home else f"{slug}/index.html"
+            self.pages_data.append((output_name, data))
 
     def _inline_svgs(self, node):
         if isinstance(node, dict):
@@ -46,12 +57,13 @@ class YamlPageGenerator(Generator):
                 self._inline_svgs(item)
 
     def generate_output(self, writer):
-        writer.write_file(
-            name="index.html",
-            template=self.get_template("page"),
-            context={**self.context, "page": self.page_data},
-            relative_urls=self.settings["RELATIVE_URLS"],
-        )
+        for output_name, data in self.pages_data:
+            writer.write_file(
+                name=output_name,
+                template=self.get_template("page"),
+                context={**self.context, "page": data},
+                relative_urls=self.settings["RELATIVE_URLS"],
+            )
 
 
 def get_generators(pelican_object):

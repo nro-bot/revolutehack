@@ -1,0 +1,46 @@
+# =============================================================================
+#  Revolute — organizers page (content/data/organizers.yaml)
+# =============================================================================
+#  Renders to /organizers/. Same rules as page.yaml: no HTML, edit the text,
+#  add/remove/reorder `sections:` blocks.
+# =============================================================================
+
+title: "Organizers"
+kicker: "Aug. 1-2, 2026 // FabLab Kendall, Cambridge"
+dek: "The people organizing Boston's first robotics + physical AI hackathon."
+apply_url: "https://luma.com/kxq4yxr8"
+
+intro:
+  - '<a href="/">← Back to event details</a>'
+
+footer:
+  - "Revolute v1.08"
+
+sections:
+
+  - id: organizers
+    title: Organizers
+    type: people
+    intro: "Meet the team behind Revolute."
+    # Each organizer needs a name and title; affiliation, photo, url, and bio
+    # are all optional. `photo` points at a file in content/images/ —
+    # without one, a monogram is shown instead. Keep bios to one sentence.
+    # The five below are placeholders — swap in the real lineup.
+    people:
+      - name: "Organizer One"
+        title: "Co-organizer"
+        affiliation: "MITERS"
+        bio: "One-sentence bio goes here."
+      - name: "Organizer Two"
+        title: "Co-organizer"
+        affiliation: "FabLab Kendall"
+        bio: "One-sentence bio goes here."
+      - name: "Organizer Three"
+        title: "Logistics Lead"
+        bio: "One-sentence bio goes here."
+      - name: "Organizer Four"
+        title: "Sponsorship Lead"
+        bio: "One-sentence bio goes here."
+      - name: "Organizer Five"
+        title: "Judging Lead"
+        bio: "One-sentence bio goes here."

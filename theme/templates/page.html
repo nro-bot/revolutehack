@@ -119,6 +119,52 @@
   {% if s.note %}<p class="sponsor-note">{{ s.note }}</p>{% endif %}
 {% endmacro %}
 
+{% macro people(s) %}
+  {% if s.intro %}<p class="copy">{{ s.intro }}</p>{% endif %}
+  <div class="people-grid">
+    {% for p in s.people | default([], true) %}
+    <div class="person">
+      {% if p.photo %}<img class="person-photo" src="{{ SITEURL }}/images/{{ p.photo }}" alt="{{ p.name }}" loading="lazy">
+      {% else %}<div class="person-photo person-photo-placeholder" aria-hidden="true">{{ p.name[0] }}</div>{% endif %}
+      <div class="person-body">
+        <h3>{% if p.url %}<a href="{{ p.url }}">{{ p.name }}</a>{% else %}{{ p.name }}{% endif %}</h3>
+        <p class="person-role">{{ p.title }}{% if p.affiliation %}, {{ p.affiliation }}{% endif %}</p>
+        {% if p.bio %}<p class="person-bio">{{ p.bio }}</p>{% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+{% endmacro %}
+
+{% macro table(s) %}
+  {% if s.intro %}<p class="copy">{{ s.intro }}</p>{% endif %}
+  <div class="tier-table-wrap">
+    <table class="tier-table">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          {% for col in s.columns %}
+          <th scope="col">
+            <span class="tier-name">{{ col.label }}</span>
+            {% if col.price %}<span class="tier-price">{{ col.price }}</span>{% endif %}
+          </th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in s.rows %}
+        <tr>
+          <th scope="row">{{ r.label }}</th>
+          {% for cell in r.cells %}
+          <td>{% if cell %}<span class="tier-yes" aria-label="Included">●</span>{% else %}<span class="tier-no" aria-hidden="true">—</span>{% endif %}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endmacro %}
+
 {% macro links_block(l) %}
   <details class="citylinks">
     <summary>{{ l.summary }}</summary>
@@ -137,6 +183,8 @@
   {% elif s.type == 'schedule' %}{{ schedule(s) }}
   {% elif s.type == 'faq' %}{{ faq(s) }}
   {% elif s.type == 'sponsors' %}{{ sponsors(s) }}
+  {% elif s.type == 'table' %}{{ table(s) }}
+  {% elif s.type == 'people' %}{{ people(s) }}
   {% endif %}
 {% endmacro %}
 
@@ -150,10 +198,23 @@
   </ol>
 {% endmacro %}
 
+{# Site-wide page links (About, Sponsorship, …) from NAV_LINKS in
+   pelicanconf.py — shown below the ToC on every page, minus the page you're
+   already on. Shared by the desktop sidebar and the mobile dropdown. #}
+{% macro site_nav_list() %}
+  <ul>
+    {% for link in NAV_LINKS | default([]) %}
+    {% if link.slug != page.slug %}
+    <li><a href="{{ SITEURL }}{{ link.url }}">{{ link.label }}</a></li>
+    {% endif %}
+    {% endfor %}
+  </ul>
+{% endmacro %}
+
 {% block content %}
 <header class="topbar" id="top">
   <div class="topbar-inner wrap">
-    <a class="brand" href="#top" aria-label="Revolute home">
+    <a class="brand" href="{{ '#top' if page.is_home else SITEURL + '/' }}" aria-label="Revolute home">
       <svg class="mark" viewBox="0 0 100 100" aria-hidden="true">
         <g class="ring">
           <circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" stroke-width="6" stroke-dasharray="17 13" stroke-linecap="round"/>
@@ -173,8 +234,9 @@
       </button>
     </div>
   </div>
-  <nav class="nav-menu" id="page-nav" aria-label="On this page">
+  <nav class="nav-menu" id="page-nav" aria-label="Page navigation">
     {{ toc_list() }}
+    <div class="site-nav">{{ site_nav_list() }}</div>
   </nav>
 </header>
 
@@ -184,6 +246,9 @@
       <p class="toc-label">On this page</p>
       {{ toc_list() }}
     </nav>
+    <nav class="site-nav" aria-label="More pages">
+      {{ site_nav_list() }}
+    </nav>
   </div>
 
   <main class="page">
@@ -192,14 +257,6 @@
       <h1 id="hero-title">{{ page.title }}</h1>
       {% if page.dek %}<p class="dek">{{ page.dek }}</p>{% endif %}
       {% for line in page.intro | default([]) %}<p class="dek">{{ line }}</p>{% endfor %}
-
-      {% if page.facts %}
-      <div class="facts" aria-label="Event facts">
-        {% for f in page.facts %}
-        <div class="fact"><p class="label">{{ f.label }}</p><p class="value">{{ f.value }}</p></div>
-        {% endfor %}
-      </div>
-      {% endif %}
     </section>
 
     {% if page.photos %}
@@ -218,6 +275,13 @@
       {% for s in page.sections %}
       <section id="{{ s.id }}">
         <h2>{{ s.title }}</h2>
+        {% if s.id == 'details' and page.facts %}
+        <div class="facts" aria-label="Event facts">
+          {% for f in page.facts %}
+          <div class="fact"><p class="label">{{ f.label }}</p><p class="value">{{ f.value }}</p></div>
+          {% endfor %}
+        </div>
+        {% endif %}
         {{ render_section(s) }}
       </section>
       {% endfor %}

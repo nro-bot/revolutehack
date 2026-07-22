@@ -12,6 +12,8 @@
 #     schedule – days, each with timed rows
 #     cards    – tagged items with a title, optional link, and note
 #     faq      – expandable question / answer pairs
+#     table    – comparison grid (`columns` across the top, `rows` down the side)
+#     people   – grid of profiles (name, title, optional affiliation/photo/url/bio)
 #  A `prose` section may also carry an optional `button` and/or `note_box`.
 #  A `cards` section may also carry an optional `links` disclosure block.
 # =============================================================================
@@ -34,11 +36,15 @@ footer:
 #  - "A two-day, in-person weekend for builders, engineers, researchers, and the robotics-curious. No robotics background required."
 
 # The fact tiles. Add or remove a `- label: / value:` pair.
-#facts:
-  #- label: "Where"
-    #value: '<a href="https://fabhubkendall.fabfoundation.org/">FabLab Kendall</a>, Cambridge, MA'
-  #- label: "When"
-    #value: "Aug. 1-2, 2026"
+facts:
+  - label: "When"
+    value: "Aug. 1-2, 2026"
+  - label: "Where"
+    value: '<a href="https://fabhubkendall.fabfoundation.org/">FabLab Kendall</a>, Cambridge, MA'
+  - label: "Theme"
+    value: "Cooking with robot arms"
+  - label: "Apply"
+    value: '<a href="https://luma.com/kxq4yxr8">Apply on Luma</a>'
   #- label: "Teams"
     #value: "Solo, with friends, or preformed"
   #- label: "Bring"
@@ -66,7 +72,6 @@ sections:
     title: Details
     type: prose
     body:
-      - "The theme of the hackathon? Cooking with robot arms!" 
       - "Each team of four to five people gets one reBot arm and one leader arm, along with two cameras and an Nvidia edge compute. The goals are to first, have fun; second, learn something new; and third, build something awesome! Or at least somewhat edible 😋"
       - "Teams should have at least one person familiar with hardware, software, and/or robotics."
       - "The reBot RS features 48V QDD motors, a 2.5 kg rated payload, a 5 kg maximum payload, and a working radius of approximately 29 inches."
@@ -166,14 +171,42 @@ sections:
       #- "Science-fair style: judges walk around, talk with teams, and watch demos, scoring on completion, technical implementation, creativity, and what the team learned."
       #- "Prizes are TBA — expect practical maker rewards such as hardware, credits, gift cards, and tools."
 
-  - id: apply
-    title: Apply/Register 
-    type: prose
-    body:
-      - "Interested in attending, sponsoring, mentoring, or judging? Visit our Events page at Luma!"
-    button:
-      label: "Apply"
-      url: "https://luma.com/kxq4yxr8"
+  - id: judges
+    title: Judges
+    type: people
+    intro: "Meet the judges."
+    # Each judge needs a name and title; affiliation, photo, url, and bio are
+    # all optional. `photo` points at a file in content/images/ — without
+    # one, a monogram is shown instead. Keep bios to one sentence.
+    # The five below are placeholders — swap in the real lineup.
+    people:
+      - name: "Judge One"
+        title: "Robotics Engineer"
+        affiliation: "Example Co."
+        bio: "One-sentence bio goes here."
+      - name: "Judge Two"
+        title: "Research Scientist"
+        affiliation: "Example Lab"
+        bio: "One-sentence bio goes here."
+      - name: "Judge Three"
+        title: "Founder"
+        affiliation: "Example Startup"
+        bio: "One-sentence bio goes here."
+      - name: "Judge Four"
+        title: "Hardware Engineer"
+        bio: "One-sentence bio goes here."
+      - name: "Judge Five"
+        title: "ML Engineer"
+        bio: "One-sentence bio goes here."
+
+  #- id: apply
+    #title: Apply/Register 
+    #type: prose
+    #body:
+      #- "Interested in attending, sponsoring, mentoring, or judging? Visit our Events page at Luma!"
+    #button:
+      #label: "Apply"
+      #url: "https://luma.com/kxq4yxr8"
     #note_box:
       #- '<strong>Confirmed sponsor:</strong> <a href="https://www.seeedstudio.com/?__vid=260630">Seeed Studio</a>. Sponsor benefits include logo placement and a short speaking slot.'
 
@@ -225,7 +258,7 @@ sections:
   - id: sponsors
     title: Sponsors
     type: sponsors
-    intro: "Revolute is made possible by our sponsors. Interested in joining them? Reach out through the sign-up form."
+    intro: 'Revolute is made possible by our sponsors. Interested in joining them? See our <a href="/sponsorship/">sponsorship tiers</a> and reach out through the sign-up form.'
     tiers:
       - label: "Gold"
         size: lg
@@ -233,8 +266,11 @@ sections:
           - img: "seeedstudio.png"
             alt: "Seeed Studio"
             url: "https://www.seeedstudio.com/?__vid=260630"
-      #- label: "Supporting"
-        #size: md
-        #logos:
-          #- name: "Your company here"
-    #note: "Tiers and logos are examples — edit the `sponsors` section in page.yaml to update them."
+      # The three below are placeholders — swap in real sponsor logos as
+      # they're confirmed (or delete the tier if there aren't any yet).
+      - label: "Supporting"
+        size: md
+        logos:
+          - name: "Sponsor One"
+          - name: "Sponsor Two"
+          - name: "Sponsor Three"
