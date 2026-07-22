@@ -39,20 +39,6 @@ footer:
 #intro:
 #  - "A two-day, in-person weekend for builders, engineers, researchers, and the robotics-curious. No robotics background required."
 
-# Photo strip. Point `src` at files in content/images/. Remove an entry to drop
-# a photo.
-#photos:
-  #- src: "robotarm.jpg"
-    #alt: "Robot arm pouring sauce onto pasta"
-    #caption: "same family of arm, cooking task"
-  #- src: "pasta.jpg"
-    #alt: "Plates of pasta from a robot cooking hackathon"
-    #caption: "cooking demo inspiration"
-  #- src: "shenzhenhackathon.jpg"
-    #alt: "Builders working at robot stations"
-    #caption: "room inspiration"
-#photo_credit: "Photos from Seeed Studio's 2025 Embodied AI Hackathon recap, used here as inspiration for the format."
-
 # ---- Sections ---------------------------------------------------------------
 #  Order here = order on the page = order in the sidebar ToC.
 sections:
@@ -75,10 +61,11 @@ sections:
       #- label: "Bring"
         #value: "A laptop. Setup notes sent beforehand."
     body:
-      - "Each team of four to five people gets one reBot arm and one leader arm, along with two cameras and an Nvidia edge compute. The goals are to first, have fun; second, learn something new; and third, build something awesome! Or at least somewhat edible 😋"
-      - "Teams should have at least one person familiar with hardware, software, and/or robotics."
+      - "Each team gets the hardware listed below, worth over $15,000 total."
+      - "The goals: 1. Have fun; 2. Learn something new; and 3. Build something awesome! Or at least somewhat edible 😋"
+      - "Teams should include at least one person familiar with hardware, software, or robotics."
       - "We’ll also have at least $1,000 in prizes, and all food is included."
-      - "Our main goal is not just competition, it’s to bring together and grow Boston’s robotics and physical AI community."
+      - "Our main goal is not just competition -- it's to build Boston into the forefront of the robotics + physical AI community."
 
     # Logo band shown at the end of this section. Each group has a small-caps
     # `label` and one or more logos; a logo is either an image (`img`, on a
@@ -182,29 +169,30 @@ sections:
     # monogram), url, one-sentence bio.
     people:
       - name: "Sayam Dhingra"
-        title: "Senior Research and Design Engineer"
+        title: "Senior R & D Engineer"
         affiliation: "Autodesk"
-        bio: "Leads research on agentic autonomous robot arm control for machine tending at Autodesk's Boston Technology Center."
+        url: "https://www.research.autodesk.com/people/sayam-dhingra/"
+        bio: "Leads research on agentic robot arm control for machine tending at Autodesk's Boston Technology Center."
       - name: "Charis Georgiou"
         title: "Founder & CEO"
         affiliation: "Minoic Intelligence"
         url: "https://minoic.ai/"
-        bio: "Building automated rockbreakers that make quarry operations safer and more efficient."
+        bio: "Builds automated rockbreakers that make quarry operations safer and more efficient."
       - name: "Eric Pan"
         title: "Founder & CEO"
         affiliation: "Seeed Studio"
         url: "https://www.seeedstudio.com/blog/2025/07/17/meet-the-judge-eric-pan/"
-        bio: "Founded Seeed Studio in 2008, now one of the world's largest open-source hardware makers."
+        bio: "Leads Seeed Studio, which he founded in 2008 and grew into one of the world's largest open-source hardware makers."
       - name: "Yuki Yamada"
         title: "Senior Deployment Engineering Manager"
         affiliation: "Pickle Robot Company"
         url: "https://www.linkedin.com/in/yamada-hiroyuki/"
-        bio: "Former professional chef who moved into robotics via Dexai Robotics before joining Pickle Robot."
+        bio: "Moved from professional kitchens into robotics, working at Dexai Robotics before joining Pickle Robot."
       - name: "Charles Yong"
         title: "Founder"
         affiliation: "Vassar Robotics (YC X25)"
         url: "https://vassarrobotics.com"
-        bio: "MIT engineer building Navrim, a low-cost robot arm that learns new skills by demonstration."
+        bio: "Builds Navrim, a low-cost robot arm that learns new skills by demonstration."
 
   #- id: apply
     #title: Apply/Register 
@@ -256,10 +244,19 @@ sections:
       - tag: "Photos"
         title: "Seeed Studio 2025 Embodied AI Hackathon recap"
         url: "https://www.seeed.cc/post/2025-embodied-ai-hackathon-recap"
-        #note: "Robot cooking photos and prior-event context."
+        note: "Robot cooking photos and prior-event context, shown below."
       #- tag: "Tools"
         #title_html: '<a href="https://github.com/huggingface/lerobot/blob/main/examples/10_use_so100.md">LeRobot</a> / <a href="https://docs.phospho.ai/welcome">Phospho</a>'
         #note: "Likely starting points for setup, data collection, training, and inference."
+    # Photo strip shown after the cards. Point `src` at files in
+    # content/images/; click a photo to view it larger.
+    photos:
+      - src: "robotarm.jpg"
+        alt: "Robot arm plating pasta"
+        caption: "ReBot plating pasta in Shenzhen"
+      - src: "shenzhenhackathon.jpg"
+        alt: "Builders at 2025 Seeed's Shenzhen hackathon"
+        caption: "Inside 2025 Shenzhen hackathon"
     # `links` attaches an optional disclosure block after the cards.
     links:
       summary: "Similar hackathons in other cities"

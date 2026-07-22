@@ -65,12 +65,12 @@ Each section has a `type` that picks how it renders:
 |------------|------------------------------|-----------------------------------------------------|
 | `prose`    | paragraphs                   | `body:` (list); optional `facts:`, `button:`, `note_box:`, `partners:` |
 | `list`     | simple bullets               | `items:` (list)                                     |
-| `cards`    | tagged items w/ link + note  | `intro:`, `cards:`; optional `links:`               |
+| `cards`    | tagged items w/ link + note  | `intro:`, `cards:`; optional `links:`, `photos:`    |
 | `schedule` | timed agenda                 | `intro:`, `days:` → `rows:`                         |
 | `faq`      | expandable Q&A               | `items:` (`q:`, `a:`, `open:`)                      |
 | `sponsors` | logo wall, optional tiers    | `intro:`, `tiers:` (`label`, `size`, `logos:`), `note:` |
 | `table`    | comparison grid              | `columns:` (`label`, `price`), `rows:` (`label`, `cells:` — booleans) |
-| `people`   | profile grid (judges, organizers) | `intro:`, `people:` (`name`, `title`; optional `affiliation`, `photo`, `url`, `bio`) |
+| `people`   | profile grid (judges, organizers) | `intro:`, `people:` (`name`, `title`; optional `role`, `affiliation`, `photo`, `url`, `bio`) |
 
 ### Logos (partners and sponsors)
 
@@ -84,6 +84,13 @@ shows a logo wall. In both, a single logo is one of:
 
 `url:` (link) is optional on any logo. In a `sponsors` tier, `size:` may be
 `lg`, `md` (default), or `sm` to scale the logos.
+
+### Photos (cards sections)
+
+A `cards` section can end with a `photos:` strip — each entry is `src:`
+(a filename in `content/images/`), `alt:`, and an optional `caption:`.
+Captions don't show in the strip itself; clicking (or Enter/Space on) a photo
+opens it larger in a lightbox, where the caption appears underneath.
 
 To support a brand-new section type, add a macro in
 `theme/templates/page.html` and a branch in its `render_section` dispatcher.

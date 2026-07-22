@@ -216,16 +216,30 @@ h1{max-width:680px;font-size:clamp(2.3rem,6.4vw,4.3rem);line-height:.98;}
 .value{font-weight:640;line-height:1.3;}
 
 /* ---------- Photo strip ---------- */
-.photo-strip{display:grid;grid-template-columns:1.1fr .9fr .9fr;gap:6px;margin:34px 0 8px;}
+.photo-strip{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:22px;}
 .photo-strip figure{position:relative;margin:0;overflow:hidden;border:1px solid var(--rule);background:#ece7de;}
-.photo-strip img{width:100%;height:210px;object-fit:cover;filter:saturate(.92) contrast(1.02);}
-.photo-strip figure:first-child img{height:280px;}
-.photo-strip figcaption{
-  position:absolute;left:10px;bottom:10px;max-width:calc(100% - 20px);
-  padding:5px 7px;background:rgba(251,250,246,.9);color:#2e2c28;
-  font-family:var(--mono);font-size:.68rem;
+.photo-strip img{width:100%;height:210px;object-fit:cover;filter:saturate(.92) contrast(1.02);cursor:zoom-in;}
+/* ---------- Lightbox (click a photo-strip image to enlarge) ---------- */
+.lightbox{
+  display:none;position:fixed;inset:0;z-index:100;
+  align-items:center;justify-content:center;padding:32px;
+  background:rgba(23,23,22,.92);
 }
-.credit-note{margin:8px 0 0;color:var(--muted);font-family:var(--mono);font-size:.72rem;}
+.lightbox.open{display:flex;}
+.lightbox figure{
+  margin:0;max-width:100%;max-height:100%;
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+}
+.lightbox img{max-width:100%;max-height:80vh;object-fit:contain;box-shadow:0 20px 60px rgba(0,0,0,.4);}
+.lightbox figcaption{color:#fff;font-family:var(--mono);font-size:.82rem;text-align:center;}
+.lightbox-close{
+  position:absolute;top:20px;right:24px;
+  width:40px;height:40px;padding:0;
+  border:1px solid rgba(255,255,255,.3);border-radius:8px;
+  background:transparent;color:#fff;font-size:1.4rem;line-height:1;
+  cursor:pointer;
+}
+.lightbox-close:hover{background:rgba(255,255,255,.12);}
 
 /* ---------- Sections (auto-numbered) ---------- */
 .content{counter-reset:section;}
@@ -296,6 +310,9 @@ h3{font-size:1.02rem;line-height:1.25;}
   font-family:var(--mono);font-size:1.05rem;font-weight:700;
   text-transform:uppercase;
 }
+/* Their actual role on the team — a small badge, distinct from the (often
+   joke) title below it. */
+.person-hackrole{margin-top:3px;color:var(--muted);font-family:var(--mono);font-size:.76rem;}
 .person-role{margin-top:3px;color:var(--muted);font-family:var(--mono);font-size:.76rem;}
 .person-bio{margin-top:7px;color:#393733;font-size:.92rem;line-height:1.42;}
 
@@ -409,7 +426,7 @@ details p{margin:0 0 16px 24px;color:var(--muted);}
   .topbar-cta{display:none;}
   .facts{grid-template-columns:1fr;}
   .photo-strip{grid-template-columns:1fr;gap:8px;}
-  .photo-strip img,.photo-strip figure:first-child img{height:220px;}
+  .photo-strip img{height:220px;}
   .row,.item{grid-template-columns:1fr;gap:6px;}
   .partners{grid-template-columns:1fr;gap:28px;}
   .tier-table th,.tier-table td{padding:10px;}

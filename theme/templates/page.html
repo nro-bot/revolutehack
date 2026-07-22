@@ -69,6 +69,18 @@
   <ul class="plain-list">{% for i in s['items'] %}<li>{{ i }}</li>{% endfor %}</ul>
 {% endmacro %}
 
+{# Captions only show in the lightbox (via data-caption), not in the strip
+   itself — keeps the thumbnails clean. #}
+{% macro photo_strip(photos) %}
+  <div class="photo-strip" aria-label="Photos">
+    {% for ph in photos %}
+    <figure>
+      <img src="{{ SITEURL }}/images/{{ ph.src }}" alt="{{ ph.alt }}"{% if ph.caption %} data-caption="{{ ph.caption }}"{% endif %} tabindex="0" loading="lazy">
+    </figure>
+    {% endfor %}
+  </div>
+{% endmacro %}
+
 {% macro cards(s) %}
   {% if s.intro %}<p class="copy">{{ s.intro }}</p>{% endif %}
   <div class="list">
@@ -82,6 +94,7 @@
     </div>
     {% endfor %}
   </div>
+  {% if s.photos %}{{ photo_strip(s.photos) }}{% endif %}
   {% if s.links %}{{ links_block(s.links) }}{% endif %}
 {% endmacro %}
 
@@ -136,6 +149,7 @@
       {% else %}<div class="person-photo person-photo-placeholder" aria-hidden="true">{{ name_parts[0][0] }}{{ name_parts[-1][0] if name_parts | length > 1 else '' }}</div>{% endif %}
       <div class="person-body">
         <h3>{% if p.url %}<a href="{{ p.url }}">{{ p.name }}</a>{% else %}{{ p.name }}{% endif %}</h3>
+        {% if p.role %}<p class="person-hackrole">{{ p.role }}</p>{% endif %}
         <p class="person-role">{{ p.title }}{% if p.affiliation %}, {{ p.affiliation }}{% endif %}</p>
         {% if p.bio %}<p class="person-bio">{{ p.bio }}</p>{% endif %}
       </div>
@@ -264,18 +278,6 @@
       {% for line in page.intro | default([]) %}<p class="dek">{{ line }}</p>{% endfor %}
     </section>
 
-    {% if page.photos %}
-    <div class="photo-strip" aria-label="Hackathon photos">
-      {% for ph in page.photos %}
-      <figure>
-        <img src="{{ SITEURL }}/images/{{ ph.src }}" alt="{{ ph.alt }}">
-        {% if ph.caption %}<figcaption>{{ ph.caption }}</figcaption>{% endif %}
-      </figure>
-      {% endfor %}
-    </div>
-    {% if page.photo_credit %}<p class="credit-note">{{ page.photo_credit }}</p>{% endif %}
-    {% endif %}
-
     <div class="content">
       {% for s in page.sections %}{% if s.bg_image %}<img class="content-bg" src="{{ SITEURL }}/images/{{ s.bg_image }}" alt="" aria-hidden="true">{% endif %}{% endfor %}
       {% for s in page.sections %}
@@ -292,6 +294,14 @@
     </footer>
     {% endif %}
   </main>
+</div>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lightbox-close" aria-label="Close">&times;</button>
+  <figure>
+    <img src="" alt="">
+    <figcaption></figcaption>
+  </figure>
 </div>
 
 <script>
@@ -312,6 +322,39 @@
 
     menu.addEventListener('click', function (e) {
       if (e.target.closest('a')) setOpen(false);
+    });
+  })();
+
+  // Photo strip lightbox: click (or Enter/Space) a photo to view it larger.
+  (function () {
+    var lightbox = document.getElementById('lightbox');
+    var lightboxImg = lightbox && lightbox.querySelector('img');
+    var lightboxCaption = lightbox && lightbox.querySelector('figcaption');
+    if (!lightbox || !lightboxImg) return;
+
+    function open(img) {
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+      lightboxCaption.textContent = img.dataset.caption || '';
+      lightbox.classList.add('open');
+      lightbox.setAttribute('aria-hidden', 'false');
+    }
+    function close() {
+      lightbox.classList.remove('open');
+      lightbox.setAttribute('aria-hidden', 'true');
+      lightboxImg.src = '';
+    }
+
+    document.querySelectorAll('.photo-strip img').forEach(function (img) {
+      img.addEventListener('click', function () { open(img); });
+      img.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(img); }
+      });
+    });
+
+    lightbox.addEventListener('click', close);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') close();
     });
   })();
 </script>
