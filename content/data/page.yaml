@@ -81,7 +81,7 @@ sections:
         logos:
           - img: "seeedstudio.png"
             alt: "Seeed Studio"
-            url: "https://www.seeedstudio.com/?__vid=260630"
+            url: "https://www.seeedstudio.com/"
       - label: "Partners"
         logos:
           - svg: "miters.svg"
@@ -93,15 +93,15 @@ sections:
     title: Hardware
     type: cards
     bg_image: "rebot_gemini.png"
-    intro: '<a href="https://www.seeedstudio.com/?__vid=260630">Seeed Studio</a> is providing the robot hardware. Approximate inventory (subject to change):'
+    intro: '<a href="https://www.seeedstudio.com/">Seeed Studio</a> is providing the robot hardware. Approximate inventory (subject to change):'
     cards:
       - tag: "1x"
         title: "reBot Arm B601 RS"
-        url: "https://www.seeedstudio.com/reBot-Arm-B601-RS-Assembled-Kit-with-Gripper-p-6865.html"
-        note: "One robot arm per team. Features 48V QDD motors, a 2.5 kg rated payload, a 5 kg maximum payload, and a working radius of approximately 29 inches."
+        #url: "https://www.seeedstudio.com/reBot-Arm-B601-RS-Assembled-Kit-with-Gripper-p-6865.html"
+        note: "One robot arm per team. Features 48V QDD motors with a 2.5 kg payload, so not a plastic arm :]"
       - tag: "1x"
         title: "reComputer Jetson Orin Nano, 8GB"
-        url: "https://www.seeedstudio.com/reComputer-J3011-p-5590.html"
+        #url: "https://www.seeedstudio.com/reComputer-J3011-p-5590.html"
         note: "Edge compute for inference, one per team."
       - tag: "2x"
         # `title_html` lets you use links/markup inside the title when needed.
@@ -120,7 +120,7 @@ sections:
       - label: "Saturday, Aug. 1"
         rows:
           - when: "10:00 AM"
-            what: "Intro tutorial"
+            what: "Intro tutorial - Setting up the hardware & software stack"
             #note: "Find a table, meet people, get oriented, and get started."
           - when: "12:01 PM"
             what: "Opening ceremony"
@@ -224,14 +224,14 @@ sections:
         logos:
           - img: "seeedstudio.png"
             alt: "Seeed Studio"
-            url: "https://www.seeedstudio.com/?__vid=260630"
+            url: "https://www.seeedstudio.com/"
       # Placeholders — swap in real sponsor logos as they're confirmed (or
       # delete the tier if there aren't any yet).
       #label: "Supporting"
       - size: md
         logos:
           - name: "Sponsor [awaiting MIT approval]"
-          - name: "Sponsor [awaiting MIT approval]"
+          #- name: "Sponsor [awaiting MIT approval]"
 
   - id: credits
     title: Credits and Inspiration
