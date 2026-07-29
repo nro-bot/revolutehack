@@ -405,6 +405,7 @@ details p{margin:0 0 16px 24px;color:var(--muted);}
   color:var(--muted);font-family:var(--mono);font-size:.85rem;
 }
 /* Tier sizes control logo height. */
+.sponsor-grid.xl .partner-chip img,.sponsor-grid.xl .partner-svg svg{height:130px;}
 .sponsor-grid.lg .partner-chip img,.sponsor-grid.lg .partner-svg svg{height:44px;}
 .sponsor-grid.md .partner-chip img,.sponsor-grid.md .partner-svg svg{height:32px;}
 .sponsor-grid.sm .partner-chip img,.sponsor-grid.sm .partner-svg svg{height:24px;}
