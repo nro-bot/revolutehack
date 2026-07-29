@@ -228,9 +228,11 @@ sections:
       # Placeholders — swap in real sponsor logos as they're confirmed (or
       # delete the tier if there aren't any yet).
       #label: "Supporting"
-      - size: md
-        logos:
-          - name: "Sponsor [awaiting MIT approval]"
+        - size: lg
+          logos:
+            - img: "minoic_logo.svg"
+              alt: "Minoic Intelligence"
+              url: "https://minoic.ai/"
           #- name: "Sponsor [awaiting MIT approval]"
 
   - id: credits
