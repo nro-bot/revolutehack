@@ -239,6 +239,10 @@ sections:
     title: Credits and Inspiration
     type: cards
     cards:
+      - tag: "Thanks to"
+        title: The Simple Platform
+      - tag: "Thanks to"
+        title: Vassar Robotics
       - tag: "Format"
         title: "Robot Hackathon NYC"
         url: "https://www.robothackathon.com/"
