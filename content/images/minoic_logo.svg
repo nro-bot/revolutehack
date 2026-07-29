@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
+   sodipodi:docname="minoic_logo_0429.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="true"
+     inkscape:zoom="2.1612093"
+     inkscape:cx="334.30357"
+     inkscape:cy="371.78259"
+     inkscape:window-width="2560"
+     inkscape:window-height="1494"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1">
+    <inkscape:grid
+       id="grid2"
+       units="mm"
+       originx="0"
+       originy="0"
+       spacingx="0.99999998"
+       spacingy="1"
+       empcolor="#0099e5"
+       empopacity="0.30196078"
+       color="#0099e5"
+       opacity="0.14901961"
+       empspacing="5"
+       enabled="true"
+       visible="true" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g16605"
+       transform="matrix(0.26458333,0,0,0.26458333,16.941094,-29.551054)"
+       inkscape:export-filename="g16605.pdf"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300">
+      <path
+         style="fill:none;stroke:#000000;stroke-width:5.156;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M 78.815949,468.39365 66.494642,448.16006 v 0 -41.90572 h 51.272988 v 0 c 18.96732,-2.88817 10.52358,-22.66069 13.26562,-35.65276 5.58978,12.83351 15.73408,22.15396 7.25614,36.68802 -4.23741,7.26235 -12.57914,12.12851 -20.87054,12.38655 v 27.86464 l -12.10028,20.85287 v 17.82972 H 78.815949 v -17.82972 z"
+         id="path12433-7-8"
+         sodipodi:nodetypes="ccccccccccccccc" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:5.156;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 90.288175,468.36722 12.321295,-20.23361 v 0 -41.90571 H 51.336512 v 0 c -18.967327,-2.88817 -10.523588,-22.6607 -13.265627,-35.65275 -5.58978,12.83351 -15.734081,22.15394 -7.256139,36.688 4.237415,7.26235 12.579148,12.1285 20.870545,12.38655 v 27.86465 l 12.100268,20.85288 10e-7,17.8297 h 26.502615 v -17.8297 z"
+         id="path16345-1"
+         sodipodi:nodetypes="ccccccccccccccc" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:13.4056px;font-family:'Inter Display';-inkscape-font-specification:'Inter Display';letter-spacing:0.142875px;word-spacing:0px;writing-mode:lr-tb;direction:ltr;fill:#00ffcc;stroke:#000000;stroke-width:0.600001"
+       x="59.493931"
+       y="83.287621"
+       id="text1"><tspan
+         sodipodi:role="line"
+         id="tspan1"
+         style="font-size:13.4056px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.6"
+         x="59.493931"
+         y="83.287621">Minoic </tspan><tspan
+         sodipodi:role="line"
+         style="font-size:13.4056px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.6"
+         x="59.493931"
+         y="100.04462"
+         id="tspan2">Intelligence</tspan></text>
+  </g>
+</svg>
