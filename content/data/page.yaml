@@ -225,7 +225,7 @@ sections:
           - img: "seeedstudio.png"
             alt: "Seeed Studio"
             url: "https://www.seeedstudio.com/"
-      - size: lg
+      - size: xl 
         logos:
           - img: "minoic_logo.svg"
             alt: "Minoic Intelligence"
