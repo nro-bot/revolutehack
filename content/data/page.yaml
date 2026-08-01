@@ -194,10 +194,11 @@ sections:
         url: "https://www.linkedin.com/in/yamada-hiroyuki/"
         bio: "Moved from professional kitchens into robotics: first in the Dexai Robotics culinary robotics lab, then deploying industrial truck unloading robots with Pickle Robot, and now on the Product team at Walden Robotics."
       - name: "Charles Yong"
-        title: "Founder"
+        title: "Founder and CEO at Vassar Robotics"
+        photo: "charles_headshot.png"
         affiliation: "Vassar Robotics (YC X25)"
         url: "https://vassarrobotics.com"
-        bio: "Builds Navrim, a low-cost robot arm that learns new skills by demonstration."
+        bio: "A mechanical, electrical, and software engineer who likes rigorous calculations, rapid prototyping, and—when possible—sleep."
 
   #- id: apply
     #title: Apply/Register 
