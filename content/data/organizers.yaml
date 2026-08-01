@@ -50,6 +50,7 @@ sections:
         url: "https://siddhimore.netlify.app/"
         bio: "Robotics Grad @ Northeastern. Building robots. Making art. Always creating :)"
       - name: "Nancy Ouyang"
+        photo: "Nancy_headshot.jpg"
         title: "Chief Robot Wrangler"
         role: "Lead Organizer"
         url: "https://nrobot.dev"
