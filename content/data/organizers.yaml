@@ -43,6 +43,7 @@ sections:
         url: "https://www.linkedin.com/in/jjasper-llee/"
         bio: "Builds bioengineered and shapeshifting robots when not organizing hackathons."
       - name: "Siddhi Sanjay More"
+        photo: "Siddhi_photo.JPG"
         title: "Robot Crafter"
         role: "Registration & Community Lead"
         url: "https://siddhimore.netlify.app/"
