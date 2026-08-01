@@ -170,6 +170,7 @@ sections:
     people:
       - name: "Sayam Dhingra"
         title: "Senior R & D Engineer"
+        photo: "Sayam_headshot.jpg"
         affiliation: "Autodesk"
         url: "https://www.research.autodesk.com/people/sayam-dhingra/"
         bio: "Leads research on agentic robot arm control for machine tending at Autodesk's Boston Technology Center."

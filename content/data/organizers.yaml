@@ -30,6 +30,7 @@ sections:
       - name: "Shivam Chopra"
         title: "Soft Robotics Enthusiast"
         role: "Hardware Lead"
+        photo: "Shivam_headshot.jpg"
         url: "https://www.linkedin.com/in/choprashivam/"
         bio: "Boston Robot Hackers Regular, armed with a PhD in soft robotics and currently at Dexcom."
       - name: "Dane Kouttron"
