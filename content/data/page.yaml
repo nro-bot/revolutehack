@@ -42,7 +42,12 @@ footer:
 # ---- Sections ---------------------------------------------------------------
 #  Order here = order on the page = order in the sidebar ToC.
 sections:
-
+  - id: posthackathon
+    title: "Update: Revolute Hackathon v1.08 is over!"
+    type: prose
+    body:
+      - 'The hackathon is over! Email us or find us on <a href="https://instagram.com/revolutehack">instagram</a> to be added to the mailing list for updates.'
+  
   - id: details
     title: Details
     type: prose
