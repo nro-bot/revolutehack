@@ -248,8 +248,16 @@ sections:
     cards:
       - tag: "Thanks to"
         title: The Simple Platform
+        url: "https://www.simple-platform.com"
       - tag: "Thanks to"
         title: Vassar Robotics
+        url: "https://vassarrobotics.com/"
+      - tag: "Thanks to"
+        title: Autodesk
+        url: "https://www.autodesk.com/technology-centers"
+      - tag: "Thanks to"
+        title: PrismaX Robotics
+        url: "https://www.prismax.ai"
       - tag: "Format"
         title: "Robot Hackathon NYC"
         url: "https://www.robothackathon.com/"
