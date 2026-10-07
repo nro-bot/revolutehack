@@ -1,0 +1,53 @@
+# =============================================================================
+#  Revolute — events page (content/data/events.yaml)
+# =============================================================================
+#  Renders to /events/. A month calendar marks every event on its day(s);
+#  clicking a marked day slides in a panel with the poster, info and
+#  registration link.
+# =============================================================================
+title: "Events"
+dek: "Hackathons, workshops and meetups from the Revolute community."
+apply_url: "https://luma.com/61s4kwai"
+
+intro:
+  - '<a href="/">← Back to event details</a>'
+
+footer:
+  - "Revolute v1.08"
+
+sections:
+
+  - id: calendar
+    title: Calendar
+    type: calendar
+    intro: "Click a highlighted day to see the event details and registration link."
+    # One entry per event. Fields:
+    #   title, date ("YYYY-MM-DD" — keep the quotes), end_date (optional, for
+    #   multi-day events), time / location (optional), poster (a file in
+    #   content/images/, optional), info (short description; links like
+    #   <a href="…">text</a> are allowed), url (registration link), button
+    #   (button text, default "Register").
+    events:
+      - title: "Revolute Hackathon v1.08"
+        date: "2026-08-01"
+        end_date: "2026-08-02"
+        time: "Two-day, in-person"
+        location: "FabLab Kendall, Cambridge"
+        info: "Boston's first robotics + physical AI hackathon. This event has wrapped up; the registration page is still linked below."
+        url: "https://luma.com/kxq4yxr8"
+        button: "Registration page"
+        # poster: "revolute_hackathon_poster.png"
+
+      - title: "Revolute Workshop"
+        date: "2026-10-09"
+        time: "2:00 PM – 5:00 PM"
+        location: "TBD"
+        info: |
+          🤖 Imitation Learning with LeRobot: See how learning from demonstration works using Seeed Studio’s LeRobot framework.
+          🤖 Simple Teleop with Star Arm: Get comfortable controlling hardware with a straightforward, hands-on Star Arm teleoperation setup. No overcomplications, just pure hands-on robotics!
+          Volunteer with us: Help us run the workshop and get a behind-the-scenes look at how we make these events happen. <a href="https://forms.gle/txHJcJBxpGS5BoBy7" target="_blank" rel="noopener noreferrer">Sign up here</a> to volunteer.
+        url: "https://luma.com/61s4kwai"
+        button: "Register"
+        poster: "workshop_poster.png"
+
+      #

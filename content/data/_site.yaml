@@ -1,0 +1,13 @@
+# =============================================================================
+#  Revolute — site-wide settings (content/data/_site.yaml)
+# =============================================================================
+#  Shared by every page. Not a page itself (files starting with "_" are
+#  skipped).
+# =============================================================================
+
+# Announcement line in the header of every page (desktop only). Edit `text`
+# (and the optional `url` it links to); comment out the whole `banner:` block
+# to hide it.
+banner:
+  text: "Register for the ReBot Arms workshop on Oct. 9, 2026"
+  #url: 

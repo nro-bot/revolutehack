@@ -1,0 +1,28 @@
+# =============================================================================
+#  Revolute — gallery page (content/data/gallery.yaml)
+# =============================================================================
+#  Renders to /gallery/. Everything in content/images/hackday/ is shown
+#  automatically (sorted by filename); photos are shrunk to web size at build
+#  time, so just drop files into that folder.
+# =============================================================================
+
+title: "Gallery"
+dek: "Photos and video clips from Revolute v1.08."
+apply_url: "https://luma.com/61s4kwai"
+
+intro:
+  - '<a href="/">← Back to event details</a>'
+
+footer:
+  - "Revolute v1.08"
+
+sections:
+
+  - id: hackday
+    title: "Revolute v1.08"
+    type: gallery
+    intro: "Shot by James R Desmond."
+    folder: hackday
+    album:
+      label: "View the full album on Dropbox"
+      url: "https://www.dropbox.com/scl/fo/2ot9wzyuax2hupqf2mrwx/AFBNBNnGSqSbZkEPnVn5G8U?rlkey=c1wupzozu4p00qwilqtb4gggx&st=8hv7e176&dl=0"

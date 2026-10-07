@@ -29,6 +29,8 @@ AUTHOR_FEED_RSS = None
 
 # Copy images straight through to output/images/.
 STATIC_PATHS = ["images"]
+# Gallery originals are huge; the plugin writes web-sized copies instead.
+STATIC_EXCLUDE_PATHS = ["images/hackday"]
 
 RELATIVE_URLS = True
 
@@ -36,6 +38,8 @@ RELATIVE_URLS = True
 # alongside that page's own Table of Contents. `slug` matches a
 # content/data/<slug>.yaml file so the current page can hide its own link.
 NAV_LINKS = [
+    {"label": "Events", "url": "/events/", "slug": "events"},
     {"label": "Organizers", "url": "/organizers/", "slug": "organizers"},
+    {"label": "Gallery", "url": "/gallery/", "slug": "gallery"},
     {"label": "Sponsorship", "url": "/sponsorship/", "slug": "sponsorship"},
 ]

@@ -198,6 +198,163 @@
   </details>
 {% endmacro %}
 
+{# Gallery: a grid of photos and videos from content/images/. Photos open in
+   the lightbox; videos play in place. Right-click save and the browser's
+   download button are switched off (deterrent only, not real protection). #}
+{% macro gallery(s) %}
+  {% if s.intro %}<p class="copy">{{ s.intro }}</p>{% endif %}
+  {% if s.get('items') %}
+  <div class="gallery-grid" aria-label="Gallery">
+    {% for it in s.get('items') %}
+    <figure>
+      {% if it.video %}
+      <video src="{{ SITEURL }}/images/{{ it.video }}"{% if it.poster %} poster="{{ SITEURL }}/images/{{ it.poster }}"{% endif %} controls controlsList="nodownload" disablepictureinpicture playsinline preload="none" aria-label="{{ it.alt }}"></video>
+      {% else %}
+      <img src="{{ SITEURL }}/images/{{ it.src }}"{% if it.full %} data-full="{{ SITEURL }}/images/{{ it.full }}"{% endif %} alt="{{ it.alt }}"{% if it.caption %} data-caption="{{ it.caption }}"{% endif %} tabindex="0" loading="lazy" draggable="false">
+      {% endif %}
+    </figure>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% if s.album %}
+  <div class="actions"><a class="button" href="{{ s.album.url }}" target="_blank" rel="noopener">{{ s.album.label }}</a></div>
+  {% endif %}
+{% endmacro %}
+
+{# Calendar: month grid built in the browser from the `events` list. Clicking
+   a day that has events opens a side panel with poster, info and link. #}
+{% macro calendar(s) %}
+  {% if s.intro %}<p class="copy">{{ s.intro }}</p>{% endif %}
+  {% set evs = [] %}
+  {% for e in s.events | default([], true) %}
+    {% set _ = evs.append({
+      'title': e.title, 'date': e.date, 'end': e.end_date | default(e.date),
+      'time': e.time | default(''), 'location': e.location | default(''),
+      'info': e.info | default(''), 'url': e.url | default(''),
+      'button': e.button | default('Register'),
+      'poster': (SITEURL ~ '/images/' ~ e.poster) if e.poster else ''
+    }) %}
+  {% endfor %}
+  <div class="cal" id="cal">
+    <div class="cal-head">
+      <button type="button" class="cal-nav" data-dir="-1" aria-label="Previous month">&lsaquo;</button>
+      <h3 class="cal-month" aria-live="polite"></h3>
+      <button type="button" class="cal-nav" data-dir="1" aria-label="Next month">&rsaquo;</button>
+    </div>
+    <div class="cal-grid cal-dow" aria-hidden="true">
+      <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+    </div>
+    <div class="cal-grid cal-days"></div>
+  </div>
+  <div class="event-backdrop" id="event-backdrop"></div>
+  <aside class="event-drawer" id="event-drawer" aria-hidden="true" aria-label="Event details">
+    <button type="button" class="event-close" aria-label="Close">&times;</button>
+    <div class="event-drawer-body"></div>
+  </aside>
+  <script type="application/json" id="cal-data">{{ evs | tojson }}</script>
+  <script>
+  (function () {
+    var events = JSON.parse(document.getElementById('cal-data').textContent);
+    var root = document.getElementById('cal');
+    var daysEl = root.querySelector('.cal-days');
+    var monthEl = root.querySelector('.cal-month');
+    var drawer = document.getElementById('event-drawer');
+    var backdrop = document.getElementById('event-backdrop');
+    var body = drawer.querySelector('.event-drawer-body');
+    var lastFocus = null;
+
+    function parse(s) { var p = s.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
+    function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    events.forEach(function (e) { e.start = parse(e.date); e.stop = parse(e.end); });
+    events.sort(function (a, b) { return a.start - b.start; });
+
+    // Start on the next upcoming event's month, else the latest one, else now.
+    var focus = today;
+    var next = events.filter(function (e) { return e.stop >= today; })[0];
+    if (next) focus = next.start > today ? next.start : today;
+    else if (events.length) focus = events[events.length - 1].start;
+    var year = focus.getFullYear(), month = focus.getMonth();
+
+    function eventsOn(d) {
+      return events.filter(function (e) { return d >= e.start && d <= e.stop; });
+    }
+
+    function render() {
+      monthEl.textContent = new Date(year, month, 1).toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+      daysEl.innerHTML = '';
+      var first = new Date(year, month, 1);
+      var gridStart = new Date(year, month, 1 - first.getDay());
+      var rows = Math.ceil((first.getDay() + new Date(year, month + 1, 0).getDate()) / 7);
+      for (var i = 0; i < rows * 7; i++) {
+        var d = new Date(gridStart.getFullYear(), gridStart.getMonth(), gridStart.getDate() + i);
+        var evs = eventsOn(d);
+        var cell = document.createElement(evs.length ? 'button' : 'div');
+        cell.className = 'cal-day' + (d.getMonth() !== month ? ' other' : '') +
+          (+d === +today ? ' today' : '') + (evs.length ? ' has-event' : '');
+        var html = '<span class="cal-num">' + d.getDate() + '</span>';
+        evs.forEach(function (e) {
+          html += '<span class="cal-chip' + (e.stop < today ? ' past' : '') + '">' + esc(e.title) + '</span>';
+        });
+        cell.innerHTML = html;
+        if (evs.length) {
+          cell.type = 'button';
+          cell.setAttribute('aria-label', d.toLocaleDateString(undefined, { month: 'long', day: 'numeric' }) + ': ' + evs.map(function (e) { return e.title; }).join(', '));
+          (function (date, el) { el.addEventListener('click', function () { openDrawer(date, el); }); })(d, cell);
+        }
+        daysEl.appendChild(cell);
+      }
+    }
+
+    function range(e) {
+      var o = { month: 'long', day: 'numeric' };
+      var a = e.start.toLocaleDateString(undefined, o);
+      if (+e.start === +e.stop) return a + ', ' + e.start.getFullYear();
+      var b = e.start.getMonth() === e.stop.getMonth() ? e.stop.getDate() : e.stop.toLocaleDateString(undefined, o);
+      return a + '–' + b + ', ' + e.stop.getFullYear();
+    }
+
+    function openDrawer(date, trigger) {
+      lastFocus = trigger;
+      body.innerHTML = eventsOn(date).map(function (e) {
+        var past = e.stop < today;
+        return '<article class="event-card">' +
+          (e.poster ? '<img class="event-poster" src="' + esc(e.poster) + '" alt="Poster for ' + esc(e.title) + '">' : '') +
+          '<p class="event-status ' + (past ? 'past' : 'upcoming') + '">' + (past ? 'Past event' : 'Upcoming') + '</p>' +
+          '<h3>' + esc(e.title) + '</h3>' +
+          '<p class="event-meta">' + esc(range(e)) + (e.time ? ' &middot; ' + esc(e.time) : '') + '</p>' +
+          (e.location ? '<p class="event-meta">' + esc(e.location) + '</p>' : '') +
+          // info is author-written YAML, so inline HTML (links) is allowed, as in
+          // every other text field on the site.
+          (e.info ? '<p class="event-info">' + e.info + '</p>' : '') +
+          (e.url ? '<a class="button" href="' + esc(e.url) + '" target="_blank" rel="noopener">' + esc(e.button) + '</a>' : '') +
+          '</article>';
+      }).join('');
+      drawer.classList.add('open'); backdrop.classList.add('open');
+      drawer.setAttribute('aria-hidden', 'false');
+      drawer.querySelector('.event-close').focus();
+    }
+    function closeDrawer() {
+      drawer.classList.remove('open'); backdrop.classList.remove('open');
+      drawer.setAttribute('aria-hidden', 'true');
+      if (lastFocus) lastFocus.focus();
+    }
+
+    root.querySelectorAll('.cal-nav').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var d = new Date(year, month + +b.dataset.dir, 1);
+        year = d.getFullYear(); month = d.getMonth(); render();
+      });
+    });
+    drawer.querySelector('.event-close').addEventListener('click', closeDrawer);
+    backdrop.addEventListener('click', closeDrawer);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeDrawer(); });
+    render();
+  })();
+  </script>
+{% endmacro %}
+
 {% macro render_section(s) %}
   {% if s.type == 'prose' %}{{ prose(s) }}
   {% elif s.type == 'list' %}{{ simple_list(s) }}
@@ -207,6 +364,8 @@
   {% elif s.type == 'sponsors' %}{{ sponsors(s) }}
   {% elif s.type == 'table' %}{{ table(s) }}
   {% elif s.type == 'people' %}{{ people(s) }}
+  {% elif s.type == 'gallery' %}{{ gallery(s) }}
+  {% elif s.type == 'calendar' %}{{ calendar(s) }}
   {% endif %}
 {% endmacro %}
 
@@ -246,7 +405,10 @@
       <span class="word">Revolute</span>
       {% if page.version %}<span class="version">{{ page.version }}</span>{% endif %}
     </a>
-    {% if page.kicker %}<p class="header-kicker">{{ page.kicker }}</p>{% endif %}
+    {# Header announcement — edit it once in content/data/_site.yaml. #}
+    {% if site.banner and site.banner.text %}
+    <p class="header-kicker">{% if site.banner.url %}<a href="{{ site.banner.url }}">{{ site.banner.text }}</a>{% else %}{{ site.banner.text }}{% endif %}</p>
+    {% endif %}
     <div class="topbar-right">
       {% if page.apply_url %}<a class="button topbar-cta" href="{{ page.apply_url }}">Apply / register</a>{% endif %}
       <button class="theme-toggle" aria-label="Toggle dark mode">
@@ -347,7 +509,7 @@
     if (!lightbox || !lightboxImg) return;
 
     function open(img) {
-      lightboxImg.src = img.src;
+      lightboxImg.src = img.dataset.full || img.src;
       lightboxImg.alt = img.alt;
       lightboxCaption.textContent = img.dataset.caption || '';
       lightbox.classList.add('open');
@@ -359,11 +521,16 @@
       lightboxImg.src = '';
     }
 
-    document.querySelectorAll('.photo-strip img').forEach(function (img) {
+    document.querySelectorAll('.photo-strip img, .gallery-grid img').forEach(function (img) {
       img.addEventListener('click', function () { open(img); });
       img.addEventListener('keydown', function (e) {
         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(img); }
       });
+    });
+
+    // Gallery media: no right-click "Save image/video as".
+    document.querySelectorAll('.gallery-grid img, .gallery-grid video').forEach(function (el) {
+      el.addEventListener('contextmenu', function (e) { e.preventDefault(); });
     });
 
     lightbox.addEventListener('click', close);

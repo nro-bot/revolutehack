@@ -24,12 +24,10 @@
 # ---- Masthead / hero --------------------------------------------------------
 title: "Boston's first robotics+physical AI hackathon"
 version: "v1.08"
-# `kicker` renders in the header (desktop only), not here.
-kicker: "Aug. 1-2, 2026 // FabLab Kendall, Cambridge"
 dek: "$15k of real robot hardware, <br>30 real-life participants, <br>2 days of real fun."
 #description: "Revolute is Boston's first robotics+physical AI hackathon."
 # og_image: "hackathon.png"
-apply_url: "https://luma.com/kxq4yxr8"
+apply_url: "https://luma.com/61s4kwai"
 
 # Footer lines, shown at the very bottom of the page. One paragraph per item.
 footer:
@@ -47,6 +45,11 @@ sections:
     type: prose
     body:
       - 'The hackathon is over! Email us or find us on <a href="https://instagram.com/revolutehack">instagram</a> to be added to the mailing list for updates.'
+  - id: posthackathon
+    title: "Rebot Arms Workshop - 10/09"
+    type: prose
+    body:
+      - 'Join us for our first Rebot Arms workshop on <a href="https://luma.com/61s4kwai">Luma Page</a> '
   
   - id: details
     title: Details

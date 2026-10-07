@@ -26,6 +26,8 @@ data files — no HTML to edit.**
 | `content/data/page.yaml`           | `/` (homepage)  |
 | `content/data/sponsorship.yaml`    | `/sponsorship/` |
 | `content/data/organizers.yaml`     | `/organizers/`  |
+| `content/data/events.yaml`         | `/events/`      |
+| `content/data/gallery.yaml`        | `/gallery/`     |
 
 To add a new page, drop a new `content/data/<slug>.yaml` file with the same
 top-level shape as the others (`title`, `sections:`, etc.) — it'll build to
@@ -33,13 +35,19 @@ top-level shape as the others (`title`, `sections:`, etc.) — it'll build to
 on every page, add it to `NAV_LINKS` in `pelicanconf.py`; a page never lists
 itself, since each entry's `slug` is compared against the current page's.
 
+## The header announcement
+
+`content/data/_site.yaml` holds site-wide settings shared by every page (files
+starting with `_` are never pages). Its `banner:` block is the announcement
+line in the header of every page (desktop only): edit `text` and the optional
+`url` it links to, or comment the block out to hide it.
+
 ## The hero and footer
 
 Top-level keys in a page's YAML control its masthead and footer. Most are
 optional — comment one out (prefix lines with `#`) and it simply disappears:
 
-- `title`, `version`, `kicker` — the header/hero text (`kicker` renders in
-  the topbar on desktop, not the hero).
+- `title`, `version` — the header/hero text.
 - `apply_url` — target of the "Apply / register" button in the header.
 - `intro:` — supporting lines under the title (a list).
 - `photos:` — the photo strip (`src` / `alt` / `caption`), plus `photo_credit`.
@@ -71,6 +79,8 @@ Each section has a `type` that picks how it renders:
 | `sponsors` | logo wall, optional tiers    | `intro:`, `tiers:` (`label`, `size`, `logos:`), `note:` |
 | `table`    | comparison grid              | `columns:` (`label`, `price`), `rows:` (`label`, `cells:` — booleans) |
 | `people`   | profile grid (judges, organizers) | `intro:`, `people:` (`name`, `title`; optional `role`, `affiliation`, `photo`, `url`, `bio`) |
+| `gallery`  | photo/video grid             | `folder:` (a folder in `content/images/`, shown in full) and/or `items:`; optional `intro:`, `album:` (`label`, `url`) |
+| `calendar` | month calendar of events     | `events:` (`title`, `date`, optional `end_date`, `time`, `location`, `poster`, `info`, `url`, `button`) |
 
 ### Logos (partners and sponsors)
 
