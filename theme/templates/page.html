@@ -59,6 +59,16 @@
   {% if s.button %}
   <div class="actions"><a class="button" href="{{ s.button.url }}">{{ s.button.label }}</a></div>
   {% endif %}
+  {% if s.qr %}
+  {# QR code with a caption. `url` (optional) also makes it tappable, since
+     phone visitors can't scan their own screen. #}
+  <figure class="qr-block">
+    {% if s.qr.url %}<a href="{{ s.qr.url }}" target="_blank" rel="noopener">{% endif %}
+    <img src="{{ SITEURL }}/images/{{ s.qr.img }}" alt="QR code: {{ s.qr.caption | default('') | striptags }}" loading="lazy">
+    {% if s.qr.url %}</a>{% endif %}
+    {% if s.qr.caption %}<figcaption>{{ s.qr.caption }}</figcaption>{% endif %}
+  </figure>
+  {% endif %}
   {% if s.note_box %}
   <div class="note-box">{% for p in s.note_box %}<p>{{ p }}</p>{% endfor %}</div>
   {% endif %}

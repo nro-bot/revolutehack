@@ -40,11 +40,20 @@ footer:
 # ---- Sections ---------------------------------------------------------------
 #  Order here = order on the page = order in the sidebar ToC.
 sections:
-  - id: posthackathon
-    title: "Rebot Arms Workshop - 10/09"
+  - id: workshop
+    title: "Rebot Arms Workshop - 10/16"
     type: prose
     body:
-      - 'Join us for our first Rebot Arms workshop on <a href="https://luma.com/61s4kwai">Luma Page</a> '
+      - 'Join us for our first Rebot Arms workshop on <a href="https://luma.com/v07bw75c">Luma Page</a> '
+    img: "lerobot tutorial.png"
+    caption: "Scan this QR code for the workshop's tutorial"
+    # QR code shown under the text. Put the image in content/images/, set
+    # `img` to its filename, and `url` to the tutorial PDF link (optional —
+    # makes the QR tappable on phones). Uncomment to show it.
+    #qr:
+    #  img: "workshop_tutorial_qr.png"
+    #  caption: "Scan this QR code for the workshop's tutorial"
+    #  url: "https://…/tutorial.pdf"
   - id: posthackathon
     title: "Update: Revolute Hackathon v1.08 is over!"
     type: prose

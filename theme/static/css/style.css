@@ -224,6 +224,10 @@ h1{max-width:680px;font-size:clamp(2.3rem,6.4vw,4.3rem);line-height:.98;}
 .photo-strip{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:22px;}
 .photo-strip figure{position:relative;margin:0;overflow:hidden;border:1px solid var(--rule);background:var(--placeholder-bg);}
 .photo-strip img{width:100%;height:210px;object-fit:cover;filter:saturate(.92) contrast(1.02);cursor:zoom-in;}
+/* ---------- QR code (prose sections) ---------- */
+.qr-block{display:flex;align-items:center;gap:18px;margin:22px 0 0;padding:14px;border:1px solid var(--rule);background:var(--paper);width:fit-content;max-width:100%;}
+.qr-block img{width:140px;height:140px;object-fit:contain;background:#fff;padding:6px;}
+.qr-block figcaption{font-family:var(--mono);font-size:.82rem;text-transform:uppercase;letter-spacing:.03em;color:var(--copy);max-width:220px;}
 /* ---------- Gallery (photos + videos) ---------- */
 .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:6px;margin-top:22px;}
 .gallery-grid figure{margin:0;overflow:hidden;border:1px solid var(--rule);background:var(--placeholder-bg);aspect-ratio:4/3;}

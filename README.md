@@ -71,7 +71,7 @@ Each section has a `type` that picks how it renders:
 
 | `type`     | For                          | Key fields                                          |
 |------------|------------------------------|-----------------------------------------------------|
-| `prose`    | paragraphs                   | `body:` (list); optional `facts:`, `button:`, `note_box:`, `partners:` |
+| `prose`    | paragraphs                   | `body:` (list); optional `facts:`, `button:`, `qr:` (`img`, `caption`, `url`), `note_box:`, `partners:` |
 | `list`     | simple bullets               | `items:` (list)                                     |
 | `cards`    | tagged items w/ link + note  | `intro:`, `cards:`; optional `links:`, `photos:`    |
 | `schedule` | timed agenda                 | `intro:`, `days:` → `rows:`                         |
