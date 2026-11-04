@@ -108,7 +108,7 @@ To support a brand-new section type, add a macro in
 Inline HTML (like a link) is allowed inside any text value if you need it —
 e.g. `value: '<a href="…">FabLab Kendall</a>, Cambridge'` — but it's optional.
 
-## Build
+## Build (pip)
 
     pip install -r requirements.txt
     pelican content -o output -s pelicanconf.py
@@ -117,6 +117,16 @@ e.g. `value: '<a href="…">FabLab Kendall</a>, Cambridge'` — but it's optiona
 Live preview while editing:
 
     pelican --autoreload --listen content -o output -s pelicanconf.py
+
+## Build (uv)
+    curl -LsSf https://astral.sh/uv/install.sh | sh   # install uv (once)
+    uv venv --python 3.12                             # create .venv (once)
+    uv pip install -r requirements.txt                # install deps (once)
+  
+  Live preview while editing:
+
+    uv run pelican --autoreload --listen content -o output -s pelicanconf.py
+    # open http://127.0.0.1:8000/
 
 ## Deploy (GitHub Pages)
 
