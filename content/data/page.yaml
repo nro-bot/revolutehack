@@ -69,7 +69,7 @@ hardware:
       name: "Jetson Orin Nano, 8 GB"
       photo: "kit/jetson.jpg"
       caption: "Jetson Orin Nano, 8 GB. Edge compute for inference, one per team."
-      credit: "Image: NVIDIA"
+      credit: "Image: NVIDIA, via Generation Robots"
       youtube: "S9L2WGf1KrM"         # NVIDIA's Jetson Orin Nano video
       youtube_start: 2               # seconds in, optional
     - count: "2×"
