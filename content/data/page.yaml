@@ -108,6 +108,22 @@ agenda:
       - { when: "4:15 PM",  what: "Awards" }
       - { when: "5:00 PM",  what: "That’s a wrap" }
 
+# ---- Prizes -----------------------------------------------------------------
+#  PLACEHOLDER: nothing here is decided yet. One row per prize.
+#     place   the label at the left, such as "1st place" or "Best demo"
+#     prize   what it wins
+#     note    optional, a smaller line under the prize
+prizes:
+  title: "Prizes"
+  note: "To be announced closer to the event."
+  items:
+    - place: "1st place"
+      prize: "TBA"
+    - place: "2nd place"
+      prize: "TBA"
+    - place: "3rd place"
+      prize: "TBA"
+
 # ---- FAQ --------------------------------------------------------------------
 #  `open: true` shows the answer straight away.
 faq:

@@ -249,6 +249,9 @@ textarea {
   :root {
     --gut: 16px;
   }
+  .dock .tab {
+    letter-spacing: 0;
+  }
 }
 @media (max-width: 340px) {
   :root {
@@ -257,6 +260,18 @@ textarea {
   .subnav .backb.sq {
     width: 36px;
     min-height: 36px;
+  }
+  /* The bottom bar's labels: small enough that "Community" is not cut off. */
+  .dock {
+    gap: 6px;
+  }
+  .dock .tab {
+    font-size: 9px;
+    letter-spacing: 0;
+  }
+  .dock .reg {
+    padding: 0 7px;
+    font-size: 14px;
   }
 }
 .chip[aria-current="true"]::before {
