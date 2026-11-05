@@ -69,9 +69,10 @@ social:
     handle: "Revolute Community"
     icon: luma
     url: "https://luma.com/user/usr-KxkVCLYqVvA7jev"
-    # Luma can embed a whole calendar. Get the address from the calendar's
-    # Settings, Embed, and put it here to show the event list in the popup.
-    # embed: "https://luma.com/embed/calendar/cal-XXXXXXXX/events"
+    # Luma does not allow its profile page inside another site, so the popup
+    # shows Revolute's calendar instead: Luma's list of upcoming events. The
+    # address comes from the calendar's Settings, Embed, on Luma.
+    embed: "https://luma.com/embed/calendar/cal-SyMvL93leFlSRRd/events"
     about: "Every upcoming Revolute event, each with its own sign-up."
     verb: "Events"
     action: "Open on Luma"
