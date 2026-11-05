@@ -19,7 +19,7 @@
     {% if page.events %}
     <ul class="rows">
       {% for ev in page.events %}
-      <li><span class="t">{{ ev.label|e }}</span><span>{% if ev.register %}<a href="{{ site.register.url|e }}" target="_blank" rel="noopener" {{ ui.pop(site.register.title, site.register.about, site.register.embed, site.register.action) }}>{{ ev.title|e }}</a>{% else %}<a href="{{ ev.url|e }}" target="_blank" rel="noopener">{{ ev.title|e }}</a>{% endif %}<small>{{ ev.host|e }}</small></span></li>
+      <li><span class="t">{{ ev.label|e }}</span><span>{% if ev.register %}<a href="{{ site.register.url|e }}" target="_blank" rel="noopener" {{ ui.pop(site.register.title, site.register.about, site.register.embed, site.register.action) }}>{{ ev.title|e }}</a>{% else %}<a href="{{ ev.url|e }}" target="_blank" rel="noopener"{% if ev.embed %} {{ ui.pop(ev.title, ev.host, ev.embed, 'Open the page') }}{% endif %}>{{ ev.title|e }}</a>{% endif %}<small>{{ ev.host|e }}</small></span></li>
       {% endfor %}
     </ul>
     {% else %}

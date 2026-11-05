@@ -15,11 +15,16 @@ description: "Where to find Revolute, what is coming up around Boston, the group
 #     date        "YYYY-MM-DD"
 #     end_date    optional, for events longer than a day
 #     register    true opens the site's Register popup instead of `url`
+#     url         the event's own page
+#     embed       the address shown inside the popup, usually the same as
+#                 `url`. Leave it out if the site does not allow being
+#                 embedded: the event then opens in a new tab.
 events:
   - date: 2026-11-12
     title: "Yun Chang and Husan Mavlonov on robot perception and connector assembly"
     host: "Boston Robot Hackers"
-    url: "https://bostonrobothackers.com/"
+    url: "https://bostonrobothackers.com/news/25-yun-chang-talk-announcement.html"
+    embed: "https://bostonrobothackers.com/news/25-yun-chang-talk-announcement.html"
   - date: 2026-11-20
     end_date: 2026-11-21
     title: "Revolute Thanksgivathon 2026"
@@ -28,7 +33,8 @@ events:
   - date: 2026-12-10
     title: "Addisu Taddese: Robotics in the Real World"
     host: "Boston Robot Hackers"
-    url: "https://bostonrobothackers.com/"
+    url: "https://bostonrobothackers.com/news/30-december-talk-announcement.html"
+    embed: "https://bostonrobothackers.com/news/30-december-talk-announcement.html"
 
 # ---- Affiliates -------------------------------------------------------------
 #  Each card opens the group's site in a popup. `embed` is the address shown
