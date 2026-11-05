@@ -650,9 +650,6 @@ textarea {
 .card.lead {
   grid-template-rows: minmax(0, 1fr) auto auto auto auto;
 }
-.card.hw {
-  grid-template-rows: auto minmax(0, 1fr);
-}
 .cmedia {
   justify-self: stretch;
   position: relative;
@@ -704,28 +701,26 @@ textarea {
   box-shadow: none;
 }
 
-/* Kit tiles: count, name, photo. Each opens a popup. */
+/* Kit tiles: count, name, picture. Each opens a popup. The tiles are only
+   as big as their content, and the picture is shown whole, never cropped. */
+.card.hw {
+  align-self: start;
+}
 .kit {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-auto-rows: 1fr;
   gap: 10px;
-  align-self: stretch;
-  min-height: 0;
 }
 .kit li {
   position: relative;
   min-width: 0;
-  min-height: 0;
   border: 3px solid var(--ink);
   background: var(--white);
 }
 .kit a {
   display: grid;
-  grid-template-rows: auto auto minmax(0, 1fr);
-  height: 100%;
-  min-height: 0;
-  padding: 10px;
+  gap: 2px;
+  padding: 8px 10px 10px;
   text-decoration: none;
 }
 .kit a::after {
@@ -733,7 +728,13 @@ textarea {
   position: absolute;
   right: 8px;
   top: 2px;
-  font: 400 22px/1.2 var(--f-mast);
+  font: 400 20px/1.2 var(--f-mast);
+}
+/* A tile that plays a video is marked with a play triangle. */
+.kit a[data-pop]::after {
+  content: "\25B6\FE0E";
+  top: 6px;
+  font: 12px/1.2 var(--f-type);
 }
 .kit a:active {
   background: var(--ink);
@@ -741,23 +742,19 @@ textarea {
 }
 .kit .n {
   display: block;
-  font: 400 44px/1 var(--f-mast);
+  font: 400 32px/1 var(--f-mast);
 }
 .kit b {
   display: block;
-  margin-top: 2px;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1.25;
 }
 .kph {
   position: relative;
   display: block;
   aspect-ratio: 4 / 3;
-  min-height: 40px;
-  margin-top: 8px;
-  border: 2px solid var(--ink);
+  margin-top: 6px;
   overflow: hidden;
-  background: var(--ink);
 }
 .kph img {
   position: absolute;
@@ -765,7 +762,7 @@ textarea {
   width: 100%;
   height: 100%;
   max-width: none;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 /* Fit one screen: the tabs, then a card that takes the rest of the height,
@@ -788,8 +785,7 @@ textarea {
       gap: 0;
       align-content: stretch;
     }
-    .fit .cmedia,
-    .fit .kph {
+    .fit .cmedia {
       aspect-ratio: auto;
     }
   }
@@ -1775,8 +1771,16 @@ textarea {
   .card.lead .btn {
     align-self: start;
   }
+  /* Four in a row. */
   .kit {
     grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  .kit .n {
+    font-size: 38px;
+  }
+  .kit b {
+    font-size: 15px;
   }
   .vlink {
     gap: 6px;

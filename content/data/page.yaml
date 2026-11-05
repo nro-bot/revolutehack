@@ -45,25 +45,33 @@ hardware:
     src: "kit/imitation.mp4"
     poster: "kit/imitation.jpg"
     caption: "Imitation learning: move the leader arm by hand and the follower arm copies you."
-  # One tile each. Tapping a tile opens its photo and caption in a popup.
+  # One tile each, with the maker's own product picture. Tapping a tile opens
+  # its picture and caption in a popup. A tile with a `youtube:` line plays
+  # that video in the popup instead: `youtube` is the part of the video's
+  # address after "watch?v=". `youtube_start` skips that many seconds in.
   items:
     - count: "1×"
       name: "reBot Arm B601 RS"
       photo: "kit/arm.jpg"
       caption: "reBot Arm B601 RS. One per team, with 48 V QDD motors and a 2.5 kg payload."
+      youtube: "qOhz4Im6hcM"         # Seeed Studio's gravity compensation demo
     - count: "1×"
       name: "Leader arm"
       photo: "kit/leader-arm.jpg"
-      caption: "Leader arm. One per team, for teleoperation and imitation learning."
+      caption: "Leader arm: StarAI Arm Violin. One per team, for teleoperation and imitation learning."
+      credit: "Image: Seeed Studio"
     - count: "1×"
       name: "Jetson Orin Nano, 8 GB"
       photo: "kit/jetson.jpg"
       caption: "Jetson Orin Nano, 8 GB. Edge compute for inference, one per team."
+      credit: "Image: NVIDIA"
+      youtube: "S9L2WGf1KrM"         # NVIDIA's Jetson Orin Nano video
+      youtube_start: 2               # seconds in, optional
     - count: "2×"
       name: "USB cameras"
       photo: "kit/cameras.jpg"
       caption: "USB cameras. Two per team: one overhead, one on the wrist."
-      credit: "Photo: James R Desmond"
+      credit: "Image: Seeed Studio"
 
 # ---- Agenda -----------------------------------------------------------------
 #  CARRIED OVER from the August 2026 hackathon, moved onto the new dates.

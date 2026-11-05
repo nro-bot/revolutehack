@@ -110,10 +110,7 @@ class YamlPageGenerator(Generator):
         for i, project in enumerate(projects):
             folder = os.path.join(self.path, "images", "projects", project["slug"])
             project["poster"] = f"projects/{project['slug']}/poster.jpg"
-            if project.get("youtube"):
-                # The privacy-friendly player address, shown in a popup.
-                project["embed"] = f"https://www.youtube-nocookie.com/embed/{project['youtube']}?autoplay=1&rel=0"
-                project["watch"] = f"https://www.youtube.com/watch?v={project['youtube']}"
+            self._add_youtube(project)
             if os.path.exists(os.path.join(folder, "preview.mp4")):
                 project["preview"] = f"projects/{project['slug']}/preview.mp4"
             if not os.path.exists(os.path.join(folder, "poster.jpg")):
@@ -122,9 +119,22 @@ class YamlPageGenerator(Generator):
             project["next"] = projects[(i + 1) % len(projects)]
         return data
 
+    @staticmethod
+    def _add_youtube(item):
+        """Turn a `youtube:` video id into the two addresses the templates use."""
+        video = item.get("youtube")
+        if video:
+            start = int(item.get("youtube_start") or 0)
+            # The privacy-friendly player address, shown in a popup.
+            item["embed"] = f"https://www.youtube-nocookie.com/embed/{video}?autoplay=1&rel=0" + (f"&start={start}" if start else "")
+            item["watch"] = f"https://www.youtube.com/watch?v={video}" + (f"&t={start}s" if start else "")
+
     def _prepare_app_page(self, data, raw):
         layout = data["layout"]
-        if layout == "previous":
+        if layout == "upcoming":
+            for item in (data.get("hardware") or {}).get("items") or []:
+                self._add_youtube(item)
+        elif layout == "previous":
             photos = data.get("photos") or {}
             if photos.get("folder"):
                 items = [i for i in self._collect_gallery(photos["folder"], photos) if i["kind"] == "photo"]
