@@ -44,7 +44,11 @@
 
     <section class="panel" id="agenda" aria-label="Agenda">
       <div class="card big">
-        <h2 class="ch">Agenda</h2>
+        {% set place = page.facts|selectattr('map')|first %}
+        <div class="chrow">
+          <h2 class="ch">Agenda</h2>
+          {% if place %}<p class="meet">Meet @ {{ ui.map_link(place.map, place.map.title, place.map.title ~ ': open the map') }}</p>{% endif %}
+        </div>
         {{ ui.agenda(page.agenda) }}
       </div>
     </section>

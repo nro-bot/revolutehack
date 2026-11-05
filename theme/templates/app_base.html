@@ -66,13 +66,13 @@
   <div class="pop-card">
     <span class="tape" aria-hidden="true"></span>
     <button class="pop-x" type="button" data-close aria-label="Close">✕</button>
+    <nav class="pop-tabs" id="pop-tabs" aria-label="Events" hidden></nav>
     <div class="pop-body" id="pop-embed">
       <div class="embed">
         <div class="embed-fall"><b id="pop-title"></b><p id="pop-about"></p></div>
         <iframe id="pop-frame" title="" allow="autoplay; fullscreen; payment; encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" hidden></iframe>
       </div>
     </div>
-    <div class="pop-body poplist" id="pop-list" hidden></div>
     <form class="pop-body compose" id="pop-email" novalidate hidden>
       <b class="ctitle">New message</b>
       <p class="mail"><span class="clab">To</span><code>{{ site.email|e }}</code><button class="mini" type="button" data-copy="{{ site.email|e }}">Copy</button></p>
@@ -81,27 +81,16 @@
       <label class="clab" for="mail-body">Message</label>
       <textarea id="mail-body" name="body" rows="4"></textarea>
     </form>
-    <div class="pop-act"><a class="btn" id="pop-go" href="{{ site.register.url|e }}" target="_blank" rel="noopener">{{ site.register.action|e }}</a></div>
+    <div class="pop-act" id="pop-act"><a class="btn" id="pop-go" href="{{ site.register.url|e }}" target="_blank" rel="noopener">{{ site.register.action|e }}</a></div>
   </div>
 </dialog>
 
-{# Lists shown inside the popup: one per social account with an `events:`
-   list. The script copies the matching one in when its icon is tapped. #}
-{% for s in site.social if s.events %}
-<template id="list-{{ s.id }}">
-  <b class="ctitle">{{ s.handle|e }}</b>
-  <p class="note">{{ s.about|e }}</p>
-  {% for heading, group in [('Upcoming', s.upcoming), ('Past', s.past)] %}
-  <h3 class="day">{{ heading }}</h3>
-  {% if group %}
-  <ul class="rows">
-    {% for ev in group %}
-    <li><span class="t">{{ ev.label|e }}</span><span><a href="{{ ev.url|e }}" target="_blank" rel="noopener" {{ ui.pop(ev.title, 'Luma\'s page for this event loads here.', ev.embed, 'Open on Luma') }}>{{ ev.title|e }}</a></span></li>
-    {% endfor %}
-  </ul>
-  {% else %}
-  <p class="note">Nothing scheduled yet.</p>
-  {% endif %}
+{# Tabs shown at the top of the popup: one set per social account that lists
+   events. The script copies the matching set in when its icon is tapped. #}
+{% for s in site.social if s.tabs %}
+<template id="tabs-{{ s.id }}">
+  {% for t in s.tabs %}
+  <a class="chip" href="{{ t.url|e }}" target="_blank" rel="noopener" data-frame="{{ t.embed|e }}" title="{{ t.title|e }}"{% if t.current %} aria-current="true"{% endif %}>{{ t.label|e }}</a>
   {% endfor %}
 </template>
 {% endfor %}

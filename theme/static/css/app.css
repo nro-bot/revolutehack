@@ -694,6 +694,12 @@ textarea {
   white-space: nowrap;
   font-size: 26px;
 }
+.meet {
+  margin: 0;
+  font: 700 12px/1.25 var(--f-type);
+  text-transform: uppercase;
+  text-align: right;
+}
 .vlink {
   flex: none;
   display: inline-flex;
@@ -904,11 +910,11 @@ textarea {
   transform: rotate(-5deg);
 }
 
+/* One photo per row on a phone, a row of squares on a wider screen. */
 .strip {
   justify-self: stretch;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
+  gap: 12px;
 }
 .strip a {
   display: block;
@@ -917,7 +923,7 @@ textarea {
 }
 .strip img {
   width: 100%;
-  aspect-ratio: 1;
+  aspect-ratio: 3 / 2;
   object-fit: cover;
 }
 
@@ -1034,7 +1040,7 @@ textarea {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2px;
-  padding-bottom: 18px;
+  padding: 0 max(var(--gut), env(safe-area-inset-right, 0px)) 18px max(var(--gut), env(safe-area-inset-left, 0px));
 }
 .tile {
   position: relative;
@@ -1314,13 +1320,14 @@ textarea {
 }
 
 /* A site in a frame, or the email form */
+/* The top padding leaves room for the close button above the card. */
 .pop {
-  padding: 40px 30px 36px;
+  padding: 62px 30px 36px;
 }
 .pop-card {
   position: relative;
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   max-width: 400px;
   height: min(78%, 780px);
@@ -1332,7 +1339,6 @@ textarea {
 }
 .pop.small .pop-card {
   height: auto;
-  grid-template-rows: auto auto;
 }
 .pop.small .embed {
   min-height: 0;
@@ -1341,7 +1347,6 @@ textarea {
 .pop.video .pop-card {
   max-width: 900px;
   height: auto;
-  grid-template-rows: auto auto;
 }
 .pop.video .embed {
   aspect-ratio: 16 / 9;
@@ -1362,12 +1367,19 @@ textarea {
   font: 700 18px/1 var(--f-type);
   cursor: pointer;
 }
+/* The popup's close button sits above the card, so it never covers what is
+   inside: an embedded page puts its own things in that corner. */
+.pop-x {
+  right: -3px;
+  top: -52px;
+}
 .pop-x:active,
 .vbtn:active {
   background: var(--ink);
   color: var(--white);
 }
 .pop-body {
+  flex: 1 1 auto;
   min-height: 0;
   display: grid;
 }
@@ -1410,18 +1422,24 @@ textarea {
   opacity: 1;
   background: var(--white);
 }
-.poplist {
-  display: grid;
-  gap: 10px;
-  align-content: start;
-  padding: 24px 18px 16px;
-  overflow: auto;
+/* Tabs across the top of a popup that can show more than one page. */
+.pop-tabs {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 14px;
+  border-bottom: 3px solid var(--ink);
+  background: var(--paper);
+  overflow-x: auto;
+  scrollbar-width: none;
 }
-.poplist .rows li {
-  grid-template-columns: 104px 1fr;
+.pop-tabs .chip {
+  flex: none;
+  white-space: nowrap;
 }
-.poplist .day {
-  margin: 6px 0 0;
+.pop.tabbed .tape {
+  display: none;
 }
 .pop-act {
   display: flex;
@@ -1843,6 +1861,10 @@ textarea {
   }
   .strip {
     grid-template-columns: repeat(8, 1fr);
+    gap: 6px;
+  }
+  .strip img {
+    aspect-ratio: 1;
   }
 
   .g-nav {
@@ -1851,6 +1873,8 @@ textarea {
   .grid {
     grid-template-columns: repeat(5, 1fr);
     gap: 3px;
+    padding-left: 32px;
+    padding-right: 32px;
   }
 
   .accts,
@@ -1872,7 +1896,7 @@ textarea {
   }
 
   .pop {
-    padding: 26px 18px 22px;
+    padding: 58px 18px 22px;
   }
   .pop-card {
     max-width: 500px;

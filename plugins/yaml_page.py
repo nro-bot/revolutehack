@@ -110,18 +110,37 @@ class YamlPageGenerator(Generator):
         return value if isinstance(value, datetime.date) else datetime.date.fromisoformat(str(value))
 
     def _prepare_social(self, site):
-        """Split an account's `events:` into upcoming and past, newest past first."""
+        """Give an account with `events:` its popup tabs: the calendar of
+        upcoming events, then one tab per past event, newest first."""
         today = datetime.date.today()
         for account in site.get("social") or []:
             events = account.get("events")
             if not events:
                 continue
             for event in events:
-                day = self._as_date(event["date"])
-                event["day"] = day
-                event["label"] = f"{day:%b} {day.day}, {day.year}"
-            account["upcoming"] = sorted((e for e in events if e["day"] >= today), key=lambda e: e["day"])
-            account["past"] = sorted((e for e in events if e["day"] < today), key=lambda e: e["day"], reverse=True)
+                event["day"] = self._as_date(event["date"])
+            upcoming = [e for e in events if e["day"] >= today]
+            past = sorted((e for e in events if e["day"] < today), key=lambda e: e["day"], reverse=True)
+
+            tabs = []
+            if account.get("embed"):
+                tabs.append({"label": "Upcoming", "title": "Upcoming events",
+                             "url": account["url"], "embed": account["embed"]})
+            for event in past:
+                day = event["day"]
+                label = f"{day:%b} {day.day}"
+                if day.year != today.year:
+                    label += f" '{day:%y}"
+                tabs.append({"label": label, "title": f"{event['title']}, {day:%B} {day.day}, {day.year}",
+                             "url": event["url"], "embed": event["embed"]})
+            if not tabs:
+                continue
+            # Open on the calendar when something is coming up, otherwise on
+            # the most recent event, so the popup never opens on an empty list.
+            start = tabs[0] if (upcoming or not past or not account.get("embed")) else tabs[1]
+            start["current"] = True
+            account["tabs"] = tabs
+            account["start"] = start
 
     def _prepare_projects(self, data):
         """Fill in each project's poster, optional preview clip, and neighbours."""

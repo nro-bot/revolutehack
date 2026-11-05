@@ -54,7 +54,8 @@ nav:
 # the list on the Community page. Each opens in a popup with a button to the
 # real page. `embed` is optional: the address that account offers for showing
 # it inside another page. Without it the popup shows `about` and the button.
-# An account with an `events:` list shows that list in its popup instead.
+# `action` is the label of the button to the real page: leave it out for no
+# button. An account with an `events:` list gets a tab per past event.
 social:
   - id: instagram
     label: "Instagram"
@@ -71,10 +72,14 @@ social:
     icon: luma
     url: "https://luma.com/user/usr-KxkVCLYqVvA7jev"
     about: "Every Revolute event, upcoming and past."
-    # Luma does not allow its profile page inside another site, and its
-    # calendar embed only lists upcoming events. So the popup shows this list
-    # instead, split into upcoming and past by date. Tapping an event opens
-    # its Luma page in the popup. Add each new event here:
+    # The popup shows Luma itself. Luma does not allow its profile page inside
+    # another site, and its calendar only lists upcoming events, so the popup
+    # has a row of tabs: "Upcoming" shows the calendar below, and each past
+    # event gets a tab, labelled with its date, that shows its Luma page.
+    # The calendar's address comes from its Settings, Embed, on Luma.
+    embed: "https://luma.com/embed/calendar/cal-SyMvL93leFlSRRd/events"
+    # Add each event here. The popup opens on "Upcoming" when one of these is
+    # still to come, and on the most recent event otherwise.
     #   date   "YYYY-MM-DD", the day it starts
     #   url    the event's page on Luma
     #   embed  the event's "Embed Event Page" address on Luma
@@ -92,4 +97,3 @@ social:
         url: "https://luma.com/kxq4yxr8"
         embed: "https://luma.com/embed/event/evt-cW5gZ6vjmv8zPmR/simple"
     verb: "Events"
-    action: "Open on Luma"

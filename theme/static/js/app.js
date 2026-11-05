@@ -47,7 +47,7 @@ for (const dialog of $$('dialog')) {
 // ---- 3. Embed popup ---------------------------------------------------------
 // A link with data-pop="embed" opens its site in a frame, with a button to the
 // real page. Without data-embed it shows a short description and the button.
-// A link with data-pop="list" shows a list from a <template> in the page.
+// With data-tabs it also gets a row of tabs, each showing another page.
 // A link with data-pop="email" opens the email form.
 
 const pop = $('#pop');
@@ -67,18 +67,33 @@ function mailHref() {
 }
 
 const popEmbed = $('#pop-embed');
-const popList = $('#pop-list');
+const popTabs = $('#pop-tabs');
+const popAct = $('#pop-act');
 const embedBox = $('.embed', popEmbed);
 let slowTimer = 0;
 
+// Shows nothing until the page inside has loaded. If it takes a long time,
+// or the site refuses to load here, the description shows instead.
+function loadFrame(address, title) {
+  clearTimeout(slowTimer);
+  popFrame.classList.remove('loaded');
+  embedBox.classList.remove('slow');
+  embedBox.classList.add('framed');
+  slowTimer = setTimeout(() => embedBox.classList.add('slow'), 6000);
+  popFrame.hidden = false;
+  popFrame.title = title;
+  popFrame.src = address;
+}
+
 function openPop(link) {
-  const kind = link.dataset.pop; // embed | list | email
+  const kind = link.dataset.pop; // embed | email
   const embed = kind === 'embed' ? link.dataset.embed : '';
+  const tabs = kind === 'embed' ? link.dataset.tabs : '';
+  const action = kind === 'email' ? 'Open in mail app' : link.dataset.action;
 
   popEmbed.hidden = kind !== 'embed';
-  popList.hidden = kind !== 'list';
   $('#pop-email').hidden = kind !== 'email';
-  pop.classList.toggle('small', kind === 'email' || (kind === 'embed' && !embed));
+  pop.classList.toggle('small', kind === 'email' || !embed);
   pop.classList.toggle('video', link.dataset.shape === 'video');
 
   // Whatever was in the frame is from the last popup.
@@ -88,37 +103,36 @@ function openPop(link) {
   popFrame.hidden = true;
   embedBox.classList.remove('framed', 'slow');
 
+  // Tabs, for a popup that can show more than one page: they are written
+  // into the page as a <template>.
+  popTabs.hidden = !tabs;
+  pop.classList.toggle('tabbed', Boolean(tabs));
+  popTabs.replaceChildren(tabs ? $(`#${tabs}`).content.cloneNode(true) : '');
+  popTabs.scrollLeft = 0;
+
+  // The button to the real page. A popup without `data-action` has none.
+  popAct.hidden = !action;
+  popGo.textContent = action ?? '';
   if (kind === 'email') {
     mailTo = link.href;
     pop.setAttribute('aria-label', 'Email us');
-    popGo.textContent = 'Open in mail app';
     popGo.removeAttribute('target');
     mailHref();
   } else {
     pop.setAttribute('aria-label', link.dataset.title);
-    popGo.textContent = link.dataset.action;
     popGo.href = link.href;
     popGo.target = '_blank';
-  }
-
-  if (kind === 'list') {
-    // A list written into the page as a <template>, such as an account's events.
-    popList.replaceChildren($(`#${link.dataset.list}`).content.cloneNode(true));
-    popList.scrollTop = 0;
-  } else if (kind === 'embed') {
     $('#pop-title').textContent = link.dataset.title;
     $('#pop-about').textContent = link.dataset.about;
-    if (embed) {
-      // Show nothing until the page inside has loaded. If it takes a long
-      // time, or the site refuses to load here, show the description.
-      embedBox.classList.add('framed');
-      slowTimer = setTimeout(() => embedBox.classList.add('slow'), 6000);
-      popFrame.hidden = false;
-      popFrame.title = link.dataset.title;
-      popFrame.src = embed;
-    }
+    if (embed) loadFrame(embed, link.dataset.title);
   }
   if (!pop.open) pop.showModal();
+}
+
+// A tab in the popup swaps the page in its frame.
+function showTab(tab) {
+  for (const other of $$('a', popTabs)) other.setAttribute('aria-current', String(other === tab));
+  loadFrame(tab.dataset.frame, tab.title);
 }
 
 popFrame.addEventListener('load', () => {
@@ -326,33 +340,13 @@ for (const button of $$('[data-copy]')) {
   });
 }
 
-// The back button returns to wherever the visitor was on this site. Arriving
-// from elsewhere, it goes to the address in its link instead. On the homepage
-// with nowhere to go back to, it is dimmed.
-const VISITED = 'revolute-visited';
-
-function hasVisited() {
-  try {
-    return sessionStorage.getItem(VISITED) === '1';
-  } catch {
-    return false;
-  }
-}
-function markVisited() {
-  try {
-    sessionStorage.setItem(VISITED, '1');
-  } catch {
-    // Storage is blocked. The back button falls back to its link.
-  }
-}
+// The back button on the page does exactly what the browser's own back
+// button does. When the browser has nowhere to go back to, it is dimmed.
 function canGoBack() {
-  return hasVisited() && (window.navigation?.canGoBack ?? history.length > 1);
+  return window.navigation?.canGoBack ?? history.length > 1;
 }
 function syncBack() {
-  const onHome = document.body.classList.contains('page-upcoming');
-  for (const back of $$('[data-back]')) {
-    back.setAttribute('aria-disabled', String(onHome && !canGoBack()));
-  }
+  for (const back of $$('[data-back]')) back.setAttribute('aria-disabled', String(!canGoBack()));
 }
 
 // ---- Wiring -----------------------------------------------------------------
@@ -363,7 +357,10 @@ document.addEventListener('click', (event) => {
   const link = event.target.closest('a');
   if (!link) return;
 
-  if (link.dataset.pop) {
+  if (link.dataset.frame) {
+    event.preventDefault();
+    showTab(link);
+  } else if (link.dataset.pop) {
     event.preventDefault();
     openPop(link);
   } else if (link.dataset.view) {
@@ -371,17 +368,12 @@ document.addEventListener('click', (event) => {
     show(link);
     if (!viewer.open) viewer.showModal();
   } else if (link.hasAttribute('data-back')) {
-    if (canGoBack()) {
-      event.preventDefault();
-      history.back();
-    }
-  } else if (link.origin === location.origin && !link.target) {
-    markVisited();
+    event.preventDefault();
+    if (canGoBack()) history.back();
   }
 });
 
 addEventListener('hashchange', () => {
-  markVisited();
   syncTabs();
   syncBack();
   pickClip();

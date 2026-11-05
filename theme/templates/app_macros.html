@@ -28,11 +28,14 @@
 
 {# Attributes that make a link open in the embed popup. The link keeps its
    real address, so it still works without JavaScript. `embed` is optional. #}
-{% macro pop(title, about, embed, action, shape='') %}data-pop="embed" data-title="{{ title|e }}" data-about="{{ about|e }}"{% if embed %} data-embed="{{ embed|e }}"{% endif %} data-action="{{ action|e }}"{% if shape %} data-shape="{{ shape }}"{% endif %}{% endmacro %}
+{% macro pop(title, about, embed, action, shape='') %}data-pop="embed" data-title="{{ title|e }}" data-about="{{ about|e }}"{% if embed %} data-embed="{{ embed|e }}"{% endif %}{% if action %} data-action="{{ action|e }}"{% endif %}{% if shape %} data-shape="{{ shape }}"{% endif %}{% endmacro %}
 
-{# Opens a social account's popup: its event list if it has one, otherwise
-   its embedded page or its description. #}
-{% macro social_pop(s) %}{% if s.events %}data-pop="list" data-list="list-{{ s.id }}" data-title="{{ s.handle|e }}" data-action="{{ s.action|e }}"{% else %}{{ pop(s.handle, s.about, s.embed, s.action) }}{% endif %}{% endmacro %}
+{# Opens a social account's popup: its embedded page, with a tab per event
+   if it lists events, or its description if it has no embed. #}
+{% macro social_pop(s) %}{% if s.tabs %}data-pop="embed" data-title="{{ s.handle|e }}" data-about="{{ s.about|e }}" data-embed="{{ s.start.embed|e }}" data-tabs="tabs-{{ s.id }}"{% else %}{{ pop(s.handle, s.about, s.embed, s.action) }}{% endif %}{% endmacro %}
+
+{# A link that opens a place's map in a popup. `m` is a `map:` block. #}
+{% macro map_link(m, text, label='') %}<a href="{{ m.url|e }}" target="_blank" rel="noopener" data-view="map" data-embed="{{ m.embed|e }}"{% if m.apple_url %} data-apple="{{ m.apple_url|e }}"{% endif %} data-title="{{ m.title|e }}" data-address="{{ m.address|e }}" data-cap="{{ (m.title ~ ', ' ~ m.address)|e }}"{% if label %} aria-label="{{ label|e }}"{% endif %}>{{ text|e }}</a>{% endmacro %}
 
 {# The site's Register button, wherever it appears. #}
 {% macro register(class_name) %}<a class="{{ class_name }}" href="{{ site.register.url|e }}" target="_blank" rel="noopener" {{ pop(site.register.title, site.register.about, site.register.embed, site.register.action) }}>{{ site.register.label|e }}</a>{% endmacro %}
@@ -53,7 +56,7 @@
 <dl class="facts{% if class_name %} {{ class_name }}{% endif %}">
   {% for f in items %}
   {% if f.map %}
-  <div class="tap{% if f.wide %} wide{% endif %}"><dt>{{ f.label|e }}</dt><dd><a href="{{ f.map.url|e }}" target="_blank" rel="noopener" data-view="map" data-embed="{{ f.map.embed|e }}"{% if f.map.apple_url %} data-apple="{{ f.map.apple_url|e }}"{% endif %} data-title="{{ f.map.title|e }}" data-address="{{ f.map.address|e }}" data-cap="{{ (f.map.title ~ ', ' ~ f.map.address)|e }}" aria-label="{{ f.value|e }}: open the map">{{ f.value|e }}</a></dd></div>
+  <div class="tap{% if f.wide %} wide{% endif %}"><dt>{{ f.label|e }}</dt><dd>{{ map_link(f.map, f.value, f.value ~ ': open the map') }}</dd></div>
   {% else %}
   <div{% if f.wide %} class="wide"{% endif %}><dt>{{ f.label|e }}</dt><dd>{{ f.value|e }}</dd></div>
   {% endif %}
@@ -93,7 +96,7 @@
     <span class="win-name">{{ p.name|e }}</span>
     <span class="team">{{ p.team|join(', ')|e }}</span>
     <span class="tag">{{ p.tagline|e }}</span>
-    <span class="go">Open project</span>
+    <span class="go">Open</span>
   </span>
 </a>
 {% endmacro %}
