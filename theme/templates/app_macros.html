@@ -1,0 +1,95 @@
+{# =============================================================================
+   Shared pieces for the app pages. Import with:
+       {% import "app_macros.html" as ui with context %}
+   Every value that comes from a YAML file is escaped with |e, because the
+   templates do not escape automatically.
+   ============================================================================= #}
+
+{# Line icons, drawn on a 24 x 24 grid. Add a name here to use it as an
+   `icon:` in _site.yaml. #}
+{% set ICONS = {
+  'cal':  '<rect x="3.5" y="5.5" width="17" height="15" rx="1"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
+  'cup':  '<path d="M8 4h8v5a4 4 0 0 1-8 0V4zM8 6H5v1a3 3 0 0 0 3 3M16 6h3v1a3 3 0 0 1-3 3M12 13v4M8.5 20h7M9.5 17h5"/>',
+  'pic':  '<rect x="3.5" y="5" width="17" height="14" rx="1"/><circle cx="9" cy="10" r="1.6"/><path d="M4 17l5-4.5 4 3.5 3-2.5 4 3.5"/>',
+  'ppl':  '<circle cx="9" cy="9" r="3"/><path d="M3 19.5a6 6 0 0 1 12 0"/><circle cx="17" cy="10" r="2.4"/><path d="M16.5 15a5 5 0 0 1 4.5 4.5"/>',
+  'ig':   '<rect x="4" y="4" width="16" height="16" rx="4"/><circle cx="12" cy="12" r="3.6"/><path d="M16.6 7.4h.01"/>',
+  'luma': '<path d="M12 3c.6 4.8 4.2 8.4 9 9-4.8.6-8.4 4.2-9 9-.6-4.8-4.2-8.4-9-9 4.8-.6 8.4-4.2 9-9z"/>',
+  'mail': '<rect x="3.5" y="6" width="17" height="12" rx="1"/><path d="M4 7l8 6 8-6"/>',
+  'play': '<rect x="3.5" y="5" width="17" height="14" rx="1"/><path d="M10 9l5 3-5 3z"/>',
+  'left': '<path d="M15 5l-7 7 7 7"/>',
+  'right': '<path d="M9 5l7 7-7 7"/>'
+} %}
+{% set ORDINAL = {1: '1st', 2: '2nd', 3: '3rd'} %}
+
+{% macro icon(name) %}<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">{{ ICONS[name] }}</svg>{% endmacro %}
+
+{# The revolute joint: one link swung about a pivot. #}
+{% macro mark() %}<svg class="mark" viewBox="0 0 72 76" aria-hidden="true" focusable="false"><rect class="mark-ink" x="30" y="46" width="12" height="26"/><rect class="mark-ink" x="22" y="68" width="28" height="6"/><g transform="rotate(32 36 46)"><rect class="mark-link" x="30" y="6" width="12" height="44" rx="6"/></g><circle class="mark-pivot" cx="36" cy="46" r="9.5"/><circle class="mark-ink" cx="36" cy="46" r="2.6"/></svg>{% endmacro %}
+
+{# Attributes that make a link open in the embed popup. The link keeps its
+   real address, so it still works without JavaScript. `embed` is optional. #}
+{% macro pop(title, about, embed, action, shape='') %}data-pop="embed" data-title="{{ title|e }}" data-about="{{ about|e }}"{% if embed %} data-embed="{{ embed|e }}"{% endif %} data-action="{{ action|e }}"{% if shape %} data-shape="{{ shape }}"{% endif %}{% endmacro %}
+
+{# The site's Register button, wherever it appears. #}
+{% macro register(class_name) %}<a class="{{ class_name }}" href="{{ site.register.url|e }}" target="_blank" rel="noopener" {{ pop(site.register.title, site.register.about, site.register.embed, site.register.action) }}>{{ site.register.label|e }}</a>{% endmacro %}
+
+{# The row at the top of a page: a back button, then one tick box per tab.
+   `tabs` is a list of (id, label). Each id is the id of a panel on the page. #}
+{% macro subnav(tabs, label='Sections', class_name='') %}
+<nav class="subnav{% if class_name %} {{ class_name }}{% endif %}" aria-label="{{ label }}">
+  <a class="backb sq" href="{{ SITEURL }}/" data-back aria-label="Back">{{ icon('left') }}</a>
+  {% for id, text in tabs %}
+  <a class="chip" href="#{{ id }}"{% if loop.first %} aria-current="true"{% endif %}>{{ text|e }}</a>
+  {% endfor %}
+</nav>
+{% endmacro %}
+
+{# Fact tiles. A tile with a `map:` block opens a map popup. #}
+{% macro facts(items, class_name='') %}
+<dl class="facts{% if class_name %} {{ class_name }}{% endif %}">
+  {% for f in items %}
+  {% if f.map %}
+  <div class="tap{% if f.wide %} wide{% endif %}"><dt>{{ f.label|e }}</dt><dd><a href="{{ f.map.url|e }}" target="_blank" rel="noopener" data-view="map" data-embed="{{ f.map.embed|e }}" data-title="{{ f.map.title|e }}" data-address="{{ f.map.address|e }}" data-cap="{{ (f.map.title ~ ', ' ~ f.map.address)|e }}" aria-label="{{ f.value|e }}: open the map">{{ f.value|e }}</a></dd></div>
+  {% else %}
+  <div{% if f.wide %} class="wide"{% endif %}><dt>{{ f.label|e }}</dt><dd>{{ f.value|e }}</dd></div>
+  {% endif %}
+  {% endfor %}
+</dl>
+{% endmacro %}
+
+{# A day-by-day agenda. #}
+{% macro agenda(days) %}
+<div class="agenda">
+  {% for day in days %}
+  <div>
+    <h3 class="day">{{ day.day|e }}</h3>
+    <ul class="rows">
+      {% for row in day.rows %}
+      <li><span class="t">{{ row.when|e }}</span><span>{{ row.what|e }}{% if row.note %}<small>{{ row.note|e }}</small>{% endif %}</span></li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endfor %}
+</div>
+{% endmacro %}
+
+{# One hackathon entry, as a card that links to its page. The preview clip,
+   when there is one, is played by app.js. #}
+{% macro project_card(p) %}
+<a class="win" href="{{ SITEURL }}/projects/{{ p.slug }}/">
+  {% if p.place %}<span class="place">{{ ORDINAL[p.place] }}</span>{% endif %}
+  <span class="media"{% if p.preview %} data-clip{% endif %} style="view-transition-name:project-{{ p.slug }}">
+    <img src="{{ SITEURL }}/images/{{ p.poster }}" alt="{{ p.alt|e }}" loading="lazy" decoding="async">
+    {% if p.preview %}
+    <video src="{{ SITEURL }}/images/{{ p.preview }}" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
+    <span class="pv">Preview</span>
+    {% endif %}
+  </span>
+  <span class="body">
+    <span class="win-name">{{ p.name|e }}</span>
+    <span class="team">{{ p.team|join(', ')|e }}</span>
+    <span class="tag">{{ p.tagline|e }}</span>
+    <span class="go">Open project</span>
+  </span>
+</a>
+{% endmacro %}

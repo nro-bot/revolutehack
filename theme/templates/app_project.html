@@ -1,0 +1,36 @@
+{% extends "app_base.html" %}
+{# One hackathon entry. Content: its block in content/data/_projects.yaml. #}
+{% block main %}
+{% set p = page.project %}
+<article class="proj">
+  <a class="backb" href="{{ SITEURL }}/previous/{% if not p.place %}#entries{% endif %}" data-back>{{ ui.icon('left') }}<span>Back</span></a>
+  <div class="hero"{% if p.preview %} data-clip{% endif %} style="view-transition-name:project-{{ p.slug }}">
+    <img src="{{ SITEURL }}/images/{{ p.poster }}" alt="{{ p.alt|e }}" fetchpriority="high" decoding="async">
+    {% if p.preview %}<video src="{{ SITEURL }}/images/{{ p.preview }}" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>{% endif %}
+  </div>
+  {% if p.place %}
+  <p class="stamp gold">Winner · {{ ui.ORDINAL[p.place] }} place · {{ projects_event|e }}</p>
+  {% else %}
+  <p class="stamp">Entry · {{ projects_event|e }}</p>
+  {% endif %}
+  <h1 class="ptitle2">{{ p.name|e }}</h1>
+  <p class="lede">{{ p.tagline|e }}</p>
+  {% if p.youtube %}
+  <div class="cta"><a class="btn" href="{{ p.watch }}" target="_blank" rel="noopener" {{ ui.pop(p.name, 'The demo video plays here.', p.embed, 'Open on YouTube', 'video') }}>YouTube</a></div>
+  {% endif %}
+  <div class="block"><h2 class="h4">Team</h2><p>{{ p.team|join(', ')|e }}</p></div>
+  {% if p.about %}<div class="block"><h2 class="h4">About</h2><p>{{ p.about|e }}</p></div>{% endif %}
+  {% if p.built_with %}
+  <div class="block"><h2 class="h4">Built with</h2><ul class="tags">{% for t in p.built_with %}<li>{{ t|e }}</li>{% endfor %}</ul></div>
+  {% endif %}
+  <div class="block">
+    <h2 class="h4">Links</h2>
+    {% if p.devpost %}<a class="go" href="{{ p.devpost|e }}" target="_blank" rel="noopener">Devpost page</a>{% endif %}
+    {% if p.github %}<a class="go" href="{{ p.github|e }}" target="_blank" rel="noopener">GitHub repo</a>{% endif %}
+  </div>
+  <nav class="pn" aria-label="More entries">
+    <a class="backb" href="{{ SITEURL }}/projects/{{ p.prev.slug }}/">{{ ui.icon('left') }}<span>{{ p.prev.name|e }}</span></a>
+    <a class="backb next" href="{{ SITEURL }}/projects/{{ p.next.slug }}/"><span>{{ p.next.name|e }}</span>{{ ui.icon('right') }}</a>
+  </nav>
+</article>
+{% endblock %}

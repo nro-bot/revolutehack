@@ -1,0 +1,102 @@
+{% import "app_macros.html" as ui with context %}
+{# =============================================================================
+   The shell every app page shares: head, the page itself, the social icons,
+   the bottom bar, and the two popups. Pages fill in `main`.
+   ============================================================================= #}
+{% set path = '' if page.is_home else page.slug ~ '/' %}
+{% set current = 'previous' if page.layout == 'project' else page.layout %}
+{% set full_title = (site.name ~ ' · ' ~ page.title) if page.is_home else (page.title ~ ' · ' ~ site.name) %}
+{% set share_image = page.og_image or 'app/overview.jpg' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{ full_title|e }}</title>
+<meta name="description" content="{{ (page.description or site.description)|e }}">
+<link rel="canonical" href="{{ site.url }}/{{ path }}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{ site.name|e }}">
+<meta property="og:title" content="{{ full_title|e }}">
+<meta property="og:description" content="{{ (page.description or site.description)|e }}">
+<meta property="og:url" content="{{ site.url }}/{{ path }}">
+<meta property="og:image" content="{{ site.url }}/images/{{ share_image }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#f4f1ea">
+{# Only this site's own files may run or load. The one exception is the list
+   of sites shown inside popups, which the build collects from the YAML. #}
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'inline-speculation-rules'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'; font-src 'self'; frame-src {{ site.frame_origins|join(' ') or "'none'" }}; object-src 'none'; base-uri 'self'; form-action 'none'">
+<link rel="icon" href="{{ SITEURL }}/theme/img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="{{ SITEURL }}/theme/img/icon-180.png">
+<link rel="manifest" href="{{ SITEURL }}/theme/manifest.webmanifest">
+<link rel="preload" href="{{ SITEURL }}/theme/fonts/anton-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ SITEURL }}/theme/fonts/courier-prime-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="{{ SITEURL }}/theme/css/app.css">
+<script type="module" src="{{ SITEURL }}/theme/js/app.js"></script>
+{# Start loading a page when a link to it is hovered or touched, so the tap
+   itself feels instant. Media files and popups are left alone. #}
+<script type="speculationrules">
+{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/images/*"}},{"not":{"selector_matches":"[data-pop],[data-view],[target=_blank]"}}]},"eagerness":"moderate"}]}
+</script>
+</head>
+<body class="page-{{ page.layout }}">
+<a class="skip" href="#main">Skip to content</a>
+<div class="app">
+  <main class="pg" id="main">
+{% block main %}{% endblock %}
+  </main>
+
+  <footer class="foot" aria-label="Social media">
+    {% for s in site.social %}
+    <a href="{{ s.url|e }}" target="_blank" rel="noopener" {{ ui.pop(s.handle, s.about, s.embed, s.action) }} aria-label="{{ s.label|e }}" title="{{ s.label|e }}">{{ ui.icon(s.icon) }}</a>
+    {% endfor %}
+    <a href="mailto:{{ site.email|e }}" data-pop="email" aria-label="Email" title="Email">{{ ui.icon('mail') }}</a>
+  </footer>
+
+  <nav class="dock" aria-label="Pages">
+    {% for n in site.nav %}
+    <a class="tab" href="{{ SITEURL }}/{{ n.path }}"{% if n.id == current %} aria-current="page"{% endif %}>{{ ui.icon(n.icon) }}<span>{{ n.label|e }}</span></a>
+    {% endfor %}
+    {{ ui.register('reg') }}
+  </nav>
+</div>
+
+{# ---- Popup: another site shown in a frame, or the email form ------------- #}
+<dialog class="pop" id="pop" aria-label="Popup">
+  <div class="pop-card">
+    <span class="tape" aria-hidden="true"></span>
+    <button class="pop-x" type="button" data-close aria-label="Close">✕</button>
+    <div class="pop-body" id="pop-embed">
+      <div class="embed">
+        <div class="embed-fall"><b id="pop-title"></b><p id="pop-about"></p></div>
+        <iframe id="pop-frame" title="" allow="autoplay; fullscreen; payment; encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" hidden></iframe>
+      </div>
+    </div>
+    <form class="pop-body compose" id="pop-email" novalidate hidden>
+      <b class="ctitle">New message</b>
+      <p class="mail"><span class="clab">To</span><code>{{ site.email|e }}</code><button class="mini" type="button" data-copy="{{ site.email|e }}">Copy</button></p>
+      <label class="clab" for="mail-subject">Subject</label>
+      <input id="mail-subject" name="subject" type="text" autocomplete="off">
+      <label class="clab" for="mail-body">Message</label>
+      <textarea id="mail-body" name="body" rows="4"></textarea>
+    </form>
+    <div class="pop-act"><a class="btn" id="pop-go" href="{{ site.register.url|e }}" target="_blank" rel="noopener">{{ site.register.action|e }}</a></div>
+  </div>
+</dialog>
+
+{# ---- Popup: one photo, video or map --------------------------------------- #}
+<dialog class="viewer" id="viewer" aria-label="Media viewer">
+  <figure class="vcard">
+    <span class="tape" aria-hidden="true"></span>
+    <button class="vbtn vx" type="button" data-close aria-label="Close">✕</button>
+    <div class="vstage" id="vstage"></div>
+    <figcaption class="vcap" id="vcap"></figcaption>
+    <div class="vrow">
+      <button class="vbtn" id="vprev" type="button" aria-label="Previous">{{ ui.icon('left') }}</button>
+      <b id="vcount" aria-live="polite"></b>
+      <button class="vbtn" id="vnext" type="button" aria-label="Next">{{ ui.icon('right') }}</button>
+    </div>
+  </figure>
+</dialog>
+</body>
+</html>
