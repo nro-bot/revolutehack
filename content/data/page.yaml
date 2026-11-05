@@ -54,7 +54,10 @@ hardware:
   # not shown: it describes the picture for screen readers. The `credit` is
   # not shown either: it records whose picture it is. With a `link:` line,
   # tapping the picture in the popup opens that address, such as the
-  # product's page on its maker's site. A tile with a `youtube:` line plays
+  # product's page on its maker's site, in a new tab. Add an `embed:` line
+  # with the same address to show that page in a popup on this site
+  # instead: only for sites that allow being embedded, or the popup stays
+  # blank. A tile with a `youtube:` line plays
   # that video in the popup instead: `youtube` is the part of the video's
   # address after "watch?v=". `youtube_start` skips that many seconds in.
   items:
@@ -82,6 +85,7 @@ hardware:
       caption: "RealSense D405 depth cameras. Two per team: one overhead, one on the wrist."
       credit: "Image: RealSense"
       link: "https://www.realsenseai.com/products/d405-series/"
+      embed: "https://www.realsenseai.com/products/d405-series/"   # RealSense allows this; Seeed does not
 
 # ---- Agenda -----------------------------------------------------------------
 #  CARRIED OVER from the August 2026 hackathon, moved onto the new dates.
