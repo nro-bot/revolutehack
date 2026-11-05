@@ -25,8 +25,8 @@
   {% endif %}
   <div class="block">
     <h2 class="h4">Links</h2>
-    {% if p.devpost %}<a class="go" href="{{ p.devpost|e }}" target="_blank" rel="noopener">Devpost page</a>{% endif %}
-    {% if p.github %}<a class="go" href="{{ p.github|e }}" target="_blank" rel="noopener">GitHub repo</a>{% endif %}
+    {% if p.devpost %}<a class="go" href="{{ p.devpost|e }}" target="_blank" rel="noopener">Devpost</a>{% endif %}
+    {% if p.github %}<a class="go" href="{{ p.github|e }}" target="_blank" rel="noopener">GitHub</a>{% endif %}
   </div>
   <nav class="pn" aria-label="More entries">
     <a class="backb" href="{{ SITEURL }}/projects/{{ p.prev.slug }}/">{{ ui.icon('left') }}<span>{{ p.prev.name|e }}</span></a>
