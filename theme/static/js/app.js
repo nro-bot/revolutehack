@@ -359,13 +359,17 @@ for (const button of $$('[data-copy]')) {
   });
 }
 
-// The back button on the page does exactly what the browser's own back
-// button does. When the browser has nowhere to go back to, it is dimmed.
+// The back button on the page does what the browser's own back button does.
+// When the browser has nowhere to go back to (the page was opened from a
+// link or a bookmark), it follows its own link instead: a project goes to
+// the Previous page, and other pages go to the homepage. On the homepage
+// itself there is then nowhere to go, so it is dimmed.
 function canGoBack() {
   return window.navigation?.canGoBack ?? history.length > 1;
 }
 function syncBack() {
-  for (const back of $$('[data-back]')) back.setAttribute('aria-disabled', String(!canGoBack()));
+  const onHome = document.body.classList.contains('page-upcoming');
+  for (const back of $$('[data-back]')) back.setAttribute('aria-disabled', String(onHome && !canGoBack()));
 }
 
 // ---- Wiring -----------------------------------------------------------------
@@ -384,8 +388,12 @@ document.addEventListener('click', (event) => {
     show(link);
     if (!viewer.open) viewer.showModal();
   } else if (link.hasAttribute('data-back')) {
-    event.preventDefault();
-    if (canGoBack()) history.back();
+    // Decided now, not when the page loaded: see the note on pages loaded
+    // ahead of time, below.
+    if (canGoBack()) {
+      event.preventDefault();
+      history.back();
+    }
   }
 });
 
@@ -399,6 +407,11 @@ addEventListener('pageshow', () => {
   syncTabs();
   syncBack();
 });
+// A page the browser loaded ahead of time (when its link was pointed at) ran
+// this script before it was shown, when it had no history yet. Read the
+// history again once it is really on screen, and whenever it changes.
+document.addEventListener('prerenderingchange', syncBack);
+window.navigation?.addEventListener('currententrychange', syncBack);
 
 syncTabs();
 syncBack();
