@@ -219,20 +219,23 @@ textarea {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 0.35em;
   min-width: 0;
   min-height: 44px;
   padding: 0 1px;
   color: var(--ink);
-  font: 700 11px/1 var(--f-type);
+  /* The size follows the screen's width, so five tabs still fit side by
+     side on a narrow phone without their words running into each other. */
+  font: 700 clamp(9px, 2.8vw, 11px) / 1 var(--f-type);
   text-transform: uppercase;
   text-decoration: none;
+  white-space: nowrap;
 }
 .chip::before {
   content: "";
   flex: none;
-  width: 12px;
-  height: 12px;
+  width: calc(1em + 1px);
+  height: calc(1em + 1px);
   border: 2px solid var(--ink);
   background: var(--white);
 }
@@ -240,6 +243,21 @@ textarea {
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-underline-offset: 4px;
+}
+/* Narrow phones: a smaller side gutter everywhere, and a smaller back button. */
+@media (max-width: 380px) {
+  :root {
+    --gut: 16px;
+  }
+}
+@media (max-width: 340px) {
+  :root {
+    --gut: 12px;
+  }
+  .subnav .backb.sq {
+    width: 36px;
+    min-height: 36px;
+  }
 }
 .chip[aria-current="true"]::before {
   background: var(--ink);
@@ -790,9 +808,11 @@ textarea {
 
 /* Fit one screen: the tabs, then a card that takes the rest of the height,
    so nothing on this page scrolls. Needs :has(), because it relies on one
-   panel showing at a time, and a screen tall enough to hold a card. */
+   panel showing at a time, and a screen tall enough to hold a card. On a
+   shorter screen than that (an iPhone SE, or a phone on its side) the page
+   is laid out the ordinary way and scrolls. */
 @supports selector(:has(*)) {
-  @media (min-height: 600px) {
+  @media (min-height: 640px) {
     .sheet.fit {
       height: calc(100dvh - var(--chrome));
       grid-template-rows: auto minmax(0, 1fr);
@@ -810,6 +830,58 @@ textarea {
     }
     .fit .cmedia {
       aspect-ratio: auto;
+    }
+    /* A card never spills over what is around it. If its content is taller
+       than the room it has, it scrolls inside itself. */
+    .fit .card.big {
+      max-height: 100%;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+    }
+  }
+  /* Most phones: the browser's own bars leave about 650 to 750 px. The card
+     is tightened so everything still fits, and the photo takes whatever
+     height is left instead of insisting on its own. */
+  @media (min-height: 640px) and (max-height: 760px) and (max-width: 699px) {
+    .fit .one {
+      gap: 6px;
+      padding-top: 8px;
+    }
+    .fit .card.big {
+      gap: 8px;
+      padding: 12px;
+    }
+    .fit .cmedia {
+      min-height: 0;
+    }
+    .fit .ev {
+      font-size: clamp(32px, 9.6vw, 40px);
+    }
+    .fit .facts {
+      gap: 8px;
+    }
+    .fit .facts div {
+      padding: 6px 9px;
+    }
+    .fit .card .btn {
+      min-height: 44px;
+      padding-top: 6px;
+      padding-bottom: 6px;
+    }
+    .fit .card .agenda {
+      gap: 10px;
+    }
+    .fit .rows li {
+      padding: 5px 0;
+      font-size: 14.5px;
+    }
+    .fit .kit .n {
+      font-size: 26px;
+    }
+    .fit .kph {
+      aspect-ratio: 16 / 9;
+      margin-top: 4px;
     }
   }
 }
