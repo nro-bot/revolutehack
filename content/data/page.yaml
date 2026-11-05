@@ -71,10 +71,10 @@ hardware:
       youtube: "S9L2WGf1KrM"         # NVIDIA's Jetson Orin Nano video
       youtube_start: 2               # seconds in, optional
     - count: "2×"
-      name: "USB cameras"
+      name: "RealSense D405"
       photo: "kit/cameras.jpg"
-      caption: "USB cameras. Two per team: one overhead, one on the wrist."
-      credit: "Image: Seeed Studio"
+      caption: "RealSense D405 depth cameras. Two per team: one overhead, one on the wrist."
+      credit: "Image: RealSense"
 
 # ---- Agenda -----------------------------------------------------------------
 #  CARRIED OVER from the August 2026 hackathon, moved onto the new dates.
