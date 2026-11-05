@@ -896,6 +896,7 @@ textarea {
 .strip a {
   display: block;
   min-width: 0;
+  overflow: hidden; /* keeps the picture inside its square when it zooms on hover */
 }
 .strip img {
   width: 100%;
@@ -1606,13 +1607,16 @@ textarea {
     translate: 0 -3px;
     box-shadow: 3px 5px 0 var(--ink);
   }
-  .tile img {
+  .tile img,
+  .strip img {
     transition: transform 0.28s ease-out;
   }
-  .tile:hover img {
+  .tile:hover img,
+  .strip a:hover img {
     transform: scale(1.08) rotate(-1.2deg);
   }
-  .tile:nth-child(even):hover img {
+  .tile:nth-child(even):hover img,
+  .strip a:nth-child(even):hover img {
     transform: scale(1.08) rotate(1.2deg);
   }
   .tile .dur {
@@ -1678,7 +1682,8 @@ textarea {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  .tile:hover img {
+  .tile:hover img,
+  .strip a:hover img {
     transform: none;
   }
 }
