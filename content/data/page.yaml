@@ -71,7 +71,11 @@ hardware:
       photo: "kit/leader-arm.jpg"
       caption: "Leader arm: StarAI Arm Violin. One per team, for teleoperation and imitation learning."
       credit: "Image: Seeed Studio"
-      link: "https://www.seeedstudio.com/StarAi-Arm-Violin-p-6571.html"
+      youtube: "pPusiho4JLQ"         # Seeed Studio's StarAI arm object grasping video
+      youtube_start: 5               # seconds in, optional
+      # Its product page, for reference. A tile that plays a video has no
+      # picture popup, so a `link:` line here would not be used:
+      # https://www.seeedstudio.com/StarAi-Arm-Violin-p-6571.html
     - count: "1×"
       name: "Jetson Orin Nano, 8 GB"
       photo: "kit/jetson.jpg"
