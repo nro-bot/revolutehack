@@ -39,9 +39,13 @@
     <ul class="people">
       {% for person in page.team.people %}
       <li class="person">
+        {# The picture and the name both go to the person's page. The picture's
+           link is skipped by keyboards and screen readers, which get the name. #}
+        {% if person.url %}<a class="facelink" href="{{ person.url|e }}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">{% endif %}
         {% if person.photo %}<img class="face" src="{{ SITEURL }}/images/{{ person.photo }}" alt="" width="160" height="160" loading="lazy" decoding="async">{% else %}<span class="face mono" aria-hidden="true">{{ person.initials|e }}</span>{% endif %}
+        {% if person.url %}</a>{% endif %}
         <div>
-          <b>{{ person.name|e }}</b>
+          <b>{% if person.url %}<a href="{{ person.url|e }}" target="_blank" rel="noopener">{{ person.name|e }}</a>{% else %}{{ person.name|e }}{% endif %}</b>
           {% if person.role %}<span class="role">{{ person.role|e }}</span>{% endif %}
           {% if person.title %}<small>{{ person.title|e }}</small>{% endif %}
           {% if person.bio %}<p>{{ person.bio|e }}</p>{% endif %}

@@ -1185,6 +1185,38 @@ textarea {
   font: 400 22px/1.1 var(--f-mast);
   text-transform: uppercase;
 }
+/* The picture and the name are links to the person's page. */
+.facelink {
+  display: block;
+  width: 72px;
+  height: 72px;
+}
+.facelink .face {
+  display: grid;
+}
+.person b a {
+  color: inherit;
+  text-decoration: none;
+}
+.facelink:active .face,
+.person b a:active {
+  opacity: 0.6;
+}
+@media (hover: hover) {
+  .facelink .face {
+    transition: translate 0.15s ease-out, rotate 0.15s ease-out, box-shadow 0.15s ease-out;
+  }
+  .facelink:hover .face {
+    translate: 0 -3px;
+    rotate: -3deg;
+    box-shadow: 3px 5px 0 var(--ink);
+  }
+  .person b a:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+}
 .person .role {
   padding: 2px 6px;
   background: var(--hi);

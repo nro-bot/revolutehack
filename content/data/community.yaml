@@ -58,6 +58,12 @@ team:
   links:
     - { label: "Sponsorship tiers", path: "sponsorship/" }
   people:
+    - name: "Nancy Ouyang"
+      role: "Lead Organizer"
+      title: "Chief Robot Wrangler"
+      photo: "team/nancy.jpg"
+      url: "https://nrobot.dev"
+      bio: "Holds a PhD and keeps Revolute's robots, hackers, and pasta sauce all running on schedule."
     - name: "Shivam Chopra"
       role: "Hardware Lead"
       title: "Soft Robotics Enthusiast"
@@ -80,12 +86,6 @@ team:
       photo: "team/siddhi.jpg"
       url: "https://siddhimore.netlify.app/"
       bio: "Robotics Grad @ Northeastern. Building robots. Making art. Always creating :)"
-    - name: "Nancy Ouyang"
-      role: "Lead Organizer"
-      title: "Chief Robot Wrangler"
-      photo: "team/nancy.jpg"
-      url: "https://nrobot.dev"
-      bio: "Holds a PhD and keeps Revolute's robots, hackers, and pasta sauce all running on schedule."
     - name: "Joseph Selvaraaj"
       role: "Volunteer"
       title: "Robotics Enthusiast"
