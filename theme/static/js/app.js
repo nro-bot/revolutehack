@@ -209,7 +209,7 @@ function show(link) {
     media.referrerPolicy = 'strict-origin-when-cross-origin';
   } else {
     media = document.createElement('img');
-    media.alt = link.dataset.cap ?? $('img', link)?.alt ?? '';
+    media.alt = link.dataset.cap ?? link.dataset.alt ?? $('img', link)?.alt ?? '';
     media.draggable = false;
     if (link.dataset.thumb) {
       // The thumbnail is already loaded, so show it at once and swap in the

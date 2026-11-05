@@ -49,7 +49,9 @@ hardware:
     poster: "kit/imitation.jpg"
     caption: "Imitation learning: move the leader arm by hand and the follower arm copies you."
   # One tile each, with the maker's own product picture. Tapping a tile opens
-  # its picture and caption in a popup. A tile with a `youtube:` line plays
+  # its picture in a popup, with the `credit` under it. The `caption` is not
+  # shown: it describes the picture for screen readers. A tile with a
+  # `youtube:` line plays
   # that video in the popup instead: `youtube` is the part of the video's
   # address after "watch?v=". `youtube_start` skips that many seconds in.
   items:

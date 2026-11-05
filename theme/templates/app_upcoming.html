@@ -30,9 +30,9 @@
           {% for it in page.hardware['items'] %}
           <li>
             {% if it.youtube %}
-            <a href="{{ it.watch }}" target="_blank" rel="noopener" {{ ui.pop(it.name, it.caption, it.embed, 'Open on YouTube', 'video') }}>
+            <a href="{{ it.watch }}" target="_blank" rel="noopener" {{ ui.pop(it.name, '', it.embed, 'Open on YouTube', 'video') }}>
             {% else %}
-            <a href="{{ SITEURL }}/images/{{ it.photo }}" data-view="photo" data-cap="{{ it.caption|e }}" data-credit="{{ (it.credit or '')|e }}">
+            <a href="{{ SITEURL }}/images/{{ it.photo }}" data-view="photo" data-alt="{{ it.caption|e }}" data-credit="{{ (it.credit or '')|e }}">
             {% endif %}
               <span class="n">{{ it.count|e }}</span><b>{{ it.name|e }}</b><span class="kph"><img src="{{ SITEURL }}/images/{{ it.photo }}" alt="" fetchpriority="low" decoding="async"></span>
             </a>
