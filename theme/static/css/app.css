@@ -506,6 +506,23 @@ textarea {
   font-weight: 700;
 }
 
+/* A short list of links, each with an optional small note under it. */
+.linklist {
+  justify-self: stretch;
+}
+.linklist li {
+  display: grid;
+  align-content: center;
+  min-height: 48px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--ink);
+}
+.linklist small {
+  font-size: 13.5px;
+  line-height: 1.4;
+  color: var(--mute);
+}
+
 .faq {
   justify-self: stretch;
 }
@@ -1360,7 +1377,14 @@ textarea {
   overflow: hidden;
   background: var(--white);
 }
-/* Shown while the frame loads, and left showing if there is no frame. */
+/* A frame stays invisible until its page has loaded, so nothing flickers.
+   The description shows only when there is no frame, or the frame is slow. */
+.embed.framed .embed-fall {
+  visibility: hidden;
+}
+.embed.framed.slow .embed-fall {
+  visibility: visible;
+}
 .embed-fall {
   display: grid;
   gap: 10px;
@@ -1378,8 +1402,26 @@ textarea {
   height: 100%;
   border: 0;
 }
+.embed iframe {
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+}
 .embed iframe.loaded {
+  opacity: 1;
   background: var(--white);
+}
+.poplist {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  padding: 24px 18px 16px;
+  overflow: auto;
+}
+.poplist .rows li {
+  grid-template-columns: 104px 1fr;
+}
+.poplist .day {
+  margin: 6px 0 0;
 }
 .pop-act {
   display: flex;
@@ -1736,9 +1778,6 @@ textarea {
 
   .facts {
     grid-template-columns: repeat(3, 1fr);
-  }
-  .facts.four {
-    grid-template-columns: repeat(4, 1fr);
   }
   .facts .wide {
     grid-column: auto;

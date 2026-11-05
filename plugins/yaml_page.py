@@ -63,6 +63,7 @@ class YamlPageGenerator(Generator):
             return _load(path) if os.path.exists(path) else {}
 
         self.site = data_file("_site.yaml")
+        self._prepare_social(self.site)
         self.projects = self._prepare_projects(data_file("_projects.yaml"))
 
         raw = {
@@ -103,6 +104,24 @@ class YamlPageGenerator(Generator):
         self.site["frame_origins"] = sorted(origins)
 
     # ---- app pages -------------------------------------------------------
+
+    @staticmethod
+    def _as_date(value):
+        return value if isinstance(value, datetime.date) else datetime.date.fromisoformat(str(value))
+
+    def _prepare_social(self, site):
+        """Split an account's `events:` into upcoming and past, newest past first."""
+        today = datetime.date.today()
+        for account in site.get("social") or []:
+            events = account.get("events")
+            if not events:
+                continue
+            for event in events:
+                day = self._as_date(event["date"])
+                event["day"] = day
+                event["label"] = f"{day:%b} {day.day}, {day.year}"
+            account["upcoming"] = sorted((e for e in events if e["day"] >= today), key=lambda e: e["day"])
+            account["past"] = sorted((e for e in events if e["day"] < today), key=lambda e: e["day"], reverse=True)
 
     def _prepare_projects(self, data):
         """Fill in each project's poster, optional preview clip, and neighbours."""

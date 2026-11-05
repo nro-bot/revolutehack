@@ -27,10 +27,13 @@ facts:
     map:
       title: "FabLab Kendall"
       address: "325 Main St, Cambridge, MA 02142"
-      # OpenStreetMap's embed address: on openstreetmap.org choose Share,
-      # then "HTML", and copy the address inside src="...".
-      embed: "https://www.openstreetmap.org/export/embed.html?bbox=-71.0925%2C42.3592%2C-71.0795%2C42.3657&layer=mapnik&marker=42.36245%2C-71.08600"
+      # The popup shows a Google map of this place. Under it is a link that
+      # opens the Maps app: Apple Maps on an iPhone or iPad (`apple_url`),
+      # Google Maps everywhere else (`url`). Apple Maps cannot be shown
+      # inside another site, so the map in the popup is always Google's.
+      embed: "https://www.google.com/maps?q=FabLab%20Kendall%2C%20325%20Main%20St%2C%20Cambridge%2C%20MA%2002142&z=16&output=embed"
       url: "https://www.google.com/maps/search/?api=1&query=FabLab+Kendall%2C+325+Main+St%2C+Cambridge%2C+MA+02142"
+      apple_url: "https://maps.apple.com/?q=FabLab+Kendall&address=325+Main+St%2C+Cambridge%2C+MA+02142"
   - label: "Theme"
     value: "TBA"
     wide: true

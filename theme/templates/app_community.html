@@ -9,7 +9,7 @@
   <section class="panel" id="social" aria-label="Social media">
     <ul class="accts">
       {% for s in site.social %}
-      <li><a class="acct" href="{{ s.url|e }}" target="_blank" rel="noopener" {{ ui.pop(s.handle, s.about, s.embed, s.action) }}>{{ ui.icon(s.icon) }}<span><b>{{ s.label|e }}</b><small>{{ s.handle|e }}</small></span><span class="do">{{ s.verb|e }}</span></a></li>
+      <li><a class="acct" href="{{ s.url|e }}" target="_blank" rel="noopener" {{ ui.social_pop(s) }}>{{ ui.icon(s.icon) }}<span><b>{{ s.label|e }}</b><small>{{ s.handle|e }}</small></span><span class="do">{{ s.verb|e }}</span></a></li>
       {% endfor %}
       <li><div class="acct">{{ ui.icon('mail') }}<span><b>Email</b><small><code>{{ site.email|e }}</code></small></span><button class="mini" type="button" data-copy="{{ site.email|e }}">Copy</button></div></li>
     </ul>

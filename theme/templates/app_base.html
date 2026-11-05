@@ -48,7 +48,7 @@
 
   <footer class="foot" aria-label="Social media">
     {% for s in site.social %}
-    <a href="{{ s.url|e }}" target="_blank" rel="noopener" {{ ui.pop(s.handle, s.about, s.embed, s.action) }} aria-label="{{ s.label|e }}" title="{{ s.label|e }}">{{ ui.icon(s.icon) }}</a>
+    <a href="{{ s.url|e }}" target="_blank" rel="noopener" {{ ui.social_pop(s) }} aria-label="{{ s.label|e }}" title="{{ s.label|e }}">{{ ui.icon(s.icon) }}</a>
     {% endfor %}
     <a href="mailto:{{ site.email|e }}" data-pop="email" aria-label="Email" title="Email">{{ ui.icon('mail') }}</a>
   </footer>
@@ -72,6 +72,7 @@
         <iframe id="pop-frame" title="" allow="autoplay; fullscreen; payment; encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" hidden></iframe>
       </div>
     </div>
+    <div class="pop-body poplist" id="pop-list" hidden></div>
     <form class="pop-body compose" id="pop-email" novalidate hidden>
       <b class="ctitle">New message</b>
       <p class="mail"><span class="clab">To</span><code>{{ site.email|e }}</code><button class="mini" type="button" data-copy="{{ site.email|e }}">Copy</button></p>
@@ -83,6 +84,27 @@
     <div class="pop-act"><a class="btn" id="pop-go" href="{{ site.register.url|e }}" target="_blank" rel="noopener">{{ site.register.action|e }}</a></div>
   </div>
 </dialog>
+
+{# Lists shown inside the popup: one per social account with an `events:`
+   list. The script copies the matching one in when its icon is tapped. #}
+{% for s in site.social if s.events %}
+<template id="list-{{ s.id }}">
+  <b class="ctitle">{{ s.handle|e }}</b>
+  <p class="note">{{ s.about|e }}</p>
+  {% for heading, group in [('Upcoming', s.upcoming), ('Past', s.past)] %}
+  <h3 class="day">{{ heading }}</h3>
+  {% if group %}
+  <ul class="rows">
+    {% for ev in group %}
+    <li><span class="t">{{ ev.label|e }}</span><span><a href="{{ ev.url|e }}" target="_blank" rel="noopener" {{ ui.pop(ev.title, 'Luma\'s page for this event loads here.', ev.embed, 'Open on Luma') }}>{{ ev.title|e }}</a></span></li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="note">Nothing scheduled yet.</p>
+  {% endif %}
+  {% endfor %}
+</template>
+{% endfor %}
 
 {# ---- Popup: one photo, video or map --------------------------------------- #}
 <dialog class="viewer" id="viewer" aria-label="Media viewer">

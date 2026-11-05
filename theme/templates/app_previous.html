@@ -32,7 +32,7 @@
   </section>
 
   <section class="panel" id="about" aria-label="About">
-    {{ ui.facts(page.facts, 'four') }}
+    {{ ui.facts(page.facts) }}
     <section class="sec">
       <h2 class="lab">Thanks</h2>
       <dl class="thanks">
@@ -43,9 +43,9 @@
     </section>
     <section class="sec">
       <h2 class="lab">Links</h2>
-      <ul class="rows">
+      <ul class="linklist">
         {% for l in page.links %}
-        <li><span class="t">{{ l.label|e }}</span><span><a href="{{ l.url|e }}" target="_blank" rel="noopener"{% if l.embed %} {{ ui.pop(l.text, l.note or '', l.embed, l.action or 'Open') }}{% endif %}>{{ l.text|e }}</a>{% if l.note %}<small>{{ l.note|e }}</small>{% endif %}</span></li>
+        <li><a class="go" href="{{ l.url|e }}" target="_blank" rel="noopener"{% if l.embed %} {{ ui.pop(l.text, l.note or '', l.embed, l.action or 'Open') }}{% endif %}>{{ l.text|e }}</a>{% if l.note %}<small>{{ l.note|e }}</small>{% endif %}</li>
         {% endfor %}
       </ul>
     </section>

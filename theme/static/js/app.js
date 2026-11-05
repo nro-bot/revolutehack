@@ -16,6 +16,9 @@ const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const isShown = (el) => el.getClientRects().length > 0;
+// iPhones and iPods say so. An iPad says it is a Mac, but a Mac has no touch.
+const isAppleTouchDevice =
+  /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
 // ---- 1. Section tabs --------------------------------------------------------
 // The stylesheet shows the panel that the address points at. All that is left
@@ -44,6 +47,7 @@ for (const dialog of $$('dialog')) {
 // ---- 3. Embed popup ---------------------------------------------------------
 // A link with data-pop="embed" opens its site in a frame, with a button to the
 // real page. Without data-embed it shows a short description and the button.
+// A link with data-pop="list" shows a list from a <template> in the page.
 // A link with data-pop="email" opens the email form.
 
 const pop = $('#pop');
@@ -62,16 +66,29 @@ function mailHref() {
   popGo.href = mailTo + (query ? `?${query}` : '');
 }
 
-function openPop(link) {
-  const isEmail = link.dataset.pop === 'email';
-  const embed = isEmail ? '' : link.dataset.embed;
+const popEmbed = $('#pop-embed');
+const popList = $('#pop-list');
+const embedBox = $('.embed', popEmbed);
+let slowTimer = 0;
 
-  $('#pop-embed').hidden = isEmail;
-  $('#pop-email').hidden = !isEmail;
-  pop.classList.toggle('small', isEmail || !embed);
+function openPop(link) {
+  const kind = link.dataset.pop; // embed | list | email
+  const embed = kind === 'embed' ? link.dataset.embed : '';
+
+  popEmbed.hidden = kind !== 'embed';
+  popList.hidden = kind !== 'list';
+  $('#pop-email').hidden = kind !== 'email';
+  pop.classList.toggle('small', kind === 'email' || (kind === 'embed' && !embed));
   pop.classList.toggle('video', link.dataset.shape === 'video');
 
-  if (isEmail) {
+  // Whatever was in the frame is from the last popup.
+  clearTimeout(slowTimer);
+  popFrame.classList.remove('loaded');
+  popFrame.removeAttribute('src');
+  popFrame.hidden = true;
+  embedBox.classList.remove('framed', 'slow');
+
+  if (kind === 'email') {
     mailTo = link.href;
     pop.setAttribute('aria-label', 'Email us');
     popGo.textContent = 'Open in mail app';
@@ -79,14 +96,24 @@ function openPop(link) {
     mailHref();
   } else {
     pop.setAttribute('aria-label', link.dataset.title);
-    $('#pop-title').textContent = link.dataset.title;
-    $('#pop-about').textContent = link.dataset.about;
     popGo.textContent = link.dataset.action;
     popGo.href = link.href;
     popGo.target = '_blank';
-    popFrame.classList.remove('loaded');
-    popFrame.hidden = !embed;
+  }
+
+  if (kind === 'list') {
+    // A list written into the page as a <template>, such as an account's events.
+    popList.replaceChildren($(`#${link.dataset.list}`).content.cloneNode(true));
+    popList.scrollTop = 0;
+  } else if (kind === 'embed') {
+    $('#pop-title').textContent = link.dataset.title;
+    $('#pop-about').textContent = link.dataset.about;
     if (embed) {
+      // Show nothing until the page inside has loaded. If it takes a long
+      // time, or the site refuses to load here, show the description.
+      embedBox.classList.add('framed');
+      slowTimer = setTimeout(() => embedBox.classList.add('slow'), 6000);
+      popFrame.hidden = false;
       popFrame.title = link.dataset.title;
       popFrame.src = embed;
     }
@@ -94,10 +121,16 @@ function openPop(link) {
   if (!pop.open) pop.showModal();
 }
 
-popFrame.addEventListener('load', () => popFrame.classList.add('loaded'));
+popFrame.addEventListener('load', () => {
+  if (!popFrame.getAttribute('src')) return;
+  clearTimeout(slowTimer);
+  embedBox.classList.remove('slow');
+  popFrame.classList.add('loaded');
+});
 pop.addEventListener('close', () => {
   if (pop.open) return; // already reopened
   // Emptying the frame stops whatever was playing in it.
+  clearTimeout(slowTimer);
   popFrame.removeAttribute('src');
   popFrame.hidden = true;
 });
@@ -165,11 +198,14 @@ function show(link) {
   const text = [link.dataset.cap, link.dataset.credit].filter(Boolean).join('  ·  ');
   caption.replaceChildren(text);
   if (kind === 'map') {
+    // The link under the map opens the Maps app: Apple Maps on an iPhone or
+    // iPad, where it is the one already installed, and Google Maps elsewhere.
+    const useApple = isAppleTouchDevice && link.dataset.apple;
     const open = document.createElement('a');
-    open.href = link.href;
+    open.href = useApple ? link.dataset.apple : link.href;
     open.target = '_blank';
     open.rel = 'noopener';
-    open.textContent = 'Open in Maps';
+    open.textContent = useApple ? 'Open in Apple Maps' : 'Open in Google Maps';
     caption.append('  ·  ', open);
   }
 

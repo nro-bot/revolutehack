@@ -51,10 +51,9 @@ facts:
     map:
       title: "FabLab Kendall"
       address: "325 Main St, Cambridge, MA 02142"
-      embed: "https://www.openstreetmap.org/export/embed.html?bbox=-71.0925%2C42.3592%2C-71.0795%2C42.3657&layer=mapnik&marker=42.36245%2C-71.08600"
+      embed: "https://www.google.com/maps?q=FabLab%20Kendall%2C%20325%20Main%20St%2C%20Cambridge%2C%20MA%2002142&z=16&output=embed"
       url: "https://www.google.com/maps/search/?api=1&query=FabLab+Kendall%2C+325+Main+St%2C+Cambridge%2C+MA+02142"
-  - label: "Who"
-    value: "30 hackers"
+      apple_url: "https://maps.apple.com/?q=FabLab+Kendall&address=325+Main+St%2C+Cambridge%2C+MA+02142"
   - label: "Hardware"
     value: "$15k of robot arms"
 
@@ -65,14 +64,13 @@ thanks:
   - { label: "Judges",   value: "Sayam Dhingra (Autodesk), Charis Georgiou (Minoic Intelligence), Erika Tsutshumi (Elemental Machines), Yuki Yamada (Walden Robotics), Charles Yong (Vassar Robotics)" }
   - { label: "Photos",   value: "James R Desmond" }
 
-# `embed` is optional: with it, the link opens in a popup.
+# One link each. `note` (a small line under the link) and `embed` are
+# optional: with `embed`, the link opens in a popup.
 links:
-  - label: "Luma"
-    text: "The event on Luma"
+  - text: "Luma"
     note: "Registration has ended"
     url: "https://luma.com/kxq4yxr8"
     embed: "https://luma.com/embed/event/evt-cW5gZ6vjmv8zPmR/simple"
     action: "Open on Luma"
-  - label: "Devpost"
-    text: "All six submissions"
+  - text: "Devpost"
     url: "https://revolute-hackathon.devpost.com/project-gallery"

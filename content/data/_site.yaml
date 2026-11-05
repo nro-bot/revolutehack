@@ -54,6 +54,7 @@ nav:
 # the list on the Community page. Each opens in a popup with a button to the
 # real page. `embed` is optional: the address that account offers for showing
 # it inside another page. Without it the popup shows `about` and the button.
+# An account with an `events:` list shows that list in its popup instead.
 social:
   - id: instagram
     label: "Instagram"
@@ -69,10 +70,26 @@ social:
     handle: "Revolute Community"
     icon: luma
     url: "https://luma.com/user/usr-KxkVCLYqVvA7jev"
-    # Luma does not allow its profile page inside another site, so the popup
-    # shows Revolute's calendar instead: Luma's list of upcoming events. The
-    # address comes from the calendar's Settings, Embed, on Luma.
-    embed: "https://luma.com/embed/calendar/cal-SyMvL93leFlSRRd/events"
-    about: "Every upcoming Revolute event, each with its own sign-up."
+    about: "Every Revolute event, upcoming and past."
+    # Luma does not allow its profile page inside another site, and its
+    # calendar embed only lists upcoming events. So the popup shows this list
+    # instead, split into upcoming and past by date. Tapping an event opens
+    # its Luma page in the popup. Add each new event here:
+    #   date   "YYYY-MM-DD", the day it starts
+    #   url    the event's page on Luma
+    #   embed  the event's "Embed Event Page" address on Luma
+    events:
+      - title: "Revolute ReBot Arms Workshop #2"
+        date: 2026-10-16
+        url: "https://luma.com/v07bw75c"
+        embed: "https://luma.com/embed/event/evt-qZIW6ZSK2pjJvi8/simple"
+      - title: "Revolute ReBot Arms Workshop"
+        date: 2026-10-09
+        url: "https://luma.com/61s4kwai"
+        embed: "https://luma.com/embed/event/evt-MqCSTuliAjAPRXQ/simple"
+      - title: "Revolute Hackathon 2026"
+        date: 2026-08-01
+        url: "https://luma.com/kxq4yxr8"
+        embed: "https://luma.com/embed/event/evt-cW5gZ6vjmv8zPmR/simple"
     verb: "Events"
     action: "Open on Luma"
