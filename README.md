@@ -41,8 +41,6 @@ A file with a `layout:` line is an app page. The older pages below have no
 
 | File                            | URL             |
 |---------------------------------|-----------------|
-| `content/data/sponsorship.yaml` | `/sponsorship/` |
-| `content/data/organizers.yaml`  | `/organizers/`  |
 | `content/data/events.yaml`      | `/events/`      |
 
 ## Common edits
@@ -94,11 +92,10 @@ in the row of icons on every page and on the Community page.
 ## Legacy pages
 
 Everything from here to "Build" describes the original design, still used by
-`sponsorship.yaml`, `organizers.yaml` and `events.yaml`. These pages are
-rendered by `theme/templates/page.html` and styled by
-`theme/static/css/style.css`. The app pages do not use any of it, apart from
-the Team tab on `/community/`, which reads names and roles from
-`organizers.yaml`.
+`events.yaml`. That page is rendered by `theme/templates/page.html` and
+styled by `theme/static/css/style.css`. The app pages do not use any of it.
+The organizers are now the Team tab on `/community/` (`team:` in
+`community.yaml`), and `/sponsorship/` is an app page.
 
 To surface a legacy page in the legacy sidebar, add it to `NAV_LINKS` in
 `pelicanconf.py`.

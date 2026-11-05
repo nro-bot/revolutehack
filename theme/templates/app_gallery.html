@@ -10,9 +10,9 @@
   <div class="grid">
     {% for it in page['items'] %}
     {% if it.kind == 'photo' %}
-    <a class="tile" href="{{ SITEURL }}/images/{{ it.full }}" data-view="photo" data-kind="photo" data-group="gallery" data-thumb="{{ SITEURL }}/images/{{ it.src }}" data-cap="{{ it.caption|e }}" data-credit="{{ it.credit|e }}"><img src="{{ SITEURL }}/images/{{ it.src }}" alt="{{ it.alt|e }}" loading="lazy" decoding="async"></a>
+    <a class="tile" href="{{ SITEURL }}/images/{{ it.full }}" data-view="photo" data-kind="photo" data-group="gallery" data-thumb="{{ SITEURL }}/images/{{ it.src }}" data-credit="{{ it.credit|e }}"><img src="{{ SITEURL }}/images/{{ it.src }}" alt="{{ it.alt|e }}" loading="lazy" decoding="async"></a>
     {% else %}
-    <a class="tile" href="{{ SITEURL }}/images/{{ it.video }}" data-view="video" data-kind="video" data-group="gallery"{% if it.poster %} data-poster="{{ SITEURL }}/images/{{ it.poster }}"{% endif %} data-cap="{{ it.caption|e }}" data-credit="{{ it.credit|replace('Photo:', 'Video:')|e }}">{% if it.poster %}<img src="{{ SITEURL }}/images/{{ it.poster }}" alt="{{ it.alt|e }}" loading="lazy" decoding="async">{% endif %}<span class="dur">{{ (it.duration or 'Video')|e }}</span></a>
+    <a class="tile" href="{{ SITEURL }}/images/{{ it.video }}" data-view="video" data-kind="video" data-group="gallery"{% if it.poster %} data-poster="{{ SITEURL }}/images/{{ it.poster }}"{% endif %} data-credit="{{ it.credit|replace('Photo:', 'Video:')|e }}">{% if it.poster %}<img src="{{ SITEURL }}/images/{{ it.poster }}" alt="{{ it.alt|e }}" loading="lazy" decoding="async">{% endif %}<span class="dur">{{ (it.duration or 'Video')|e }}</span></a>
     {% endif %}
     {% endfor %}
   </div>

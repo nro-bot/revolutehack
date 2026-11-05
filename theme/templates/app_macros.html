@@ -30,9 +30,9 @@
    real address, so it still works without JavaScript. `embed` is optional. #}
 {% macro pop(title, about, embed, action, shape='') %}data-pop="embed" data-title="{{ title|e }}" data-about="{{ about|e }}"{% if embed %} data-embed="{{ embed|e }}"{% endif %}{% if action %} data-action="{{ action|e }}"{% endif %}{% if shape %} data-shape="{{ shape }}"{% endif %}{% endmacro %}
 
-{# Opens a social account's popup: its embedded page, with a tab per event
-   if it lists events, or its description if it has no embed. #}
-{% macro social_pop(s) %}{% if s.tabs %}data-pop="embed" data-title="{{ s.handle|e }}" data-about="{{ s.about|e }}" data-embed="{{ s.start.embed|e }}" data-tabs="tabs-{{ s.id }}"{% else %}{{ pop(s.handle, s.about, s.embed, s.action) }}{% endif %}{% endmacro %}
+{# Opens a social account's popup: its events' pages if it lists events,
+   otherwise its embedded page, or its description if it has no embed. #}
+{% macro social_pop(s) %}{% if s.events %}data-pop="stack" data-stack="stack-{{ s.id }}" data-title="{{ s.handle|e }}"{% else %}{{ pop(s.handle, s.about, s.embed, s.action) }}{% endif %}{% endmacro %}
 
 {# A link that opens a place's map in a popup. `m` is a `map:` block. #}
 {% macro map_link(m, text, label='') %}<a href="{{ m.url|e }}" target="_blank" rel="noopener" data-view="map" data-embed="{{ m.embed|e }}"{% if m.apple_url %} data-apple="{{ m.apple_url|e }}"{% endif %} data-title="{{ m.title|e }}" data-address="{{ m.address|e }}" data-cap="{{ (m.title ~ ', ' ~ m.address)|e }}"{% if label %} aria-label="{{ label|e }}"{% endif %}>{{ text|e }}</a>{% endmacro %}
@@ -85,7 +85,7 @@
 {% macro project_card(p) %}
 <a class="win" href="{{ SITEURL }}/projects/{{ p.slug }}/">
   {% if p.place %}<span class="place">{{ ORDINAL[p.place] }}</span>{% endif %}
-  <span class="media"{% if p.preview %} data-clip{% endif %} style="view-transition-name:project-{{ p.slug }}">
+  <span class="media"{% if p.preview %} data-clip{% endif %} data-vt="project-{{ p.slug }}">
     <img src="{{ SITEURL }}/images/{{ p.poster }}" alt="{{ p.alt|e }}" loading="lazy" decoding="async">
     {% if p.preview %}
     <video src="{{ SITEURL }}/images/{{ p.preview }}" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>

@@ -1,57 +1,54 @@
 # =============================================================================
-#  Revolute — sponsorship page (content/data/sponsorship.yaml)
+#  Revolute: the Sponsorship page (content/data/sponsorship.yaml)
 # =============================================================================
-#  Renders to /sponsorship/. Same rules as page.yaml: no HTML, edit the text,
-#  add/remove/reorder `sections:` blocks.
+#  Renders to /sponsorship/. Plain text only, no HTML. It is reached from the
+#  Team tab on the Community page.
 # =============================================================================
 
-title: "Sponsorships"
+layout: sponsorship
+nav: community            # the bottom tab that is lit on this page
+title: "Sponsorship"
+description: "Sponsor Revolute and help us make Boston the forefront of Embodied AI. Five tiers, from $2,500."
+kicker: "Sponsor Revolute"
+
 dek: "Sponsor Revolute and help us make Boston the forefront of Embodied AI."
-apply_url: "https://luma.com/61s4kwai"
+contact: "Interested in sponsoring? Email us and we'll follow up."
 
-intro:
-  - '<a href="/">← Back to event details</a>'
+# ---- Tiers ------------------------------------------------------------------
+#  Smallest first. Each tier gets a card listing what it includes.
+tiers:
+  - name: "Amber"
+    price: "$2,500"
+  - name: "Garnet"
+    price: "$3,500"
+  - name: "Sapphire"
+    price: "$5,000"
+  - name: "Emerald"
+    price: "$7,500"
+  - name: "Title Sponsor"
+    price: "$10,000"
 
-footer:
-  - "Revolute v1.08"
+# ---- Benefits ---------------------------------------------------------------
+#  `from` is the smallest tier that gets the benefit. That tier and every
+#  larger one list it. The name must match a tier's `name` above exactly.
+benefits:
+  - label: "Logo on website"
+    from: "Amber"
+  - label: "Thanked at opening & closing"
+    from: "Amber"
+  - label: "Short shoutout on email announcements"
+    from: "Garnet"
+  - label: "Logo on T-shirt"
+    from: "Garnet"
+  - label: "Access to resumes (opt-in by hackers)"
+    from: "Sapphire"
+  - label: "2-min talk at kickoff"
+    from: "Emerald"
+  - label: '"Presented by" naming rights'
+    from: "Title Sponsor"
 
-sections:
-
-  - id: tiers
-    title: Sponsorship Tiers
-    type: table
-    intro: 'Interested in sponsoring? Reach out to <a href="mailto:revolutehack@gmail.com">revolutehack@gmail.com</a> and we''ll follow up.'
-    columns:
-      - label: "Amber"
-        price: "$2,500"
-      - label: "Garnet"
-        price: "$3,500"
-      - label: "Sapphire"
-        price: "$5,000"
-      - label: "Emerald"
-        price: "$7,500"
-      - label: "Title Sponsor"
-        price: "$10,000"
-    rows:
-      - label: "Logo on website"
-        cells: [true, true, true, true, true]
-      - label: "Thanked at opening & closing"
-        cells: [true, true, true, true, true]
-      - label: "Short shoutout on email announcements"
-        cells: [false, true, true, true, true]
-      - label: "Logo on T-shirt"
-        cells: [false, true, true, true, true]
-      - label: "Access to resumes (opt-in by hackers)"
-        cells: [false, false, true, true, true]
-      - label: "2-min talk at kickoff"
-        cells: [false, false, false, true, true]
-      - label: '"Presented by" naming rights'
-        cells: [false, false, false, false, true]
-
-  - id: policies
-    title: Policies
-    type: list
-    items:
-      - "Under $2,500 is a gift under MIT policy, so we cannot provide benefits."
-      - "Judges will be selected at sole discretion of the organizing committee and not offered as seats."
-      - "No recruiting at demo hour or the social! We don't want a super competitive event. Recruiters can be present as individuals in the community."
+# ---- Policies ---------------------------------------------------------------
+policies:
+  - "Under $2,500 is a gift under MIT policy, so we cannot provide benefits."
+  - "Judges will be selected at sole discretion of the organizing committee and not offered as seats."
+  - "No recruiting at demo hour or the social! We don't want a super competitive event. Recruiters can be present as individuals in the community."

@@ -42,7 +42,6 @@ RELATIVE_URLS = True
 # content/data/<slug>.yaml file so the current page can hide its own link.
 NAV_LINKS = [
     {"label": "Events", "url": "/events/", "slug": "events"},
-    {"label": "Organizers", "url": "/organizers/", "slug": "organizers"},
     {"label": "Gallery", "url": "/gallery/", "slug": "gallery"},
     {"label": "Sponsorship", "url": "/sponsorship/", "slug": "sponsorship"},
 ]

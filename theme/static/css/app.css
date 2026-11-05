@@ -1143,24 +1143,126 @@ textarea {
   font-size: 14.5px;
   line-height: 1.4;
 }
+/* The team: a picture or initials, then name, role, a line, a sentence and
+   a link. */
 .people {
   justify-self: stretch;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px 14px;
+  gap: 0;
 }
-.people li {
-  min-width: 0;
+.person {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+  padding: 14px 0;
+  border-bottom: 2px solid var(--ink);
 }
-.people b {
-  display: block;
-  line-height: 1.25;
+.person:first-child {
+  padding-top: 0;
 }
-.people small {
-  display: block;
+.face {
+  width: 72px;
+  height: 72px;
+  border: 3px solid var(--ink);
+  background: var(--white);
+  object-fit: cover;
+}
+.face.mono {
+  display: grid;
+  place-content: center;
+  background: var(--ink);
+  color: var(--paper);
+  font: 400 26px/1 var(--f-mast);
+  letter-spacing: 0.04em;
+}
+.person > div {
+  display: grid;
+  gap: 4px;
+  justify-items: start;
+}
+.person b {
+  font: 400 22px/1.1 var(--f-mast);
+  text-transform: uppercase;
+}
+.person .role {
+  padding: 2px 6px;
+  background: var(--hi);
+  font: 700 11.5px/1.3 var(--f-type);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.person small {
   font-size: 13px;
   line-height: 1.3;
   color: var(--mute);
+}
+.person p {
+  font-size: 14.5px;
+  line-height: 1.45;
+}
+.person .go {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+/* Sponsorship: a card per tier, listing what it includes. What a tier adds
+   over the one before it is in bold. */
+.tiers {
+  justify-self: stretch;
+  display: grid;
+  gap: 18px;
+  align-items: start;
+}
+.tier {
+  gap: 12px;
+}
+.tier .stamp {
+  margin-left: 2px;
+}
+.ticks {
+  justify-self: stretch;
+  display: grid;
+  gap: 8px;
+}
+.ticks li {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr);
+  gap: 9px;
+  font-size: 14.5px;
+  line-height: 1.35;
+}
+.ticks li::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  margin-top: 3px;
+  border: 2px solid var(--ink);
+  background: var(--ink);
+  box-shadow: inset 0 0 0 2px var(--hi);
+}
+.ticks .new {
+  font-weight: 700;
+}
+.policies {
+  justify-self: stretch;
+}
+.policies li {
+  padding: 12px 0;
+  border-bottom: 2px solid var(--ink);
+  line-height: 1.45;
+}
+.policies li:first-child {
+  padding-top: 0;
+}
+a.mini {
+  display: inline-flex;
+  align-items: center;
+  color: var(--ink);
+  text-decoration: none;
 }
 
 /* ---- 10. Floating bottom bar and social icons ----------------------------- */
@@ -1422,24 +1524,35 @@ textarea {
   opacity: 1;
   background: var(--white);
 }
-/* Tabs across the top of a popup that can show more than one page. */
-.pop-tabs {
-  flex: none;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 0 14px;
-  border-bottom: 3px solid var(--ink);
-  background: var(--paper);
-  overflow-x: auto;
-  scrollbar-width: none;
+/* Several embedded pages, one under another, in a popup that scrolls. Each
+   is as wide as the card and tall enough to show its whole page, and it is
+   invisible until it has loaded. */
+.popstack {
+  display: block;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
-.pop-tabs .chip {
-  flex: none;
-  white-space: nowrap;
+.popstack .ctitle {
+  display: block;
+  margin: 0;
+  padding: 24px 18px 4px;
 }
-.pop.tabbed .tape {
-  display: none;
+.popstack .day {
+  margin: 0;
+  padding: 8px 18px;
+}
+.popstack iframe {
+  display: block;
+  width: 100%;
+  height: 840px;
+  border: 0;
+  border-top: 3px solid var(--ink);
+  background: var(--white);
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+}
+.popstack iframe.loaded {
+  opacity: 1;
 }
 .pop-act {
   display: flex;
@@ -1544,6 +1657,13 @@ textarea {
 }
 .vcap a {
   font-weight: 700;
+}
+/* No caption, only a credit: one line. */
+.viewer.nocap .vcap {
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  height: 1.35em;
+  min-height: 0;
 }
 .vrow {
   display: grid;
@@ -1882,7 +2002,14 @@ textarea {
     grid-template-columns: 1fr 1fr;
   }
   .people {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 1fr 1fr;
+    column-gap: 36px;
+  }
+  .person:nth-child(2) {
+    padding-top: 0;
+  }
+  .tiers {
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .dock {
@@ -1901,6 +2028,9 @@ textarea {
   .pop-card {
     max-width: 500px;
     height: min(92%, 770px);
+  }
+  .popstack iframe {
+    height: 740px;
   }
 }
 

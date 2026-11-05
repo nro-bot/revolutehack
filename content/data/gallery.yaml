@@ -17,7 +17,8 @@
 #     alt      description used for items that have no caption
 #     first    items to move to the front, by any part of their filename
 #     meta     per item, by any part of its filename:
-#                caption   one line shown in the popup
+#                caption   describes the picture for screen readers.
+#                          It is not shown on the page.
 #                duration  a video's length, shown on its tile, e.g. "0:27"
 # =============================================================================
 

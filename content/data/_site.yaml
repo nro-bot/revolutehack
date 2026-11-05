@@ -40,7 +40,8 @@ register:
   embed: "https://luma.com/embed/event/evt-cW5gZ6vjmv8zPmR/simple"
   title: "Register on Luma"
   about: "Luma's sign-up page for the event loads here."
-  action: "Open on Luma"
+  # No `action:` line, so the popup has no button under the Luma page. Add
+  # one, such as action: "Open on Luma", to get a button to the event's page.
 
 # The bottom bar. `path` is the page's address ("" is the homepage).
 # `icon` is one of the drawings in theme/templates/app_macros.html.
@@ -55,7 +56,7 @@ nav:
 # real page. `embed` is optional: the address that account offers for showing
 # it inside another page. Without it the popup shows `about` and the button.
 # `action` is the label of the button to the real page: leave it out for no
-# button. An account with an `events:` list gets a tab per past event.
+# button. An account with an `events:` list shows those events instead.
 social:
   - id: instagram
     label: "Instagram"
@@ -72,14 +73,11 @@ social:
     icon: luma
     url: "https://luma.com/user/usr-KxkVCLYqVvA7jev"
     about: "Every Revolute event, upcoming and past."
-    # The popup shows Luma itself. Luma does not allow its profile page inside
-    # another site, and its calendar only lists upcoming events, so the popup
-    # has a row of tabs: "Upcoming" shows the calendar below, and each past
-    # event gets a tab, labelled with its date, that shows its Luma page.
-    # The calendar's address comes from its Settings, Embed, on Luma.
-    embed: "https://luma.com/embed/calendar/cal-SyMvL93leFlSRRd/events"
-    # Add each event here. The popup opens on "Upcoming" when one of these is
-    # still to come, and on the most recent event otherwise.
+    # The popup shows Luma itself: the Luma page of every event below, one
+    # under another, upcoming first and then past, newest first. Luma has no
+    # single page of all events that it allows inside another site (its
+    # profile page refuses, and its calendar embed lists upcoming events
+    # only), so each event is listed here. Add each new event:
     #   date   "YYYY-MM-DD", the day it starts
     #   url    the event's page on Luma
     #   embed  the event's "Embed Event Page" address on Luma

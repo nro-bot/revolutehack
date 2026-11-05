@@ -37,8 +37,17 @@
 
   <section class="panel" id="team" aria-label="Team">
     <ul class="people">
-      {% for person in page.people %}
-      <li><b>{{ person.name|e }}</b><small>{{ person.role|e }}</small></li>
+      {% for person in page.team.people %}
+      <li class="person">
+        {% if person.photo %}<img class="face" src="{{ SITEURL }}/images/{{ person.photo }}" alt="" width="160" height="160" loading="lazy" decoding="async">{% else %}<span class="face mono" aria-hidden="true">{{ person.initials|e }}</span>{% endif %}
+        <div>
+          <b>{{ person.name|e }}</b>
+          {% if person.role %}<span class="role">{{ person.role|e }}</span>{% endif %}
+          {% if person.title %}<small>{{ person.title|e }}</small>{% endif %}
+          {% if person.bio %}<p>{{ person.bio|e }}</p>{% endif %}
+          {% if person.url %}<a class="go" href="{{ person.url|e }}" target="_blank" rel="noopener" aria-label="{{ person.name|e }} on {{ person.link_label|e }}">{{ person.link_label|e }}</a>{% endif %}
+        </div>
+      </li>
       {% endfor %}
     </ul>
     <div class="dash">

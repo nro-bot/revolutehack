@@ -47,7 +47,7 @@ for (const dialog of $$('dialog')) {
 // ---- 3. Embed popup ---------------------------------------------------------
 // A link with data-pop="embed" opens its site in a frame, with a button to the
 // real page. Without data-embed it shows a short description and the button.
-// With data-tabs it also gets a row of tabs, each showing another page.
+// A link with data-pop="stack" shows several pages, one under another.
 // A link with data-pop="email" opens the email form.
 
 const pop = $('#pop');
@@ -67,7 +67,7 @@ function mailHref() {
 }
 
 const popEmbed = $('#pop-embed');
-const popTabs = $('#pop-tabs');
+const popStack = $('#pop-stack');
 const popAct = $('#pop-act');
 const embedBox = $('.embed', popEmbed);
 let slowTimer = 0;
@@ -86,14 +86,14 @@ function loadFrame(address, title) {
 }
 
 function openPop(link) {
-  const kind = link.dataset.pop; // embed | email
+  const kind = link.dataset.pop; // embed | stack | email
   const embed = kind === 'embed' ? link.dataset.embed : '';
-  const tabs = kind === 'embed' ? link.dataset.tabs : '';
   const action = kind === 'email' ? 'Open in mail app' : link.dataset.action;
 
   popEmbed.hidden = kind !== 'embed';
+  popStack.hidden = kind !== 'stack';
   $('#pop-email').hidden = kind !== 'email';
-  pop.classList.toggle('small', kind === 'email' || !embed);
+  pop.classList.toggle('small', kind === 'email' || (kind === 'embed' && !embed));
   pop.classList.toggle('video', link.dataset.shape === 'video');
 
   // Whatever was in the frame is from the last popup.
@@ -103,12 +103,11 @@ function openPop(link) {
   popFrame.hidden = true;
   embedBox.classList.remove('framed', 'slow');
 
-  // Tabs, for a popup that can show more than one page: they are written
-  // into the page as a <template>.
-  popTabs.hidden = !tabs;
-  pop.classList.toggle('tabbed', Boolean(tabs));
-  popTabs.replaceChildren(tabs ? $(`#${tabs}`).content.cloneNode(true) : '');
-  popTabs.scrollLeft = 0;
+  // Several pages, one under another: they are written into the page as a
+  // <template>, so they only start loading now.
+  popStack.replaceChildren(kind === 'stack' ? $(`#${link.dataset.stack}`).content.cloneNode(true) : '');
+  popStack.scrollTop = 0;
+  for (const frame of $$('iframe', popStack)) nearStack.observe(frame);
 
   // The button to the real page. A popup without `data-action` has none.
   popAct.hidden = !action;
@@ -122,6 +121,8 @@ function openPop(link) {
     pop.setAttribute('aria-label', link.dataset.title);
     popGo.href = link.href;
     popGo.target = '_blank';
+  }
+  if (kind === 'embed') {
     $('#pop-title').textContent = link.dataset.title;
     $('#pop-about').textContent = link.dataset.about;
     if (embed) loadFrame(embed, link.dataset.title);
@@ -129,11 +130,26 @@ function openPop(link) {
   if (!pop.open) pop.showModal();
 }
 
-// A tab in the popup swaps the page in its frame.
-function showTab(tab) {
-  for (const other of $$('a', popTabs)) other.setAttribute('aria-current', String(other === tab));
-  loadFrame(tab.dataset.frame, tab.title);
-}
+// Each page in a stack starts loading when it is scrolled near, and appears
+// once it has loaded. A load event does not bubble, so it is caught on its
+// way down.
+const nearStack = new IntersectionObserver(
+  (entries) => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) continue;
+      nearStack.unobserve(entry.target);
+      entry.target.src = entry.target.dataset.src;
+    }
+  },
+  { root: popStack, rootMargin: '600px 0px' },
+);
+popStack.addEventListener(
+  'load',
+  (event) => {
+    if (event.target.getAttribute('src')) event.target.classList.add('loaded');
+  },
+  true,
+);
 
 popFrame.addEventListener('load', () => {
   if (!popFrame.getAttribute('src')) return;
@@ -147,6 +163,7 @@ pop.addEventListener('close', () => {
   clearTimeout(slowTimer);
   popFrame.removeAttribute('src');
   popFrame.hidden = true;
+  popStack.replaceChildren();
 });
 mailSubject.addEventListener('input', mailHref);
 mailBody.addEventListener('input', mailHref);
@@ -192,7 +209,7 @@ function show(link) {
     media.referrerPolicy = 'strict-origin-when-cross-origin';
   } else {
     media = document.createElement('img');
-    media.alt = link.dataset.cap ?? '';
+    media.alt = link.dataset.cap ?? $('img', link)?.alt ?? '';
     media.draggable = false;
     if (link.dataset.thumb) {
       // The thumbnail is already loaded, so show it at once and swap in the
@@ -209,8 +226,10 @@ function show(link) {
   }
   stage.replaceChildren(media);
 
+  // Photos and videos in the gallery have no caption, only a credit: one line.
   const text = [link.dataset.cap, link.dataset.credit].filter(Boolean).join('  ·  ');
   caption.replaceChildren(text);
+  viewer.classList.toggle('nocap', !link.dataset.cap);
   if (kind === 'map') {
     // The link under the map opens the Maps app: Apple Maps on an iPhone or
     // iPad, where it is the one already installed, and Google Maps elsewhere.
@@ -357,10 +376,7 @@ document.addEventListener('click', (event) => {
   const link = event.target.closest('a');
   if (!link) return;
 
-  if (link.dataset.frame) {
-    event.preventDefault();
-    showTab(link);
-  } else if (link.dataset.pop) {
+  if (link.dataset.pop) {
     event.preventDefault();
     openPop(link);
   } else if (link.dataset.view) {

@@ -4,7 +4,7 @@
    the bottom bar, and the two popups. Pages fill in `main`.
    ============================================================================= #}
 {% set path = '' if page.is_home else page.slug ~ '/' %}
-{% set current = 'previous' if page.layout == 'project' else page.layout %}
+{% set current = page.nav or ('previous' if page.layout == 'project' else page.layout) %}
 {% set full_title = (site.name ~ ' · ' ~ page.title) if page.is_home else (page.title ~ ' · ' ~ site.name) %}
 {% set share_image = page.og_image or 'app/overview.jpg' %}
 <!DOCTYPE html>
@@ -32,6 +32,8 @@
 <link rel="preload" href="{{ SITEURL }}/theme/fonts/anton-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{{ SITEURL }}/theme/fonts/courier-prime-700.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{{ SITEURL }}/theme/css/app.css">
+{# Not a module, on purpose: it has to run before the page is first drawn. #}
+<script src="{{ SITEURL }}/theme/js/transitions.js"></script>
 <script type="module" src="{{ SITEURL }}/theme/js/app.js"></script>
 {# Start loading a page when a link to it is hovered or touched, so the tap
    itself feels instant. Media files and popups are left alone. #}
@@ -66,13 +68,13 @@
   <div class="pop-card">
     <span class="tape" aria-hidden="true"></span>
     <button class="pop-x" type="button" data-close aria-label="Close">✕</button>
-    <nav class="pop-tabs" id="pop-tabs" aria-label="Events" hidden></nav>
     <div class="pop-body" id="pop-embed">
       <div class="embed">
         <div class="embed-fall"><b id="pop-title"></b><p id="pop-about"></p></div>
         <iframe id="pop-frame" title="" allow="autoplay; fullscreen; payment; encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" hidden></iframe>
       </div>
     </div>
+    <div class="pop-body popstack" id="pop-stack" hidden></div>
     <form class="pop-body compose" id="pop-email" novalidate hidden>
       <b class="ctitle">New message</b>
       <p class="mail"><span class="clab">To</span><code>{{ site.email|e }}</code><button class="mini" type="button" data-copy="{{ site.email|e }}">Copy</button></p>
@@ -85,12 +87,17 @@
   </div>
 </dialog>
 
-{# Tabs shown at the top of the popup: one set per social account that lists
-   events. The script copies the matching set in when its icon is tapped. #}
-{% for s in site.social if s.tabs %}
-<template id="tabs-{{ s.id }}">
-  {% for t in s.tabs %}
-  <a class="chip" href="{{ t.url|e }}" target="_blank" rel="noopener" data-frame="{{ t.embed|e }}" title="{{ t.title|e }}"{% if t.current %} aria-current="true"{% endif %}>{{ t.label|e }}</a>
+{# Event pages shown one under another in the popup: one set per social
+   account that lists events. The script copies the matching set in when
+   its icon is tapped, and loads each page as it is scrolled near. #}
+{% for s in site.social if s.events %}
+<template id="stack-{{ s.id }}">
+  <b class="ctitle">{{ s.handle|e }}</b>
+  {% for heading, group in [('Upcoming', s.upcoming), ('Past', s.past)] if group %}
+  <h3 class="day">{{ heading }}</h3>
+  {% for ev in group %}
+  <iframe data-src="{{ ev.embed|e }}" title="{{ ev.title|e }}, {{ ev.label|e }}" allow="fullscreen; payment" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+  {% endfor %}
   {% endfor %}
 </template>
 {% endfor %}

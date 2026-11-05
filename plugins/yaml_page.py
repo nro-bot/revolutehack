@@ -39,7 +39,7 @@ VIDEO_EXTS = {".mp4", ".mov", ".webm", ".m4v"}
 WEB_MAX_PX = 1800  # longest side of the popup copy of a gallery photo
 THUMB_MAX_PX = 640  # longest side of the grid thumbnail
 GITHUB_FILE_LIMIT = 100 * 1024 * 1024
-APP_LAYOUTS = {"upcoming", "previous", "gallery", "community"}
+APP_LAYOUTS = {"upcoming", "previous", "gallery", "community", "sponsorship"}
 
 
 def _load(path):
@@ -110,37 +110,19 @@ class YamlPageGenerator(Generator):
         return value if isinstance(value, datetime.date) else datetime.date.fromisoformat(str(value))
 
     def _prepare_social(self, site):
-        """Give an account with `events:` its popup tabs: the calendar of
-        upcoming events, then one tab per past event, newest first."""
+        """Split an account's `events:` into upcoming (soonest first) and
+        past (newest first), for its popup."""
         today = datetime.date.today()
         for account in site.get("social") or []:
             events = account.get("events")
             if not events:
                 continue
             for event in events:
-                event["day"] = self._as_date(event["date"])
-            upcoming = [e for e in events if e["day"] >= today]
-            past = sorted((e for e in events if e["day"] < today), key=lambda e: e["day"], reverse=True)
-
-            tabs = []
-            if account.get("embed"):
-                tabs.append({"label": "Upcoming", "title": "Upcoming events",
-                             "url": account["url"], "embed": account["embed"]})
-            for event in past:
-                day = event["day"]
-                label = f"{day:%b} {day.day}"
-                if day.year != today.year:
-                    label += f" '{day:%y}"
-                tabs.append({"label": label, "title": f"{event['title']}, {day:%B} {day.day}, {day.year}",
-                             "url": event["url"], "embed": event["embed"]})
-            if not tabs:
-                continue
-            # Open on the calendar when something is coming up, otherwise on
-            # the most recent event, so the popup never opens on an empty list.
-            start = tabs[0] if (upcoming or not past or not account.get("embed")) else tabs[1]
-            start["current"] = True
-            account["tabs"] = tabs
-            account["start"] = start
+                day = self._as_date(event["date"])
+                event["day"] = day
+                event["label"] = f"{day:%B} {day.day}, {day.year}"
+            account["upcoming"] = sorted((e for e in events if e["day"] >= today), key=lambda e: e["day"])
+            account["past"] = sorted((e for e in events if e["day"] < today), key=lambda e: e["day"], reverse=True)
 
     def _prepare_projects(self, data):
         """Fill in each project's poster, optional preview clip, and neighbours."""
@@ -186,14 +168,11 @@ class YamlPageGenerator(Generator):
                 items += self._collect_gallery(album["folder"], album)
             data["items"] = items
         elif layout == "community":
-            team = data.get("team") or {}
-            source = raw.get(team.get("from", ""), {})
-            data["people"] = [
-                person
-                for section in source.get("sections", [])
-                if section.get("type") == "people"
-                for person in section.get("people", [])
-            ]
+            for person in (data.get("team") or {}).get("people") or []:
+                parts = person["name"].split()
+                person["initials"] = (parts[0][0] + (parts[-1][0] if len(parts) > 1 else "")).upper()
+                if person.get("url"):
+                    person["link_label"] = self._link_label(person["url"])
             # Past events drop off the list. This is decided at build time,
             # so the list is as fresh as the last deploy.
             today = datetime.date.today()
@@ -203,6 +182,26 @@ class YamlPageGenerator(Generator):
                 if not isinstance(start, datetime.date):
                     start = datetime.date.fromisoformat(str(start))
                 event["label"] = f"{start:%b} {start.day}"
+
+        elif layout == "sponsorship":
+            tiers = data.get("tiers") or []
+            names = [tier["name"] for tier in tiers]
+            for tier in tiers:
+                tier["benefits"] = []
+            for benefit in data.get("benefits") or []:
+                if benefit.get("from") not in names:
+                    log.error("sponsorship.yaml: benefit %r starts at %r, which is not a tier", benefit.get("label"), benefit.get("from"))
+                    continue
+                first = names.index(benefit["from"])
+                for index, tier in enumerate(tiers[first:], first):
+                    tier["benefits"].append({"label": benefit["label"], "new": index == first})
+
+    @staticmethod
+    def _link_label(url):
+        """What to call a link to someone's own page: "LinkedIn" or the site's name."""
+        host = urlsplit(url).netloc.lower().removeprefix("www.")
+        known = {"linkedin.com": "LinkedIn", "github.com": "GitHub", "instagram.com": "Instagram"}
+        return known.get(host, host)
 
     @staticmethod
     def _event_date(event):

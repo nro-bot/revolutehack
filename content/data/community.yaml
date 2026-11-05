@@ -45,12 +45,60 @@ affiliates:
     url: "https://boardgamenightwg.com/community/"
     embed: "https://boardgamenightwg.com/community/"
 
-# ---- Team -------------------------------------------------------------------
-#  Names and roles are read from another page's `people` section, so the team
-#  is written down once. `from` is that page's filename without ".yaml".
+# ---- Team ---------------------------------------------------------------------
+#  One block per organizer, shown on the Team tab in this order.
+#    role   their job on the team, shown as a label
+#    title  a line about them, often a joke
+#    photo  a square picture in content/images/. Leave it out for a square
+#           with their initials.
+#    url    their site or profile. The link's text is made from the address.
+#    bio    one sentence
 team:
-  from: organizers
   blurb: "Run by volunteers. Want to sponsor, lend hardware, or mentor?"
   links:
-    - { label: "Organizer bios", path: "organizers/" }
     - { label: "Sponsorship tiers", path: "sponsorship/" }
+  people:
+    - name: "Shivam Chopra"
+      role: "Hardware Lead"
+      title: "Soft Robotics Enthusiast"
+      photo: "team/shivam.jpg"
+      url: "https://shivamchopra.net/"
+      bio: "Boston Robot Hackers Regular, armed with a PhD in soft robotics and currently at Dexcom."
+    - name: "Dane Kouttron"
+      role: "Judging Lead"
+      title: "Snowblower Whisperer"
+      url: "https://transistor-man.com/"
+      bio: "Works as an engineer at MIT's nuclear reactor lab and is a MITERS regular, best known for BattleBots and a remote-control autonomous snowblower."
+    - name: "Jasper Lee"
+      role: "Logistics Lead"
+      title: "MITERS Tinkerer"
+      url: "https://www.linkedin.com/in/jjasper-llee/"
+      bio: "Builds bioengineered and shapeshifting robots when not organizing hackathons."
+    - name: "Siddhi Sanjay More"
+      role: "Registration & Community Lead"
+      title: "Robot Crafter"
+      photo: "team/siddhi.jpg"
+      url: "https://siddhimore.netlify.app/"
+      bio: "Robotics Grad @ Northeastern. Building robots. Making art. Always creating :)"
+    - name: "Nancy Ouyang"
+      role: "Lead Organizer"
+      title: "Chief Robot Wrangler"
+      photo: "team/nancy.jpg"
+      url: "https://nrobot.dev"
+      bio: "Holds a PhD and keeps Revolute's robots, hackers, and pasta sauce all running on schedule."
+    - name: "Joseph Selvaraaj"
+      role: "Volunteer"
+      title: "Robotics Enthusiast"
+      url: "https://jselvaraaj.github.io/"
+      bio: "Studies AeroAstro as an MIT grad student."
+    - name: "Nevin Thinagar"
+      role: "Sponsors Lead"
+      title: "Serial Insomniac"
+      url: "https://www.linkedin.com/in/nevinthinagar/"
+      bio: "Aspiring aerodynamicist who secretly loves EE. Wants to make robot arms DJ instead of learning himself."
+    - name: "Lily Zdansky"
+      role: "Volunteer and Day-of Ops Lead"
+      title: "Full-Stack Robot Herder"
+      photo: "team/lily.jpg"
+      url: "https://www.linkedin.com/in/lily-zdansky/"
+      bio: "Traded lesson plans for robotics code and now works as a full-stack engineer at Veo Robotics."

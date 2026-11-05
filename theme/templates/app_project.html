@@ -4,7 +4,7 @@
 {% set p = page.project %}
 <article class="proj">
   <a class="backb" href="{{ SITEURL }}/previous/{% if not p.place %}#entries{% endif %}" data-back>{{ ui.icon('left') }}<span>Back</span></a>
-  <div class="hero"{% if p.preview %} data-clip{% endif %} style="view-transition-name:project-{{ p.slug }}">
+  <div class="hero"{% if p.preview %} data-clip{% endif %} data-vt="project-{{ p.slug }}">
     <img src="{{ SITEURL }}/images/{{ p.poster }}" alt="{{ p.alt|e }}" fetchpriority="high" decoding="async">
     {% if p.preview %}<video src="{{ SITEURL }}/images/{{ p.preview }}" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>{% endif %}
   </div>

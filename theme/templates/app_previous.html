@@ -25,7 +25,7 @@
   <section class="panel" id="photos" aria-label="Photos">
     <div class="strip">
       {% for it in page.photo_items %}
-      <a href="{{ SITEURL }}/images/{{ it.full }}" data-view="photo" data-group="strip" data-thumb="{{ SITEURL }}/images/{{ it.src }}" data-cap="{{ it.caption|e }}" data-credit="{{ it.credit|e }}"><img src="{{ SITEURL }}/images/{{ it.src }}" alt="{{ it.alt|e }}" loading="lazy" decoding="async"></a>
+      <a href="{{ SITEURL }}/images/{{ it.full }}" data-view="photo" data-group="strip" data-thumb="{{ SITEURL }}/images/{{ it.src }}" data-credit="{{ it.credit|e }}"><img src="{{ SITEURL }}/images/{{ it.src }}" alt="{{ it.alt|e }}" loading="lazy" decoding="async"></a>
       {% endfor %}
     </div>
     <div><a class="btn" href="{{ SITEURL }}/gallery/#photos">{{ (page.photos.gallery_label or 'Gallery')|e }}</a></div>
