@@ -225,7 +225,17 @@ function show(link) {
       media.src = link.href;
     }
   }
-  stage.replaceChildren(media);
+  if (kind === 'photo' && link.dataset.link) {
+    // The picture itself is a link, such as a product's page on its maker's site.
+    const out = document.createElement('a');
+    out.href = link.dataset.link;
+    out.target = '_blank';
+    out.rel = 'noopener';
+    out.append(media);
+    stage.replaceChildren(out);
+  } else {
+    stage.replaceChildren(media);
+  }
 
   // Photos and videos in the gallery have no caption, only a credit: one line.
   const text = [link.dataset.cap, link.dataset.credit].filter(Boolean).join('  ·  ');
