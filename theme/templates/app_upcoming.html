@@ -3,7 +3,7 @@
    to fit the screen. Content: content/data/page.yaml. #}
 {% block main %}
 <div class="sheet panels fit">
-  {{ ui.subnav([('overview', 'Overview'), ('hardware', 'Hardware'), ('agenda', 'Agenda'), ('faq', 'FAQ')]) }}
+  {{ ui.subnav([('overview', 'Overview'), ('hardware', 'Hardware'), ('agenda', 'Agenda'), ('prizes', 'Prizes'), ('faq', 'FAQ')]) }}
   <div class="one">
     <div class="logo">{{ ui.mark() }}<b>{{ site.name|e }}</b><span class="tagline">{{ site.tagline|map('e')|join('<br>') }}</span></div>
 
@@ -50,6 +50,18 @@
           {% if place %}<p class="meet">Meet @ {{ ui.map_link(place.map, place.map.title, place.map.title ~ ': open the map') }}</p>{% endif %}
         </div>
         {{ ui.agenda(page.agenda) }}
+      </div>
+    </section>
+
+    <section class="panel" id="prizes" aria-label="Prizes">
+      <div class="card big">
+        <h2 class="ch">{{ (page.prizes.title or 'Prizes')|e }}</h2>
+        {% if page.prizes.note %}<p class="note">{{ page.prizes.note|e }}</p>{% endif %}
+        <ul class="rows">
+          {% for item in page.prizes['items'] %}
+          <li><span class="t">{{ item.place|e }}</span><span>{{ item.prize|e }}{% if item.note %}<small>{{ item.note|e }}</small>{% endif %}</span></li>
+          {% endfor %}
+        </ul>
       </div>
     </section>
 
