@@ -1,0 +1,91 @@
+# =============================================================================
+#  Revolute: hackathon entries (content/data/_projects.yaml)
+# =============================================================================
+#  One block per project. Each appears under Winners and Entries on
+#  /previous/ and gets its own page at /projects/<slug>/.
+#
+#  Media for a project lives in content/images/projects/<slug>/:
+#     poster.jpg    required. A still frame, about 960 px wide.
+#     preview.mp4   optional. A silent 6 to 8 second loop, 640 px wide.
+#                   It plays on the project's card.
+#
+#  Fields:
+#     slug        short name used in the address: letters, digits, hyphens
+#     name        the project's name
+#     place       1, 2 or 3 for winners. Leave out for other entries.
+#     tagline     one line on what it does
+#     team        the people, as shown on Devpost
+#     alt         describes the poster image for screen readers
+#     youtube     the demo video's id. Leave out if there is none.
+#     devpost, github   links
+#     built_with  short tags
+#     about       optional. Two to four sentences, written with the team.
+#
+#  List winners first: the order here is the order on the page.
+# =============================================================================
+
+event: "Revolute v1.08"
+
+projects:
+  - slug: safeserve
+    name: "SafeServe"
+    place: 1
+    tagline: "Cooking meals safely through imitation learning and LTL-based verification."
+    team: ["Colette Scott", "Pranay Katyal", "Sam Honor", "Mohamed Abdelnaby", "Siqi Wang"]
+    alt: "A robot arm scoops oats beside a pot on a crowded workbench"
+    youtube: "WkZ93TdnOdk"
+    devpost: "https://devpost.com/software/safeserve-21m4xd"
+    github: "https://github.com/sq-siqiwang/-Revolute-Hackathon"
+    built_with: ["Hugging Face", "Python", "ROS 2"]
+
+  - slug: yeschef
+    name: "YesChef"
+    place: 2
+    tagline: "Say “Hey Chef, make me a sandwich,” and let the robot do the work!"
+    team: ["Sanja Kirova", "Gautham Ramkumar"]
+    alt: "A robot arm lifts lettuce toward a slice of bread on a plate"
+    youtube: "LuXvsEADzmA"
+    devpost: "https://devpost.com/software/yeschef-ujtk23"
+    github: "https://github.com/s-m-asjad/revolute-hackathon"
+    built_with: ["CUDA", "Hugging Face", "Jetson Nano", "LeRobot", "Ollama", "PyTorch", "Qwen", "Whisper"]
+
+  - slug: toastability
+    name: "Toastability"
+    place: 3
+    tagline: "A robot arm that makes toasted peanut butter and jelly sandwiches for people with disabilities that affect their ability to cook."
+    team: ["Rohan Raman", "Sourav Selvaraj"]
+    alt: "A robot arm lifts a slice of toast above a toaster"
+    youtube: "N5lcU1-Ud68"
+    devpost: "https://devpost.com/software/toastability"
+    github: "https://github.com/souravselvaraj/Revolute"
+    built_with: ["LeRobot", "Python", "PyTorch"]
+
+  - slug: fruitinator
+    name: "Fruitinator"
+    tagline: "A robot arm’s journey from “let’s plate a beautiful charcuterie board” to “please just pick up the orange.”"
+    team: ["Kriish Hate", "Jinhee A"]
+    alt: "A robot arm reaches for an orange, beside a simulation of the same arm"
+    youtube: "4si0cMH1Hvc"
+    devpost: "https://devpost.com/software/fruitinator"
+    github: "https://github.com/KriishAHate/Revolute-Hackathon-Team6"
+    built_with: ["ACT"]
+
+  - slug: froyo
+    name: "Froyo"
+    tagline: "Robot-made fruit yogurt, powered by a vision-language-action model. It sees the berries and plates them itself."
+    team: ["Ahilesh Vadivel"]
+    alt: "Photo from the Froyo project page"
+    # The demo video is no longer on YouTube, so there is no `youtube:` line.
+    devpost: "https://devpost.com/software/froyo-2v1ckj"
+    github: "https://github.com/savieee/froyo_arm-"
+    built_with: ["Jetson", "Camera", "Robot arm"]
+
+  - slug: bagelbot
+    name: "Bagel-Bot"
+    tagline: "We toast your bagel and spread Nutella on it. Yum yum yum."
+    team: ["ae s", "P.S. Sethumadhavan"]
+    alt: "Three views of a robot arm toasting and preparing a bagel"
+    youtube: "XYDVJewcOOU"
+    devpost: "https://devpost.com/software/bagelbot"
+    github: "https://github.com/PremSeth/rebot-b601-lerobot-workflow"
+    built_with: ["ACT", "Hugging Face", "LeRobot", "reBot"]

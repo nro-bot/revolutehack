@@ -1,0 +1,56 @@
+# =============================================================================
+#  Revolute: community (content/data/community.yaml)
+# =============================================================================
+#  Renders to /community/. Four tabs: Social, Events, Affiliates, Team.
+#  The social accounts themselves are listed once, in _site.yaml.
+# =============================================================================
+
+layout: community
+title: "Community"
+description: "Where to find Revolute, what is coming up around Boston, the groups we work with, and the team."
+
+# ---- Events -----------------------------------------------------------------
+#  Soonest first. An event disappears from the page once its date has passed
+#  (checked each time the site is built).
+#     date        "YYYY-MM-DD"
+#     end_date    optional, for events longer than a day
+#     register    true opens the site's Register popup instead of `url`
+events:
+  - date: 2026-11-12
+    title: "Yun Chang and Husan Mavlonov on robot perception and connector assembly"
+    host: "Boston Robot Hackers"
+    url: "https://bostonrobothackers.com/"
+  - date: 2026-11-20
+    end_date: 2026-11-21
+    title: "Revolute Thanksgivathon 2026"
+    host: "Revolute, on Luma · Nov. 20–21"
+    register: true
+  - date: 2026-12-10
+    title: "Addisu Taddese: Robotics in the Real World"
+    host: "Boston Robot Hackers"
+    url: "https://bostonrobothackers.com/"
+
+# ---- Affiliates -------------------------------------------------------------
+#  Each card opens the group's site in a popup. `embed` is the address shown
+#  inside the popup: leave it out if the site does not allow being embedded.
+affiliates:
+  - name: "Boston Robot Hackers"
+    about: "A community for people who build robots: talks, learning sessions, member projects."
+    link_label: "bostonrobothackers.com"
+    url: "https://bostonrobothackers.com/"
+    embed: "https://bostonrobothackers.com/"
+  - name: "Board Game Night Working Group"
+    about: "A community list of robotics, board game, and tech events in Boston and the Bay Area."
+    link_label: "See the events list"
+    url: "https://boardgamenightwg.com/community/"
+    embed: "https://boardgamenightwg.com/community/"
+
+# ---- Team -------------------------------------------------------------------
+#  Names and roles are read from another page's `people` section, so the team
+#  is written down once. `from` is that page's filename without ".yaml".
+team:
+  from: organizers
+  blurb: "Run by volunteers. Want to sponsor, lend hardware, or mentor?"
+  links:
+    - { label: "Organizer bios", path: "organizers/" }
+    - { label: "Sponsorship tiers", path: "sponsorship/" }

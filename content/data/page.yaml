@@ -1,0 +1,94 @@
+# =============================================================================
+#  Revolute homepage: the upcoming hackathon (content/data/page.yaml)
+# =============================================================================
+#  Renders to /. The page is four cards, one per tab: Overview, Hardware,
+#  Agenda, FAQ. Each card is sized to fit one screen, so keep them short.
+#
+#  The "Register" button is set once for the whole site, in _site.yaml.
+# =============================================================================
+
+layout: upcoming
+title: "Thanksgivathon 2026"
+description: "Revolute's next robotics and physical AI hackathon in Boston, Nov. 20–21, 2026. Real robot arms, small teams, one weekend."
+
+# ---- Overview ---------------------------------------------------------------
+kicker: "Next up"
+photo:
+  src: "app/overview.jpg"            # a file in content/images/
+  alt: "A hacker leans in close to adjust a robot arm"
+
+# Fact tiles under the title. `wide: true` gives a tile the full row on a
+# phone. A tile with a `map:` block opens a map in a popup.
+facts:
+  - label: "When"
+    value: "Nov. 20–21, 2026"
+  - label: "Where"
+    value: "FabLab Kendall"
+    map:
+      title: "FabLab Kendall"
+      address: "325 Main St, Cambridge, MA 02142"
+      # OpenStreetMap's embed address: on openstreetmap.org choose Share,
+      # then "HTML", and copy the address inside src="...".
+      embed: "https://www.openstreetmap.org/export/embed.html?bbox=-71.0925%2C42.3592%2C-71.0795%2C42.3657&layer=mapnik&marker=42.36245%2C-71.08600"
+      url: "https://www.google.com/maps/search/?api=1&query=FabLab+Kendall%2C+325+Main+St%2C+Cambridge%2C+MA+02142"
+  - label: "Theme"
+    value: "TBA"
+    wide: true
+
+# ---- Hardware ---------------------------------------------------------------
+#  CARRIED OVER from the August 2026 hackathon. Confirm for this event.
+hardware:
+  title: "What you get"
+  # The yellow link beside the title. It opens this video in a popup.
+  video:
+    label: "Imitation learning"
+    src: "kit/imitation.mp4"
+    poster: "kit/imitation.jpg"
+    caption: "Imitation learning: move the leader arm by hand and the follower arm copies you."
+  # One tile each. Tapping a tile opens its photo and caption in a popup.
+  items:
+    - count: "1×"
+      name: "reBot Arm B601 RS"
+      photo: "kit/arm.jpg"
+      caption: "reBot Arm B601 RS. One per team, with 48 V QDD motors and a 2.5 kg payload."
+    - count: "1×"
+      name: "Leader arm"
+      photo: "kit/leader-arm.jpg"
+      caption: "Leader arm. One per team, for teleoperation and imitation learning."
+    - count: "1×"
+      name: "Jetson Orin Nano, 8 GB"
+      photo: "kit/jetson.jpg"
+      caption: "Jetson Orin Nano, 8 GB. Edge compute for inference, one per team."
+    - count: "2×"
+      name: "USB cameras"
+      photo: "kit/cameras.jpg"
+      caption: "USB cameras. Two per team: one overhead, one on the wrist."
+      credit: "Photo: James R Desmond"
+
+# ---- Agenda -----------------------------------------------------------------
+#  CARRIED OVER from the August 2026 hackathon, moved onto the new dates.
+#  Keep it to about four rows a day so the card fits a phone screen.
+agenda:
+  - day: "Friday, Nov. 20"
+    rows:
+      - { when: "10:00 AM", what: "Intro tutorial" }
+      - { when: "12:01 PM", what: "Opening ceremony" }
+      - { when: "2:00 PM",  what: "Hacking begins" }
+      - { when: "10:00 PM", what: "Hacking ends for the day" }
+  - day: "Saturday, Nov. 21"
+    rows:
+      - { when: "10:00 AM", what: "Doors open" }
+      - { when: "3:00 PM",  what: "Demos and judging" }
+      - { when: "4:15 PM",  what: "Awards" }
+      - { when: "5:00 PM",  what: "That’s a wrap" }
+
+# ---- FAQ --------------------------------------------------------------------
+#  `open: true` shows the answer straight away.
+faq:
+  - q: "What is Revolute?"
+    a: "Not a company. “Boston Embodied / Physical AI Robot Hackathon” was too much of a mouthful, so it is named after the revolute joint."
+    open: true
+  - q: "Who should be on a team?"
+    a: "At least one person familiar with hardware, software, or robotics."
+  - q: "More questions?"
+    a: "Email revolutehack@gmail.com."

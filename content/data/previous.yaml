@@ -1,322 +1,78 @@
 # =============================================================================
-#  Revolute — page content
+#  Revolute: the previous hackathon (content/data/previous.yaml)
 # =============================================================================
-#  Everything on the page is described here. No HTML. To edit copy, just change
-#  the text. To add / remove / reorder a section, add / remove / move a block
-#  under `sections:` — the page and the sidebar Table of Contents both follow
-#  this file's order automatically. Section numbers (01, 02, …) are automatic.
-#
-#  Each section has a `type` that decides how it's rendered:
-#     prose    – one or more paragraphs (the `body` list)
-#     list     – simple bullet points (the `items` list)
-#     schedule – days, each with timed rows
-#     cards    – tagged items with a title, optional link, and note
-#     faq      – expandable question / answer pairs
-#     table    – comparison grid (`columns` across the top, `rows` down the side)
-#     people   – grid of profiles (name, title, optional affiliation/photo/url/bio)
-#     sponsors – logo wall, optionally grouped into tiers
-#  A `prose` section may also carry optional `facts`, `button`, and/or `note_box` blocks.
-#  A `cards` section may also carry an optional `links` disclosure block.
-#  Any section may carry an optional `bg_image` — a faded illustration behind
-#  the page content (desktop only), a filename in content/images/.
+#  Renders to /previous/. Five tabs: Winners, Entries, Agenda, Photos, About.
+#  Winners and Entries come from _projects.yaml. Everything else is here.
 # =============================================================================
 
-# ---- Masthead / hero --------------------------------------------------------
-title: "Boston's first robotics+physical AI hackathon"
-version: "v1.08"
-dek: "$15k of real robot hardware, <br>30 real-life participants, <br>2 days of real fun."
-#description: "Revolute is Boston's first robotics+physical AI hackathon."
-# og_image: "hackathon.png"
-apply_url: "https://luma.com/61s4kwai"
+layout: previous
+title: "Revolute v1.08"
+description: "Revolute Hackathon v1.08: cooking with robot arms. Aug. 1–2, 2026 at FabLab Kendall, Cambridge. Winners, every entry, the agenda and photos."
 
-# Footer lines, shown at the very bottom of the page. One paragraph per item.
-footer:
-  - "Revolute v1.08"
+# The line under the tabs.
+kicker: "Revolute v1.08 · Cooking with robot arms"
 
-# One supporting line under the dek.
-#intro:
-#  - "A two-day, in-person weekend for builders, engineers, researchers, and the robotics-curious. No robotics background required."
+# ---- Agenda -----------------------------------------------------------------
+agenda:
+  - day: "Saturday, Aug. 1"
+    rows:
+      - { when: "10:00 AM", what: "Intro tutorial", note: "Setting up the hardware and software stack" }
+      - { when: "12:01 PM", what: "Opening ceremony" }
+      - { when: "1:00 PM",  what: "Lunch and office hours", note: "Form teams, mentors available for setup" }
+      - { when: "2:00 PM",  what: "Hacking begins" }
+      - { when: "6:15 PM",  what: "Intermission: dinner" }
+      - { when: "10:00 PM", what: "Hacking ends for the day" }
+  - day: "Sunday, Aug. 2"
+    rows:
+      - { when: "10:00 AM", what: "Doors open, breakfast bites" }
+      - { when: "12:01 PM", what: "Lunch" }
+      - { when: "3:00 PM",  what: "Science-fair style demos and judging", note: "Judges go around to tables for demos" }
+      - { when: "4:00 PM",  what: "Final submissions", note: "GitHub, project documentation, and a one-minute video" }
+      - { when: "4:15 PM",  what: "Awards" }
+      - { when: "4:30 PM",  what: "Light snacks and social" }
+      - { when: "5:00 PM",  what: "That’s a wrap!" }
 
-# ---- Sections ---------------------------------------------------------------
-#  Order here = order on the page = order in the sidebar ToC.
-sections:
-  - id: workshop
-    title: "Rebot Arms Workshop - 10/16"
-    type: prose
-    body:
-      - 'Join us for our first Rebot Arms workshop on <a href="https://luma.com/v07bw75c">Luma Page</a> '
-    img: "lerobot tutorial.png"
-    caption: "Scan this QR code for the workshop's tutorial"
-    # QR code shown under the text. Put the image in content/images/, set
-    # `img` to its filename, and `url` to the tutorial PDF link (optional —
-    # makes the QR tappable on phones). Uncomment to show it.
-    #qr:
-    #  img: "workshop_tutorial_qr.png"
-    #  caption: "Scan this QR code for the workshop's tutorial"
-    #  url: "https://…/tutorial.pdf"
-  - id: posthackathon
-    title: "Update: Revolute Hackathon v1.08 is over!"
-    type: prose
-    body:
-      - 'The hackathon is over! Email us or find us on <a href="https://instagram.com/revolutehack">instagram</a> to be added to the mailing list for updates.'
-  
-  
-  - id: details
-    title: Details
-    type: prose
-    # Fact tiles shown at the top of this section. Add/remove a label:/value: pair.
-    facts:
-      - label: "When"
-        value: "Aug. 1-2, 2026"
-      - label: "Where"
-        value: '<a href="https://fabhubkendall.fabfoundation.org/">FabLab Kendall</a>, Cambridge, MA'
-      - label: "Theme"
-        value: "Cooking with robot arms"
-      - label: "Apply"
-        value: '<a href="https://luma.com/kxq4yxr8">Apply on Luma</a>'
-      #- label: "Teams"
-        #value: "Solo, with friends, or preformed"
-      #- label: "Bring"
-        #value: "A laptop. Setup notes sent beforehand."
-    body:
-      - "Each team gets a robot arm and leader arm -- more details in the Hardware section below.."
-      - "The goals: 1. Have fun; 2. Learn something new; and 3. Build something awesome! Or at least somewhat edible 😋"
-      - "Teams should include at least one person familiar with hardware, software, or robotics."
-      - "We’ll also have at least $1,000 in prizes, and all food is included."
-      - "Our main goal is not just competition -- it's to build Boston into the forefront of the robotics + physical AI community."
+# ---- Photos -----------------------------------------------------------------
+#  A short strip taken from a gallery album (a folder in content/images/).
+#  `pick` lists the photos to show, in order, by any part of their filename.
+#  Captions and the credit for the album are written in gallery.yaml.
+photos:
+  folder: hackday
+  pick: [DSC02691, DSC00696, DSC01429, DSC00691, DSC02415, DSC00830, DSC02517, DSC02452]
+  credit: "Photo: James R Desmond"
+  gallery_label: "Gallery"
 
-    # Logo band shown at the end of this section. Each group has a small-caps
-    # `label` and one or more logos; a logo is either an image (`img`, on a
-    # white chip) or an inline SVG (`svg`, tinted to the accent color).
-    # `url` and `sub` (a subtitle line) are optional.
-    partners:
-      - label: "Hosted by"
-        logos:
-          - img: "fabfoundation.png"
-            alt: "Fab Foundation"
-            url: "https://fabfoundation.org/"
-      - label: "Sponsored by"
-        logos:
-          - img: "seeedstudio.png"
-            alt: "Seeed Studio"
-            url: "https://www.seeedstudio.com/"
-      - label: "Partners"
-        logos:
-          - svg: "miters.svg"
-            alt: "MITERS"
-            url: "https://miters.mit.edu/"
-            sub: "Boston Robot Hackers"
+# ---- About ------------------------------------------------------------------
+facts:
+  - label: "When"
+    value: "Aug. 1–2, 2026"
+  - label: "Where"
+    value: "FabLab Kendall, Cambridge"
+    map:
+      title: "FabLab Kendall"
+      address: "325 Main St, Cambridge, MA 02142"
+      embed: "https://www.openstreetmap.org/export/embed.html?bbox=-71.0925%2C42.3592%2C-71.0795%2C42.3657&layer=mapnik&marker=42.36245%2C-71.08600"
+      url: "https://www.google.com/maps/search/?api=1&query=FabLab+Kendall%2C+325+Main+St%2C+Cambridge%2C+MA+02142"
+  - label: "Who"
+    value: "30 hackers"
+  - label: "Hardware"
+    value: "$15k of robot arms"
 
-  - id: hardware
-    title: Hardware
-    type: cards
-    bg_image: "rebot_gemini.png"
-    intro: '<a href="https://www.seeedstudio.com/">Seeed Studio</a> is providing the robot hardware. Approximate inventory (subject to change):'
-    cards:
-      - tag: "1x"
-        title: "reBot Arm B601 RS"
-        #url: "https://www.seeedstudio.com/reBot-Arm-B601-RS-Assembled-Kit-with-Gripper-p-6865.html"
-        note: "One robot arm per team. Features 48V QDD motors with a 2.5 kg payload, so not a plastic arm :]"
-      - tag: "1x"
-        title: "reComputer Jetson Orin Nano, 8GB"
-        #url: "https://www.seeedstudio.com/reComputer-J3011-p-5590.html"
-        note: "Edge compute for inference, one per team."
-      - tag: "2x"
-        # `title_html` lets you use links/markup inside the title when needed.
-        #title_html: '<a href="https://www.seeedstudio.com/X10-USB-wired-camera-p-6506.html">X10 USB Camera</a> and <a href="https://www.seeedstudio.com/ET-S231-90-USB-Camera-p-6684.html">ET-S231 Webcam Module</a>'
-        title: USB camera
-        note: "Overhead and wrist cameras"
-      - tag: "1x"
-        title: "Leader arm for reBot"
-        note: For teleoperations and imitation learning.
+thanks:
+  - { label: "Host",     value: "Fab Foundation, at FabLab Kendall" }
+  - { label: "Sponsors", value: "Seeed Studio, Minoic Intelligence" }
+  - { label: "Partner",  value: "MITERS" }
+  - { label: "Judges",   value: "Sayam Dhingra (Autodesk), Charis Georgiou (Minoic Intelligence), Erika Tsutshumi (Elemental Machines), Yuki Yamada (Walden Robotics), Charles Yong (Vassar Robotics)" }
+  - { label: "Photos",   value: "James R Desmond" }
 
-  - id: schedule
-    title: Schedule
-    type: schedule
-    intro: "Subject to change."
-    days:
-      - label: "Saturday, Aug. 1"
-        rows:
-          - when: "10:00 AM"
-            what: "Intro tutorial - Setting up the hardware & software stack"
-            #note: "Find a table, meet people, get oriented, and get started."
-          - when: "12:01 PM"
-            what: "Opening ceremony"
-            #note: "Theme, safety, judging, and hardware rules."
-          - when: "1:00 PM"
-            what: "Lunch and office hours"
-            note: "Form teams, mentors available for setup."
-          - when: "2:00 PM"
-            what: "Hacking begins"
-            #note: "Setup, data collection, scripts, fixtures, training, and demos."
-          - when: "6:15 PM"
-            what: "Intermission: Dinner"
-          - when: "10:00 PM"
-            what: "Hacking ends for the day"
-      - label: "Sunday, Aug. 2"
-        rows:
-          - when: "10:00 AM"
-            what: "Doors open, breakfast bites"
-          - when: "12:01 PM"
-            what: "Lunch"
-          - when: "3:00 PM"
-            what: "Science-fair style demos and judging"
-            note: "Judges will go around to tables for demos."
-          - when: "4:00 PM"
-            what: "Final submissions"
-            note: "Github, project documentation, and one-minute video submitted online"
-          - when: "4:15 PM"
-            what: "Awards"
-          - when: "4:30 PM"
-            what: "Light snacks and social"
-          - when: "5 PM"
-            what: "That's a wrap!"
-
-  #- id: judging
-    #title: Judging and Prizes
-    #type: prose
-    #body:
-      #- "Science-fair style: judges walk around, talk with teams, and watch demos, scoring on completion, technical implementation, creativity, and what the team learned."
-      #- "Prizes are TBA — expect practical maker rewards such as hardware, credits, gift cards, and tools."
-
-  - id: judges
-    title: Judges
-    type: people
-    intro: "Meet the judges."
-    # Optional per judge: affiliation, photo (content/images/, else a
-    # monogram), url, one-sentence bio.
-    people:
-      - name: "Sayam Dhingra"
-        title: "Senior R & D Engineer"
-        photo: "Sayam_headshot.jpg"
-        affiliation: "Autodesk"
-        url: "https://www.research.autodesk.com/people/sayam-dhingra/"
-        bio: "Leads research on agentic robot arm control for machine tending at Autodesk's Boston Technology Center."
-      - name: "Charis Georgiou"
-        title: "Founder & CEO"
-        affiliation: "Minoic Intelligence"
-        url: "https://minoic.ai/"
-        bio: "Builds automated rockbreakers that make quarry operations safer and more efficient."
-      - name: "Erika Tsutshumi"
-        title: "Director of Integrations"
-        affiliation: "Elemental Machines"
-        url: "https://elementalmachines.com/about/team/erika-tsutsumi/"
-        bio: "Creates data collection solutions for biotech & pharma labs."
-      #- name: "Eric Pan"
-       # title: "Founder & CEO"
-       # affiliation: "Seeed Studio"
-       # url: "https://www.seeedstudio.com/blog/2025/07/17/meet-the-judge-eric-pan/"
-       # bio: "Leads Seeed Studio, which he founded in 2008 and grew into one of the world's largest open-source hardware makers."
-      - name: "Yuki Yamada"
-        title: "Solutions Architect & Customer Success Lead"
-        affiliation: "Walden Robotics"
-        url: "https://www.linkedin.com/in/yamada-hiroyuki/"
-        bio: "Moved from professional kitchens into robotics: first in the Dexai Robotics culinary robotics lab, then deploying industrial truck unloading robots with Pickle Robot, and now on the Product team at Walden Robotics."
-      - name: "Charles Yong"
-        title: "Founder and CEO at Vassar Robotics"
-        photo: "charles_headshot.png"
-        affiliation: "Vassar Robotics (YC X25)"
-        url: "https://vassarrobotics.com"
-        bio: "A mechanical, electrical, and software engineer who likes rigorous calculations, rapid prototyping, and—when possible—sleep."
-
-  #- id: apply
-    #title: Apply/Register 
-    #type: prose
-    #body:
-      #- "Interested in attending, sponsoring, mentoring, or judging? Visit our Events page at Luma!"
-    #button:
-      #label: "Apply"
-      #url: "https://luma.com/kxq4yxr8"
-    #note_box:
-      #- '<strong>Confirmed sponsor:</strong> <a href="https://www.seeedstudio.com/?__vid=260630">Seeed Studio</a>. Sponsor benefits include logo placement and a short speaking slot.'
-
-  # ---- Sponsors -------------------------------------------------------------
-  #  A `sponsors` section shows logos, optionally grouped into tiers. Each tier
-  #  has an optional `label` (e.g. "Gold") and a `size` controlling how large
-  #  the logos render: "lg", "md" (default), or "sm". A logo is an image
-  #  (`img`, white chip), an inline SVG (`svg`, accent-tinted), or just a
-  #  `name` (text) when there's no logo yet. `url` is optional on any of them.
-  #  To skip tiers entirely, use a single tier with no `label`.
-  - id: sponsors
-    title: Sponsors
-    type: sponsors
-    intro: 'Revolute is made possible by our sponsors. Interested in joining them? See our <a href="/sponsorship/">sponsorship tiers</a> and reach out to <a href="mailto:revolutehack@gmail.com">revolutehack@gmail.com</a>.'
-    tiers:
-      # Tier labels commented out below to hide them on the page while
-      # staying documented for editors.
-      #label: "Gold"
-      - size: lg
-        logos:
-          - img: "seeedstudio.png"
-            alt: "Seeed Studio"
-            url: "https://www.seeedstudio.com/"
-      - size: xl 
-        logos:
-          - img: "minoic_logo.svg"
-            alt: "Minoic Intelligence"
-            url: "https://minoic.ai/"
-          #- name: "Sponsor [awaiting MIT approval]"
-      # Placeholders — swap in real sponsor logos as they're confirmed (or
-      # delete the tier if there aren't any yet).
-      #label: "Supporting"
-
-  - id: credits
-    title: Credits and Inspiration
-    type: cards
-    cards:
-      - tag: "Thanks to"
-        title: The Simple Platform
-        url: "https://www.simple-platform.com"
-      - tag: "Thanks to"
-        title: Vassar Robotics
-        url: "https://vassarrobotics.com/"
-      - tag: "Thanks to"
-        title: Autodesk
-        url: "https://www.autodesk.com/technology-centers"
-      - tag: "Thanks to"
-        title: PrismaX Robotics
-        url: "https://www.prismax.ai"
-      - tag: "Format"
-        title: "Robot Hackathon NYC"
-        url: "https://www.robothackathon.com/"
-        #note: "Schedule and science-fair judging structure were useful references."
-      - tag: "Photos"
-        title: "Seeed Studio 2025 Embodied AI Hackathon recap"
-        url: "https://www.seeed.cc/post/2025-embodied-ai-hackathon-recap"
-        note: "Robot cooking photos and prior-event context, shown below."
-      #- tag: "Tools"
-        #title_html: '<a href="https://github.com/huggingface/lerobot/blob/main/examples/10_use_so100.md">LeRobot</a> / <a href="https://docs.phospho.ai/welcome">Phospho</a>'
-        #note: "Likely starting points for setup, data collection, training, and inference."
-    # Photo strip shown after the cards. Point `src` at files in
-    # content/images/; click a photo to view it larger.
-    photos:
-      - src: "robotarm.jpg"
-        alt: "Robot arm plating pasta"
-        caption: "ReBot plating pasta in Shenzhen"
-      - src: "shenzhenhackathon.jpg"
-        alt: "Builders at 2025 Seeed's Shenzhen hackathon"
-        caption: "Inside 2025 Shenzhen hackathon"
-    # `links` attaches an optional disclosure block after the cards.
-    links:
-      summary: "Similar hackathons in other cities"
-      items:
-        - { label: "Paris", url: "https://www.joinef.com/events/https-lu-ma-roboticshack/", place: "Apr 11 2025" }
-        - { label: "NYC", url: "https://robothackathon.devpost.com/", place: "Apr 20 2025" }
-        - { label: "NYC (LeRobot)", url: "https://www.betaworks.com/event/nyc-lerobot-hackathon", place: "June 14 2025" }
-        - { label: "Shenzhen", url: "https://forums.developer.nvidia.com/t/join-the-seeed-studio-hugging-face-embodied-ai-hackathon/344162", place: "Oct 18 2025" }
-        - { label: "Santa Clara", url: "https://luma.com/zsaa3r3d", place: "Mar 21 2026" }
-        - { label: "San Francisco", url: "https://luma.com/embodied-metal", place: "July 17 2026" }
-
-  - id: faq
-    title: FAQ
-    type: faq
-    items:
-      #- q: "Can I apply without a team?"
-        #a: "Yes — apply solo, with friends, or as a preformed team. Teams can also form at the event."
-        #open: true
-      - q: "What is Revolute?"
-        a: "Revolute isn't a company, the phrase 'Boston Embodied / Physical AI Robot Hackathon' was just too much of a mouthful. The word comes from 'revolute joint', a type of rotating joint."
-        open: true
-      - q: "What if I still have questions?"
-        a: "Email revolutehack at gmail dot com and we should hopefully answer -- if not try stalking us."
-        open: true
+# `embed` is optional: with it, the link opens in a popup.
+links:
+  - label: "Luma"
+    text: "The event on Luma"
+    note: "Registration has ended"
+    url: "https://luma.com/kxq4yxr8"
+    embed: "https://luma.com/embed/event/evt-cW5gZ6vjmv8zPmR/simple"
+    action: "Open on Luma"
+  - label: "Devpost"
+    text: "All six submissions"
+    url: "https://revolute-hackathon.devpost.com/project-gallery"
