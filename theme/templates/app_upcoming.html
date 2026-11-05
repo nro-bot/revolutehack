@@ -32,7 +32,7 @@
             {% if it.youtube %}
             <a href="{{ it.watch }}" target="_blank" rel="noopener" {{ ui.pop(it.name, '', it.embed, 'Open on YouTube', 'video') }}>
             {% else %}
-            <a href="{{ SITEURL }}/images/{{ it.photo }}" data-view="photo" data-light data-alt="{{ it.caption|e }}"{% if it.link %} data-link="{{ it.link|e }}"{% endif %}>
+            <a href="{{ SITEURL }}/images/{{ it.photo }}" data-view="photo" data-light data-alt="{{ it.caption|e }}"{% if it.link %} data-link="{{ it.link|e }}"{% if it.embed %} data-link-embed="{{ it.embed|e }}" data-title="{{ it.name|e }}"{% endif %}{% endif %}>
             {% endif %}
               <span class="n">{{ it.count|e }}</span><b>{{ it.name|e }}</b><span class="kph"><img src="{{ SITEURL }}/images/{{ it.photo }}" alt="" fetchpriority="low" decoding="async"></span>
             </a>

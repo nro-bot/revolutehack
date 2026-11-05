@@ -86,6 +86,8 @@ function loadFrame(address, title) {
 }
 
 function openPop(link) {
+  // One popup at a time: a picture that opens a page gives way to it.
+  if (viewer.open) viewer.close();
   const kind = link.dataset.pop; // embed | stack | email
   const embed = kind === 'embed' ? link.dataset.embed : '';
   const action = kind === 'email' ? 'Open in mail app' : link.dataset.action;
@@ -231,6 +233,14 @@ function show(link) {
     out.href = link.dataset.link;
     out.target = '_blank';
     out.rel = 'noopener';
+    if (link.dataset.linkEmbed) {
+      // That page allows itself to be shown here: open it in the embed popup.
+      out.dataset.pop = 'embed';
+      out.dataset.embed = link.dataset.linkEmbed;
+      out.dataset.title = link.dataset.title ?? '';
+      out.dataset.about = '';
+      out.dataset.action = 'Open the page';
+    }
     out.append(media);
     stage.replaceChildren(out);
   } else {
