@@ -1927,6 +1927,10 @@ a.mini {
   min-height: 2.7em;
   padding-bottom: 4px;
 }
+/* Nothing to say under the picture: no empty line either. */
+.viewer .vcap:empty {
+  display: none;
+}
 
 /* ---- 12. Motion ------------------------------------------------------------ */
 

@@ -229,7 +229,7 @@ function show(link) {
 
   // Photos and videos in the gallery have no caption, only a credit: one line.
   const text = [link.dataset.cap, link.dataset.credit].filter(Boolean).join('  ·  ');
-  caption.replaceChildren(text);
+  caption.replaceChildren(...(text ? [text] : []));
   viewer.classList.toggle('nocap', !link.dataset.cap);
   // A product picture on white: no black around it where it does not fill the frame.
   viewer.classList.toggle('light', 'light' in link.dataset);

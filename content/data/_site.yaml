@@ -21,7 +21,6 @@ name: "Revolute"
 # Two short lines shown beside the logo.
 tagline:
   - "Boston · robotics"
-  - "+ physical AI"
 description: "Revolute is Boston's robotics and physical AI hackathon. Real robot arms, small teams, one weekend."
 # The site's public address, used for share previews and canonical links.
 url: "https://revolutehack.com"
