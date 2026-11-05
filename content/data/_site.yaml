@@ -11,3 +11,86 @@
 banner:
   text: "Register for the ReBot Arms workshop on Oct. 9, 2026"
   #url: 
+
+# =============================================================================
+#  App pages (those with a `layout:` key). Everything below is shared by the
+#  homepage, Previous, Gallery, Community and every project page.
+# =============================================================================
+
+name: "Revolute"
+# Two short lines shown beside the logo.
+tagline:
+  - "Boston · robotics"
+description: "Revolute is Boston's robotics and physical AI hackathon. Real robot arms, small teams, one weekend."
+# The site's public address, used for share previews and canonical links.
+url: "https://revolutehack.com"
+email: "revolutehack@gmail.com"
+
+# The "Register" button in the bottom bar and on the homepage. It opens Luma's
+# event page in a popup, so people sign up without leaving the site.
+#   url    the event's page on Luma
+#   embed  the same event as Luma's "Embed Event Page" address. Find it on the
+#          event's manage page, under More, "Embed Registration Button".
+# PLACEHOLDER: this is the August 2026 hackathon, whose registration has
+# closed. Swap both lines when the next event is on Luma.
+register:
+  label: "Register"
+  url: "https://luma.com/kxq4yxr8"
+  embed: "https://luma.com/embed/event/evt-cW5gZ6vjmv8zPmR/simple"
+  title: "Register on Luma"
+  about: "Luma's sign-up page for the event loads here."
+  # No `action:` line, so the popup has no button under the Luma page. Add
+  # one, such as action: "Open on Luma", to get a button to the event's page.
+
+# The bottom bar. `path` is the page's address ("" is the homepage).
+# `icon` is one of the drawings in theme/templates/app_macros.html.
+nav:
+  - { id: upcoming,  label: "Upcoming",  path: "",           icon: cal }
+  - { id: previous,  label: "Previous",  path: "previous/",  icon: cup }
+  - { id: gallery,   label: "Gallery",   path: "gallery/",   icon: pic }
+  - { id: community, label: "Community", path: "community/", icon: ppl }
+
+# Social accounts: the small icons above the bottom bar on every page, and
+# the list on the Community page. Each opens in a popup with a button to the
+# real page. `embed` is optional: the address that account offers for showing
+# it inside another page. Without it the popup shows `about` and the button.
+# `action` is the label of the button to the real page: leave it out for no
+# button. An account with an `events:` list shows those events instead.
+social:
+  - id: instagram
+    label: "Instagram"
+    handle: "@revolutehack"
+    icon: ig
+    url: "https://instagram.com/revolutehack"
+    embed: "https://www.instagram.com/revolutehack/embed/"
+    about: "Photos and videos from the hackathons and the bench."
+    verb: "Follow"
+    action: "Open in Instagram"
+  - id: luma
+    label: "Luma"
+    handle: "Revolute Community"
+    icon: luma
+    url: "https://luma.com/user/usr-KxkVCLYqVvA7jev"
+    about: "Every Revolute event, upcoming and past."
+    # The popup shows Luma itself: the Luma page of every event below, one
+    # under another, upcoming first and then past, newest first. Luma has no
+    # single page of all events that it allows inside another site (its
+    # profile page refuses, and its calendar embed lists upcoming events
+    # only), so each event is listed here. Add each new event:
+    #   date   "YYYY-MM-DD", the day it starts
+    #   url    the event's page on Luma
+    #   embed  the event's "Embed Event Page" address on Luma
+    events:
+      - title: "Revolute ReBot Arms Workshop #2"
+        date: 2026-10-16
+        url: "https://luma.com/v07bw75c"
+        embed: "https://luma.com/embed/event/evt-qZIW6ZSK2pjJvi8/simple"
+      - title: "Revolute ReBot Arms Workshop"
+        date: 2026-10-09
+        url: "https://luma.com/61s4kwai"
+        embed: "https://luma.com/embed/event/evt-MqCSTuliAjAPRXQ/simple"
+      - title: "Revolute Hackathon 2026"
+        date: 2026-08-01
+        url: "https://luma.com/kxq4yxr8"
+        embed: "https://luma.com/embed/event/evt-cW5gZ6vjmv8zPmR/simple"
+    verb: "Events"

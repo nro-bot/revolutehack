@@ -29,17 +29,19 @@ AUTHOR_FEED_RSS = None
 
 # Copy images straight through to output/images/.
 STATIC_PATHS = ["images"]
-# Gallery originals are huge; the plugin writes web-sized copies instead.
-STATIC_EXCLUDE_PATHS = ["images/hackday"]
+# Gallery albums are not copied as they are: the plugin writes web-sized
+# copies and thumbnails of each instead. List every album folder here.
+STATIC_EXCLUDE_PATHS = ["images/hackday", "images/arms"]
 
 RELATIVE_URLS = True
 
+# Legacy pages only (those without a `layout:` key in their YAML file).
+# The app pages take their navigation from content/data/_site.yaml.
 # Site-wide links shown in the sidebar (and mobile menu) on every page,
 # alongside that page's own Table of Contents. `slug` matches a
 # content/data/<slug>.yaml file so the current page can hide its own link.
 NAV_LINKS = [
     {"label": "Events", "url": "/events/", "slug": "events"},
-    {"label": "Organizers", "url": "/organizers/", "slug": "organizers"},
     {"label": "Gallery", "url": "/gallery/", "slug": "gallery"},
     {"label": "Sponsorship", "url": "/sponsorship/", "slug": "sponsorship"},
 ]

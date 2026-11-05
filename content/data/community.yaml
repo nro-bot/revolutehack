@@ -1,0 +1,110 @@
+# =============================================================================
+#  Revolute: community (content/data/community.yaml)
+# =============================================================================
+#  Renders to /community/. Four tabs: Social, Events, Affiliates, Team.
+#  The social accounts themselves are listed once, in _site.yaml.
+# =============================================================================
+
+layout: community
+title: "Community"
+description: "Where to find Revolute, what is coming up around Boston, the groups we work with, and the team."
+
+# ---- Events -----------------------------------------------------------------
+#  Soonest first. An event disappears from the page once its date has passed
+#  (checked each time the site is built).
+#     date        "YYYY-MM-DD"
+#     end_date    optional, for events longer than a day
+#     register    true opens the site's Register popup instead of `url`
+#     url         the event's own page
+#     embed       the address shown inside the popup, usually the same as
+#                 `url`. Leave it out if the site does not allow being
+#                 embedded: the event then opens in a new tab.
+events:
+  - date: 2026-11-12
+    title: "Yun Chang and Husan Mavlonov on robot perception and connector assembly"
+    host: "Boston Robot Hackers"
+    url: "https://bostonrobothackers.com/news/25-yun-chang-talk-announcement.html"
+    embed: "https://bostonrobothackers.com/news/25-yun-chang-talk-announcement.html"
+  - date: 2026-11-20
+    end_date: 2026-11-21
+    title: "Revolute Thanksgivathon 2026"
+    host: "Revolute, on Luma · Nov. 20–21"
+    register: true
+  - date: 2026-12-10
+    title: "Addisu Taddese: Robotics in the Real World"
+    host: "Boston Robot Hackers"
+    url: "https://bostonrobothackers.com/news/30-december-talk-announcement.html"
+    embed: "https://bostonrobothackers.com/news/30-december-talk-announcement.html"
+
+# ---- Affiliates -------------------------------------------------------------
+#  Each card opens the group's site in a popup. `embed` is the address shown
+#  inside the popup: leave it out if the site does not allow being embedded.
+affiliates:
+  - name: "Boston Robot Hackers"
+    about: "A community for people who build robots: talks, learning sessions, member projects."
+    link_label: "bostonrobothackers.com"
+    url: "https://bostonrobothackers.com/"
+    embed: "https://bostonrobothackers.com/"
+  - name: "Board Game Night Working Group"
+    about: "A community list of robotics, board game, and tech events in Boston and the Bay Area."
+    link_label: "See the events list"
+    url: "https://boardgamenightwg.com/community/"
+    embed: "https://boardgamenightwg.com/community/"
+
+# ---- Team ---------------------------------------------------------------------
+#  One block per organizer, shown on the Team tab in this order.
+#    role   their job on the team, shown as a label
+#    title  a line about them, often a joke
+#    photo  a square picture in content/images/. Leave it out for a square
+#           with their initials.
+#    url    their site or profile. The link's text is made from the address.
+#    bio    one sentence
+team:
+  blurb: "Run by volunteers. Want to sponsor, lend hardware, or mentor?"
+  links:
+    - { label: "Sponsorship tiers", path: "sponsorship/" }
+  people:
+    - name: "Nancy Ouyang"
+      role: "Lead Organizer"
+      title: "Chief Robot Wrangler"
+      photo: "team/nancy.jpg"
+      url: "https://nrobot.dev"
+      bio: "Holds a PhD and keeps Revolute's robots, hackers, and pasta sauce all running on schedule."
+    - name: "Shivam Chopra"
+      role: "Hardware Lead"
+      title: "Soft Robotics Enthusiast"
+      photo: "team/shivam.jpg"
+      url: "https://shivamchopra.net/"
+      bio: "Boston Robot Hackers Regular, armed with a PhD in soft robotics and currently at Dexcom."
+    - name: "Dane Kouttron"
+      role: "Judging Lead"
+      title: "Snowblower Whisperer"
+      url: "https://transistor-man.com/"
+      bio: "Works as an engineer at MIT's nuclear reactor lab and is a MITERS regular, best known for BattleBots and a remote-control autonomous snowblower."
+    - name: "Jasper Lee"
+      role: "Logistics Lead"
+      title: "MITERS Tinkerer"
+      url: "https://www.linkedin.com/in/jjasper-llee/"
+      bio: "Builds bioengineered and shapeshifting robots when not organizing hackathons."
+    - name: "Siddhi Sanjay More"
+      role: "Registration & Community Lead"
+      title: "Robot Crafter"
+      photo: "team/siddhi.jpg"
+      url: "https://siddhimore.netlify.app/"
+      bio: "Robotics Grad @ Northeastern. Building robots. Making art. Always creating :)"
+    - name: "Joseph Selvaraaj"
+      role: "Volunteer"
+      title: "Robotics Enthusiast"
+      url: "https://jselvaraaj.github.io/"
+      bio: "Studies AeroAstro as an MIT grad student."
+    - name: "Nevin Thinagar"
+      role: "Sponsors Lead"
+      title: "Serial Insomniac"
+      url: "https://www.linkedin.com/in/nevinthinagar/"
+      bio: "Aspiring aerodynamicist who secretly loves EE. Wants to make robot arms DJ instead of learning himself."
+    - name: "Lily Zdansky"
+      role: "Volunteer and Day-of Ops Lead"
+      title: "Full-Stack Robot Herder"
+      photo: "team/lily.jpg"
+      url: "https://www.linkedin.com/in/lily-zdansky/"
+      bio: "Traded lesson plans for robotics code and now works as a full-stack engineer at Veo Robotics."

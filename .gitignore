@@ -6,3 +6,5 @@ output/
 *.swp
 *.swo
 *~
+# Original photos and videos. Only resized copies belong in the repo.
+content/raw/

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 76">
+  <!-- The revolute joint: one link swung about a pivot. -->
+  <rect x="30" y="46" width="12" height="26" fill="#111"/>
+  <rect x="22" y="68" width="28" height="6" fill="#111"/>
+  <g transform="rotate(32 36 46)">
+    <rect x="30" y="6" width="12" height="44" rx="6" fill="#fff" stroke="#111" stroke-width="3"/>
+  </g>
+  <circle cx="36" cy="46" r="9.5" fill="#ffe83d" stroke="#111" stroke-width="3"/>
+  <circle cx="36" cy="46" r="2.6" fill="#111"/>
+</svg>

@@ -1,0 +1,77 @@
+{% extends "app_base.html" %}
+{# Social accounts, events, affiliates and the team.
+   Content: content/data/community.yaml and the `social` list in _site.yaml. #}
+{% block main %}
+<div class="sheet panels">
+  {{ ui.subnav([('social', 'Social'), ('events', 'Events'), ('affiliates', 'Affiliates'), ('team', 'Team')]) }}
+  <h1 class="vh">{{ page.title|e }}</h1>
+
+  <section class="panel" id="social" aria-label="Social media">
+    <ul class="accts">
+      {% for s in site.social %}
+      <li><a class="acct" href="{{ s.url|e }}" target="_blank" rel="noopener" {{ ui.social_pop(s) }}>{{ ui.icon(s.icon) }}<span><b>{{ s.label|e }}</b><small>{{ s.handle|e }}</small></span><span class="do">{{ s.verb|e }}</span></a></li>
+      {% endfor %}
+      <li><div class="acct">{{ ui.icon('mail') }}<span><b>Email</b><small><code>{{ site.email|e }}</code></small></span><button class="mini" type="button" data-copy="{{ site.email|e }}">Copy</button></div></li>
+    </ul>
+  </section>
+
+  <section class="panel" id="events" aria-label="Events">
+    {% if page.events %}
+    {# Each event is one card, and the whole card is the link. #}
+    <ul class="evs">
+      {% for ev in page.events %}
+      {% set month, day = ev.label.split(' ') %}
+      <li>
+        {% if ev.register %}
+        <a class="ev-card" href="{{ site.register.url|e }}" target="_blank" rel="noopener" {{ ui.pop(site.register.title, site.register.about, site.register.embed, site.register.action) }}>
+        {% else %}
+        <a class="ev-card" href="{{ ev.url|e }}" target="_blank" rel="noopener"{% if ev.embed %} {{ ui.pop(ev.title, ev.host, ev.embed, 'Open the page') }}{% endif %}>
+        {% endif %}
+          <span class="ev-date"><span>{{ month|e }}</span><b>{{ day|e }}</b></span>
+          <span class="ev-text"><b>{{ ev.title|e }}</b><small>{{ ev.host|e }}</small></span>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p>Nothing on the calendar right now. Follow us on Luma to hear about the next one.</p>
+    {% endif %}
+  </section>
+
+  <section class="panel" id="affiliates" aria-label="Affiliates">
+    <div class="orgs">
+      {% for a in page.affiliates %}
+      <a class="org" href="{{ a.url|e }}" target="_blank" rel="noopener" {{ ui.pop(a.name, a.about, a.embed, 'Open the site') }}><b>{{ a.name|e }}</b><span>{{ a.about|e }}</span><span class="go">{{ a.link_label|e }}</span></a>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="panel" id="team" aria-label="Team">
+    <ul class="people">
+      {% for person in page.team.people %}
+      <li class="person">
+        {# The picture and the name both go to the person's page. The picture's
+           link is skipped by keyboards and screen readers, which get the name. #}
+        {% if person.url %}<a class="facelink" href="{{ person.url|e }}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">{% endif %}
+        {% if person.photo %}<img class="face" src="{{ SITEURL }}/images/{{ person.photo }}" alt="" width="160" height="160" loading="lazy" decoding="async">{% else %}<span class="face mono" aria-hidden="true">{{ person.initials|e }}</span>{% endif %}
+        {% if person.url %}</a>{% endif %}
+        <div>
+          <b>{% if person.url %}<a href="{{ person.url|e }}" target="_blank" rel="noopener">{{ person.name|e }}</a>{% else %}{{ person.name|e }}{% endif %}</b>
+          {% if person.role %}<span class="role">{{ person.role|e }}</span>{% endif %}
+          {% if person.title %}<small>{{ person.title|e }}</small>{% endif %}
+          {% if person.bio %}<p>{{ person.bio|e }}</p>{% endif %}
+          {% if person.url %}<a class="go" href="{{ person.url|e }}" target="_blank" rel="noopener" aria-label="{{ person.name|e }} on {{ person.link_label|e }}">{{ person.link_label|e }}</a>{% endif %}
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+    <div class="dash">
+      <p>{{ page.team.blurb|e }}</p>
+      <p class="mail"><code>{{ site.email|e }}</code><button class="mini" type="button" data-copy="{{ site.email|e }}">Copy</button></p>
+      {% if page.team.links %}
+      <p class="morelinks">{% for l in page.team.links %}<a class="go" href="{{ SITEURL }}/{{ l.path }}">{{ l.label|e }}</a>{% endfor %}</p>
+      {% endif %}
+    </div>
+  </section>
+</div>
+{% endblock %}

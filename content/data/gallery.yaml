@@ -1,28 +1,67 @@
 # =============================================================================
-#  Revolute — gallery page (content/data/gallery.yaml)
+#  Revolute: gallery (content/data/gallery.yaml)
 # =============================================================================
-#  Renders to /gallery/. Everything in content/images/hackday/ is shown
-#  automatically (sorted by filename); photos are shrunk to web size at build
-#  time, so just drop files into that folder.
+#  Renders to /gallery/, with three filters: All, Photos, Videos.
+#
+#  Each album is a folder in content/images/. Everything in the folder is
+#  shown, sorted by filename. To add media, drop files into the folder.
+#  Photos are shrunk to web size when the site is built. Videos are published
+#  as they are, so compress them first (1080p or smaller, under 30 MB).
+#  A video shows a still frame if posters/<same name>.jpg is in the folder.
+#
+#  Every album folder must also be listed in STATIC_EXCLUDE_PATHS in
+#  pelicanconf.py.
+#
+#  Per album, all optional:
+#     credit   shown under every item in the album
+#     alt      description used for items that have no caption
+#     first    items to move to the front, by any part of their filename
+#     meta     per item, by any part of its filename:
+#                caption   describes the picture for screen readers.
+#                          It is not shown on the page.
+#                duration  a video's length, shown on its tile, e.g. "0:27"
 # =============================================================================
 
+layout: gallery
 title: "Gallery"
-dek: "Photos and video clips from Revolute v1.08."
-apply_url: "https://luma.com/61s4kwai"
+description: "Photos and videos from Revolute hackathons and the robot arms on the bench."
 
-intro:
-  - '<a href="/">← Back to event details</a>'
+albums:
+  - folder: hackday
+    credit: "Photo: James R Desmond"
+    alt: "Revolute Hackathon v1.08"
+    first: [DSC02691]
+    meta:
+      DSC02691: { caption: "Everyone at Revolute Hackathon v1.08 in one group photo" }
+      DSC00664: { caption: "A team works at a table of laptops with a robot arm" }
+      DSC00691: { caption: "Hackers gather around a pot beside a robot arm" }
+      DSC00696: { caption: "A robot arm reaches over bowls of strawberries and blueberries" }
+      DSC00700: { caption: "A robot arm behind an orange gear-shaped bagel sign" }
+      DSC00794: { caption: "Teams working on laptops at long tables" }
+      DSC00830: { caption: "A smiling hacker beside a robot arm and a plate of food" }
+      DSC01429: { caption: "Hackers at a shared table with a robot arm in the foreground" }
+      DSC01779: { caption: "A hacker leans in close to adjust a robot arm" }
+      DSC02415: { caption: "Hackers in Revolute T-shirts cook next to a robot arm" }
+      DSC02452: { caption: "Five hackers in Revolute T-shirts pose with their robot arm" }
+      DSC02468: { caption: "A team of five stands behind their robot arm" }
+      DSC02495: { caption: "A team of five poses behind their bench" }
+      DSC02517: { caption: "A team of six celebrates, holding an orange gear" }
+      DSC02532: { caption: "Two hackers in Revolute T-shirts" }
+      C0046:    { caption: "Clip from Revolute Hackathon v1.08", duration: "0:27" }
+      C0054:    { caption: "Clip from Revolute Hackathon v1.08", duration: "1:25" }
 
-footer:
-  - "Revolute v1.08"
-
-sections:
-
-  - id: hackday
-    title: "Revolute v1.08"
-    type: gallery
-    intro: "Shot by James R Desmond."
-    folder: hackday
-    album:
-      label: "View the full album on Dropbox"
-      url: "https://www.dropbox.com/scl/fo/2ot9wzyuax2hupqf2mrwx/AFBNBNnGSqSbZkEPnVn5G8U?rlkey=c1wupzozu4p00qwilqtb4gggx&st=8hv7e176&dl=0"
+  - folder: arms
+    alt: "Robot arms on the bench"
+    meta:
+      arm-over-berries:    { caption: "A robot arm set up over bowls of berries" }
+      arm-on-blue-mat:     { caption: "A robot arm clamped to a blue mat on a workbench" }
+      arm-with-blocks:     { caption: "A robot arm on a wooden table with coloured blocks" }
+      cooking-setup:       { caption: "A robot arm, a pan, and bowls of fruit laid out for a cooking task" }
+      white-arms:          { caption: "White robot arms side by side on a table" }
+      bench-work:          { caption: "Two people working at a bench with a robot arm" }
+      robot-hand:          { caption: "A robotic hand held up next to a robot arm" }
+      workshop-demo:       { caption: "A group watches a robot arm demo at a workshop" }
+      arm-over-plate:      { caption: "A robot arm reaching over a plate" }
+      workshop-table:      { caption: "People try out robot arms at a workshop table" }
+      arm-in-event-space:  { caption: "A robot arm on a table in the event space" }
+      teleoperation:       { caption: "Teleoperation: the follower arm copies the leader arm", duration: "0:08" }

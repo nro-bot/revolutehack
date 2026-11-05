@@ -1,0 +1,37 @@
+{% extends "app_base.html" %}
+{# Sponsorship tiers and policies. Content: content/data/sponsorship.yaml. #}
+{% block main %}
+<div class="sheet panels">
+  {{ ui.subnav([('tiers', 'Tiers'), ('policies', 'Policies')]) }}
+  <h1 class="pagekick">{{ (page.kicker or page.title)|e }}</h1>
+
+  <section class="panel" id="tiers" aria-label="Tiers">
+    <p class="lede">{{ page.dek|e }}</p>
+    <div class="dash">
+      <p>{{ page.contact|e }}</p>
+      <p class="mail"><code>{{ site.email|e }}</code><button class="mini" type="button" data-copy="{{ site.email|e }}">Copy</button><a class="mini" href="mailto:{{ site.email|e }}" data-pop="email">Email us</a></p>
+    </div>
+    <div class="tiers">
+      {% for tier in page.tiers %}
+      <article class="card tier">
+        <h2 class="ch">{{ tier.name|e }}</h2>
+        <p class="stamp">{{ tier.price|e }}</p>
+        <ul class="ticks">
+          {% for benefit in tier.benefits %}
+          <li{% if benefit.new %} class="new"{% endif %}>{{ benefit.label|e }}</li>
+          {% endfor %}
+        </ul>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="panel" id="policies" aria-label="Policies">
+    <ul class="policies">
+      {% for line in page.policies %}
+      <li>{{ line|e }}</li>
+      {% endfor %}
+    </ul>
+  </section>
+</div>
+{% endblock %}

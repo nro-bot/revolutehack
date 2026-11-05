@@ -1,0 +1,40 @@
+# Builds the site and checks its links, without publishing anything.
+#
+# Runs on every pull request and on every push to a branch other than main,
+# so a broken build or a missing file is caught before it reaches the live
+# site. Publishing is done by deploy.yml, on main only.
+name: Build check
+
+on:
+  pull_request:
+  push:
+    branches-ignore: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Build site
+        run: pelican content -o output -s pelicanconf.py --fatal errors
+
+      - name: Check local links
+        run: python scripts/check_links.py output

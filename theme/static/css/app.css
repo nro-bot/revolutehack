@@ -1,0 +1,2265 @@
+/* =============================================================================
+   Revolute app pages
+   -----------------------------------------------------------------------------
+   A photocopied zine that behaves like an app. Phone layout is the base;
+   wider screens add columns at the end of this file.
+
+   Contents
+     1. Fonts and tokens
+     2. Base
+     3. Page shell: sheet, section tabs, panels
+     4. Shared pieces: buttons, facts, rows, cards
+     5. Upcoming page (fits one screen)
+     6. Previous page and project cards
+     7. Project page
+     8. Gallery
+     9. Community
+    10. Floating bottom bar and social icons
+    11. Popups
+    12. Motion: hover and page transitions
+    13. Wider screens
+   ============================================================================= */
+
+/* ---- 1. Fonts and tokens -------------------------------------------------- */
+
+@font-face {
+  font-family: "Anton";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/anton-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Courier Prime";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/courier-prime-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Courier Prime";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/courier-prime-700.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Courier Prime";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/courier-prime-400-italic.woff2") format("woff2");
+}
+
+:root {
+  --paper: #f4f1ea;
+  --desk: #d9d5cc;
+  --ink: #111;
+  --white: #fff;
+  --hi: #ffe83d;
+  --tape: #efe3a8cc;
+  --mute: #111111b8;
+  --soft: #0000004d;
+  --faint: #1111111f;
+  --veil: #0d0c0b80;
+  --night-veil: #0d0c0bcc;
+  --night-fg: #f4f1ea;
+
+  --f-mast: "Anton", "Impact", "Haettenschweiler", sans-serif;
+  --f-type: "Courier Prime", "Courier New", Courier, monospace;
+
+  /* Side gutter, and the room the bottom bar and social icons take up. */
+  --gut: 20px;
+  --chrome: 126px;
+
+  color-scheme: light;
+}
+
+/* ---- 2. Base --------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+/* The page behind a popup stays put. */
+html:has(dialog[open]) {
+  overflow: hidden;
+}
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 16px/1.5 var(--f-type);
+}
+img,
+video {
+  display: block;
+  max-width: 100%;
+}
+a {
+  color: var(--ink);
+}
+p,
+h1,
+h2,
+h3,
+figure,
+dl,
+dd {
+  margin: 0;
+}
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+button,
+input,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+:focus-visible {
+  outline: 3px dashed var(--ink);
+  outline-offset: 3px;
+}
+[hidden] {
+  display: none !important;
+}
+
+.icon {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.mark-ink {
+  fill: var(--ink);
+}
+.mark-link {
+  fill: var(--white);
+  stroke: var(--ink);
+  stroke-width: 3;
+}
+.mark-pivot {
+  fill: var(--hi);
+  stroke: var(--ink);
+  stroke-width: 3;
+}
+
+/* Read by screen readers, not shown. */
+.vh {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.skip {
+  position: absolute;
+  left: 8px;
+  top: -80px;
+  z-index: 50;
+  padding: 10px 14px;
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 700;
+}
+.skip:focus {
+  top: 8px;
+}
+
+/* ---- 3. Page shell --------------------------------------------------------- */
+
+.app {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+}
+.pg {
+  flex: 1;
+  min-width: 0;
+}
+.sheet {
+  display: grid;
+  gap: 22px;
+  align-content: start;
+  padding: 0 max(var(--gut), env(safe-area-inset-right, 0px)) 30px max(var(--gut), env(safe-area-inset-left, 0px));
+}
+.sheet > * {
+  min-width: 0;
+}
+
+/* Section tabs: a back button, then a tick box per section. */
+.subnav {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 3px;
+  margin: 0 calc(var(--gut) * -1);
+  padding: max(6px, env(safe-area-inset-top, 0px)) var(--gut) 6px;
+  background: var(--paper);
+  border-bottom: 3px solid var(--ink);
+}
+.chip {
+  flex: 0 1 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35em;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0 1px;
+  color: var(--ink);
+  /* The size follows the screen's width, so five tabs still fit side by
+     side on a narrow phone without their words running into each other. */
+  font: 700 clamp(9px, 2.8vw, 11px) / 1 var(--f-type);
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.chip::before {
+  content: "";
+  flex: none;
+  width: calc(1em + 1px);
+  height: calc(1em + 1px);
+  border: 2px solid var(--ink);
+  background: var(--white);
+}
+.chip[aria-current="true"] {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+/* Narrow phones: a smaller side gutter everywhere, and a smaller back button. */
+@media (max-width: 380px) {
+  :root {
+    --gut: 16px;
+  }
+}
+@media (max-width: 340px) {
+  :root {
+    --gut: 12px;
+  }
+  .subnav .backb.sq {
+    width: 36px;
+    min-height: 36px;
+  }
+}
+.chip[aria-current="true"]::before {
+  background: var(--ink);
+  box-shadow: inset 0 0 0 2px var(--hi);
+}
+
+.backb {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  min-height: 44px;
+  padding: 6px 14px 6px 8px;
+  border: 3px solid var(--ink);
+  background: var(--white);
+  box-shadow: 3px 3px 0 var(--ink);
+  font: 700 14px/1.1 var(--f-type);
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.backb .icon {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  stroke-width: 2.8;
+}
+.backb.next {
+  padding: 6px 8px 6px 14px;
+}
+.backb span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.backb:active {
+  translate: 2px 2px;
+  box-shadow: 1px 1px 0 var(--ink);
+}
+.backb.sq {
+  flex: none;
+  width: 40px;
+  min-height: 40px;
+  padding: 0;
+  justify-content: center;
+  border-width: 2px;
+}
+.backb[aria-disabled="true"] {
+  opacity: 0.3;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+/* Panels: one section of a page at a time. The tab links point at a panel's
+   id, and the panel that is the address's target is the one shown. With no
+   target, the first panel shows. Browsers without :has() show every panel. */
+.panel {
+  display: grid;
+  gap: 26px;
+  align-content: start;
+  min-width: 0;
+  scroll-margin-top: 100vh; /* keeps the page at the top when a tab is used */
+}
+.panel > * {
+  min-width: 0;
+}
+.panel > .sec:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+@supports selector(:has(*)) {
+  .panels:has(.panel:target) .panel:not(:target),
+  .panels:not(:has(.panel:target)) .panel:not(:first-of-type) {
+    display: none;
+  }
+}
+
+.pagekick {
+  font: 700 13px/1.3 var(--f-type);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ---- 4. Shared pieces ------------------------------------------------------ */
+
+.sec {
+  display: grid;
+  gap: 14px;
+  justify-items: start;
+  padding-top: 24px;
+  border-top: 3px solid var(--ink);
+}
+.sec > * {
+  min-width: 0;
+  max-width: 100%;
+}
+.lab {
+  display: inline-block;
+  padding: 4px 10px;
+  background: var(--ink);
+  color: var(--paper);
+  font: 400 30px/1.05 var(--f-mast);
+  text-transform: uppercase;
+  text-wrap: balance;
+  transform: rotate(-1deg);
+}
+.sec:nth-of-type(even) > .lab {
+  transform: rotate(0.8deg);
+}
+.note {
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--mute);
+}
+.go {
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.kick {
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.lede {
+  font-size: 19px;
+  line-height: 1.4;
+}
+.tape {
+  position: absolute;
+  z-index: 2;
+  left: calc(50% - 55px);
+  top: -15px;
+  width: 110px;
+  height: 28px;
+  background: var(--tape);
+  transform: rotate(-7deg);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 48px;
+  padding: 8px 16px;
+  border: 3px solid var(--ink);
+  background: var(--white);
+  box-shadow: 3px 3px 0 var(--ink);
+  font: 700 16px/1.2 var(--f-type);
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+}
+.btn.hi {
+  background: var(--hi);
+}
+.btn:active,
+.win:active,
+.acct:active {
+  translate: 2px 2px;
+  box-shadow: 1px 1px 0 var(--ink);
+}
+.cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.mini {
+  min-height: 40px;
+  padding: 4px 10px;
+  border: 2px solid var(--ink);
+  background: var(--white);
+  font: 700 13px/1 var(--f-type);
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+/* Fact tiles */
+.facts {
+  justify-self: stretch;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.facts div {
+  position: relative;
+  min-width: 0;
+  padding: 8px 10px;
+  border: 2px solid var(--ink);
+  background: var(--white);
+}
+.facts dt {
+  font: 400 13px/1 var(--f-mast);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.facts dd {
+  margin-top: 4px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.facts .wide {
+  grid-column: 1 / -1;
+}
+/* A tile that opens a popup: the whole tile is the link. */
+.facts .tap a {
+  text-decoration: none;
+}
+.facts .tap a::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.facts .tap::after {
+  content: "+";
+  position: absolute;
+  right: 8px;
+  top: 2px;
+  font: 400 20px/1.2 var(--f-mast);
+}
+.facts .tap:active {
+  background: var(--ink);
+}
+.facts .tap:active,
+.facts .tap:active a {
+  color: var(--white);
+}
+
+/* Label and value rows: agendas, events, links */
+.agenda {
+  justify-self: stretch;
+  display: grid;
+  gap: 20px;
+}
+.day {
+  margin-bottom: 4px;
+  font: 400 22px/1.1 var(--f-mast);
+  text-transform: uppercase;
+}
+.rows {
+  justify-self: stretch;
+}
+.rows li {
+  display: grid;
+  grid-template-columns: 84px 1fr;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--ink);
+}
+.rows li > * {
+  min-width: 0;
+}
+.rows .t {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.rows small {
+  display: block;
+  font-size: 13.5px;
+  line-height: 1.4;
+  color: var(--mute);
+}
+.rows a {
+  font-weight: 700;
+}
+
+/* A short list of links, each with an optional small note under it. */
+.linklist {
+  justify-self: stretch;
+}
+.linklist li {
+  display: grid;
+  align-content: center;
+  min-height: 48px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--ink);
+}
+.linklist small {
+  font-size: 13.5px;
+  line-height: 1.4;
+  color: var(--mute);
+}
+
+.faq {
+  justify-self: stretch;
+}
+.faq details {
+  padding: 6px 0;
+  border-bottom: 1px solid var(--ink);
+}
+.faq summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+}
+.faq summary::-webkit-details-marker {
+  display: none;
+}
+.faq summary::before {
+  content: "+";
+  width: 16px;
+  font: 400 22px/1 var(--f-mast);
+}
+.faq details[open] summary::before {
+  content: "\2212";
+}
+.faq details p {
+  padding: 0 0 10px 24px;
+}
+
+.dash {
+  justify-self: stretch;
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+  padding: 12px 14px;
+  border: 2px dashed var(--ink);
+}
+.mail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  font-weight: 700;
+}
+.mail code {
+  font: inherit;
+  user-select: all;
+  overflow-wrap: anywhere;
+}
+.morelinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+}
+.morelinks a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+}
+
+/* ---- 5. Upcoming page ------------------------------------------------------ */
+
+.one {
+  display: grid;
+  gap: 8px;
+  margin: 0 calc(var(--gut) * -1);
+  padding: 12px 18px 2px;
+}
+.one > * {
+  min-width: 0;
+  min-height: 0;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.logo .mark {
+  flex: none;
+  width: 30px;
+  height: 30px;
+}
+.logo b {
+  font: 400 30px/1 var(--f-mast);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+.logo .tagline {
+  margin-left: auto;
+  font-weight: 700;
+  font-size: 11px;
+  line-height: 1.25;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: right;
+}
+.ev {
+  font: 400 clamp(36px, 11.5vw, 60px) / 0.92 var(--f-mast);
+  text-transform: uppercase;
+}
+
+.card {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  justify-items: start;
+  padding: 14px;
+  border: 3px solid var(--ink);
+  background: var(--white);
+  box-shadow: 4px 4px 0 var(--ink);
+  overflow: hidden;
+}
+.card > * {
+  min-width: 0;
+  max-width: 100%;
+}
+.card.big {
+  margin: 2px 5px 6px 1px;
+  min-height: 0;
+  transform: rotate(-0.35deg);
+}
+.card .ch {
+  font: 400 28px/1 var(--f-mast);
+  text-transform: uppercase;
+}
+.card .facts,
+.card .kit,
+.card .rows,
+.card .faq,
+.card .agenda {
+  justify-self: stretch;
+}
+.card .agenda {
+  gap: 16px;
+}
+.card .rows li {
+  padding: 8px 0;
+}
+/* Overview: the photo takes whatever height is left over. */
+.card.lead {
+  grid-template-rows: minmax(0, 1fr) auto auto auto auto;
+}
+.cmedia {
+  justify-self: stretch;
+  position: relative;
+  aspect-ratio: 16 / 10;
+  min-height: 110px;
+  overflow: hidden;
+  background: var(--ink);
+}
+.cmedia img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.chrow {
+  justify-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.chrow .ch {
+  white-space: nowrap;
+  font-size: 26px;
+}
+.meet {
+  margin: 0;
+  font: 700 12px/1.25 var(--f-type);
+  text-transform: uppercase;
+  text-align: right;
+}
+.vlink {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 34px;
+  padding: 3px 7px 3px 5px;
+  border: 2px solid var(--ink);
+  background: var(--hi);
+  box-shadow: 2px 2px 0 var(--ink);
+  font: 700 10px/1.1 var(--f-type);
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.vlink .icon {
+  flex: none;
+  width: 15px;
+  height: 15px;
+}
+.vlink:active {
+  translate: 2px 2px;
+  box-shadow: none;
+}
+
+/* Kit tiles: count, name, picture. Each opens a popup. The tiles are only
+   as big as their content, and the picture is shown whole, never cropped. */
+.card.hw {
+  align-self: start;
+}
+.kit {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.kit li {
+  position: relative;
+  min-width: 0;
+  border: 3px solid var(--ink);
+  background: var(--white);
+}
+.kit a {
+  display: grid;
+  gap: 2px;
+  padding: 8px 10px 10px;
+  text-decoration: none;
+}
+.kit a::after {
+  content: "+";
+  position: absolute;
+  right: 8px;
+  top: 2px;
+  font: 400 20px/1.2 var(--f-mast);
+}
+/* A tile that plays a video is marked with a play triangle. */
+.kit a[data-pop]::after {
+  content: "\25B6\FE0E";
+  top: 6px;
+  font: 12px/1.2 var(--f-type);
+}
+.kit a:active {
+  background: var(--ink);
+  color: var(--white);
+}
+.kit .n {
+  display: block;
+  font: 400 32px/1 var(--f-mast);
+}
+.kit b {
+  display: block;
+  font-size: 14px;
+  line-height: 1.25;
+}
+.kph {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  margin-top: 6px;
+  overflow: hidden;
+}
+.kph img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: contain;
+}
+
+/* Fit one screen: the tabs, then a card that takes the rest of the height,
+   so nothing on this page scrolls. Needs :has(), because it relies on one
+   panel showing at a time, and a screen tall enough to hold a card. On a
+   shorter screen than that (an iPhone SE, or a phone on its side) the page
+   is laid out the ordinary way and scrolls. */
+@supports selector(:has(*)) {
+  @media (min-height: 640px) {
+    .sheet.fit {
+      height: calc(100dvh - var(--chrome));
+      grid-template-rows: auto minmax(0, 1fr);
+      gap: 0;
+      padding-bottom: 0;
+    }
+    .fit .one {
+      grid-template-rows: auto minmax(0, 1fr);
+      overflow: hidden;
+    }
+    .fit .panel {
+      grid-template-rows: minmax(0, 1fr);
+      gap: 0;
+      align-content: stretch;
+    }
+    .fit .cmedia {
+      aspect-ratio: auto;
+    }
+    /* A card never spills over what is around it. If its content is taller
+       than the room it has, it scrolls inside itself. */
+    .fit .card.big {
+      max-height: 100%;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+    }
+  }
+  /* Most phones: the browser's own bars leave about 650 to 750 px. The card
+     is tightened so everything still fits, and the photo takes whatever
+     height is left instead of insisting on its own. */
+  @media (min-height: 640px) and (max-height: 760px) and (max-width: 699px) {
+    .fit .one {
+      gap: 6px;
+      padding-top: 8px;
+    }
+    .fit .card.big {
+      gap: 8px;
+      padding: 12px;
+    }
+    .fit .cmedia {
+      min-height: 0;
+    }
+    .fit .ev {
+      font-size: clamp(32px, 9.6vw, 40px);
+    }
+    .fit .facts {
+      gap: 8px;
+    }
+    .fit .facts div {
+      padding: 6px 9px;
+    }
+    .fit .card .btn {
+      min-height: 44px;
+      padding-top: 6px;
+      padding-bottom: 6px;
+    }
+    .fit .card .agenda {
+      gap: 10px;
+    }
+    .fit .rows li {
+      padding: 5px 0;
+      font-size: 14.5px;
+    }
+    .fit .kit .n {
+      font-size: 26px;
+    }
+    .fit .kph {
+      aspect-ratio: 16 / 9;
+      margin-top: 4px;
+    }
+  }
+}
+
+/* ---- 6. Previous page and project cards ----------------------------------- */
+
+.wall {
+  justify-self: stretch;
+  display: grid;
+  gap: 24px;
+  padding-top: 8px;
+}
+.win {
+  position: relative;
+  display: block;
+  min-width: 0;
+  border: 3px solid var(--ink);
+  background: var(--white);
+  box-shadow: 5px 5px 0 var(--ink);
+  text-decoration: none;
+  transform: rotate(var(--r, 0deg));
+}
+.win:nth-child(odd) {
+  --r: -0.6deg;
+}
+.win:nth-child(even) {
+  --r: 0.7deg;
+}
+.media {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--ink);
+}
+.media img,
+.media video,
+.hero img,
+.hero video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* Cards are photocopies until they are pointed at or their clip plays. */
+.media img {
+  filter: grayscale(1) contrast(1.35);
+}
+.media video,
+.hero video {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.media video.on,
+.hero video.on {
+  opacity: 1;
+}
+.pv {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  z-index: 1;
+  padding: 1px 6px;
+  background: var(--ink);
+  color: var(--paper);
+  font: 700 11px/1.5 var(--f-type);
+  text-transform: uppercase;
+}
+.win .body {
+  display: grid;
+  gap: 5px;
+  padding: 12px 14px 14px;
+}
+.win-name {
+  font: 400 30px/1 var(--f-mast);
+  text-transform: uppercase;
+}
+.win .team {
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+.win .tag {
+  font-size: 15px;
+  line-height: 1.4;
+}
+.place {
+  position: absolute;
+  z-index: 2;
+  left: -8px;
+  top: -13px;
+  padding: 2px 10px;
+  border: 3px solid var(--ink);
+  background: var(--hi);
+  font: 400 20px/1.2 var(--f-mast);
+  text-transform: uppercase;
+  transform: rotate(-5deg);
+}
+
+/* One photo per row on a phone, a row of squares on a wider screen. */
+.strip {
+  justify-self: stretch;
+  display: grid;
+  gap: 12px;
+}
+.strip a {
+  display: block;
+  min-width: 0;
+  overflow: hidden; /* keeps the picture inside its square when it zooms on hover */
+}
+.strip img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+.thanks {
+  justify-self: stretch;
+  display: grid;
+  gap: 10px;
+}
+.thanks div {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--ink);
+}
+.thanks dt {
+  font: 400 14px/1.3 var(--f-mast);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.thanks dd {
+  min-width: 0;
+}
+
+/* ---- 7. Project page ------------------------------------------------------- */
+
+.proj {
+  display: grid;
+  gap: 16px;
+  justify-items: start;
+  padding: max(14px, env(safe-area-inset-top, 0px)) max(var(--gut), env(safe-area-inset-right, 0px)) 30px
+    max(var(--gut), env(safe-area-inset-left, 0px));
+}
+.proj > * {
+  min-width: 0;
+  max-width: 100%;
+}
+.hero {
+  justify-self: stretch;
+  position: relative;
+  max-width: none;
+  margin: 0 calc(var(--gut) * -1);
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--ink);
+}
+.stamp {
+  display: inline-block;
+  padding: 6px 12px;
+  border: 4px double var(--ink);
+  font: 400 16px/1.1 var(--f-mast);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transform: rotate(-3deg);
+}
+.stamp.gold {
+  background: var(--hi);
+}
+.ptitle2 {
+  font: 400 clamp(48px, 15vw, 88px) / 0.9 var(--f-mast);
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+.block {
+  justify-self: stretch;
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+  padding-top: 14px;
+  border-top: 1px solid var(--ink);
+}
+.h4 {
+  font: 400 16px/1.1 var(--f-mast);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.tags li {
+  padding: 1px 8px;
+  border: 2px solid var(--ink);
+  background: var(--white);
+  font-size: 13px;
+  font-weight: 700;
+}
+.pn {
+  justify-self: stretch;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 3px solid var(--ink);
+}
+
+/* ---- 8. Gallery: deliberately plain, so the media is the focus ------------ */
+
+.gal {
+  position: relative;
+}
+.anchor {
+  position: absolute;
+  top: 0;
+}
+.g-nav {
+  margin: 0;
+  padding-left: max(var(--gut), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--gut), env(safe-area-inset-right, 0px));
+  border-bottom: 0;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  padding: 0 max(var(--gut), env(safe-area-inset-right, 0px)) 18px max(var(--gut), env(safe-area-inset-left, 0px));
+}
+.tile {
+  position: relative;
+  display: block;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--faint);
+}
+.tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.tile:active {
+  opacity: 0.8;
+}
+.dur {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  padding: 1px 5px;
+  background: var(--night-veil);
+  color: var(--night-fg);
+  font: 700 11px/1.5 var(--f-type);
+}
+.dur::before {
+  content: "\25B6\FE0E\00A0";
+}
+/* The filters are links to #photos and #videos. */
+.gal:has(#photos:target) .tile[data-kind="video"],
+.gal:has(#videos:target) .tile[data-kind="photo"] {
+  display: none;
+}
+
+/* ---- 9. Community ---------------------------------------------------------- */
+
+.accts {
+  justify-self: stretch;
+  display: grid;
+  gap: 10px;
+}
+.acct {
+  display: grid;
+  grid-template-columns: 34px 1fr auto;
+  gap: 12px;
+  align-items: center;
+  min-width: 0;
+  min-height: 68px;
+  padding: 10px 12px;
+  border: 3px solid var(--ink);
+  background: var(--white);
+  box-shadow: 3px 3px 0 var(--ink);
+  text-decoration: none;
+}
+.acct .icon {
+  width: 30px;
+  height: 30px;
+  stroke-width: 1.7;
+}
+.acct b {
+  display: block;
+  font: 400 21px/1.1 var(--f-mast);
+  text-transform: uppercase;
+}
+.acct small {
+  display: block;
+  font-size: 13px;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+.acct code {
+  font: inherit;
+  user-select: all;
+}
+.acct .do {
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+/* Events: a card each, with the date on a tab at its left. The whole card
+   is the link. */
+.evs {
+  justify-self: stretch;
+  display: grid;
+  gap: 12px;
+}
+.ev-card {
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr);
+  min-height: 76px;
+  border: 3px solid var(--ink);
+  background: var(--white);
+  box-shadow: 3px 3px 0 var(--ink);
+  text-decoration: none;
+}
+.ev-date {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 2px;
+  background: var(--ink);
+  color: var(--paper);
+}
+.ev-date span {
+  font: 700 11.5px/1 var(--f-type);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.ev-date b {
+  font: 400 30px/1 var(--f-mast);
+}
+.ev-text {
+  display: grid;
+  gap: 4px;
+  align-content: center;
+  padding: 10px 12px;
+}
+.ev-text b {
+  font-size: 15.5px;
+  line-height: 1.3;
+}
+.ev-text small {
+  font-size: 13px;
+  line-height: 1.3;
+  color: var(--mute);
+}
+.ev-card:active {
+  translate: 2px 2px;
+  box-shadow: 1px 1px 0 var(--ink);
+}
+@media (hover: hover) {
+  .ev-card {
+    transition: translate 0.15s ease-out, box-shadow 0.15s ease-out;
+  }
+  .ev-card:hover:not(:active) {
+    translate: -1px -3px;
+    box-shadow: 5px 7px 0 var(--ink);
+  }
+  .ev-card:hover .ev-date {
+    background: var(--hi);
+    color: var(--ink);
+  }
+}
+.orgs {
+  justify-self: stretch;
+  display: grid;
+  gap: 12px;
+}
+.org {
+  display: grid;
+  gap: 4px;
+  padding: 12px 14px;
+  border: 3px solid var(--ink);
+  background: var(--white);
+  text-decoration: none;
+}
+.org b {
+  font: 400 22px/1.1 var(--f-mast);
+  text-transform: uppercase;
+}
+.org span {
+  font-size: 14.5px;
+  line-height: 1.4;
+}
+/* The team: a picture or initials, then name, role, a line, a sentence and
+   a link. */
+.people {
+  justify-self: stretch;
+  display: grid;
+  gap: 0;
+}
+.person {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+  padding: 14px 0;
+  border-bottom: 2px solid var(--ink);
+}
+.person:first-child {
+  padding-top: 0;
+}
+.face {
+  width: 72px;
+  height: 72px;
+  border: 3px solid var(--ink);
+  background: var(--white);
+  object-fit: cover;
+}
+.face.mono {
+  display: grid;
+  place-content: center;
+  background: var(--ink);
+  color: var(--paper);
+  font: 400 26px/1 var(--f-mast);
+  letter-spacing: 0.04em;
+}
+.person > div {
+  display: grid;
+  gap: 4px;
+  justify-items: start;
+}
+.person b {
+  font: 400 22px/1.1 var(--f-mast);
+  text-transform: uppercase;
+}
+/* The picture and the name are links to the person's page. */
+.facelink {
+  display: block;
+  width: 72px;
+  height: 72px;
+}
+.facelink .face {
+  display: grid;
+}
+.person b a {
+  color: inherit;
+  text-decoration: none;
+}
+.facelink:active .face,
+.person b a:active {
+  opacity: 0.6;
+}
+@media (hover: hover) {
+  .facelink .face {
+    transition: translate 0.15s ease-out, rotate 0.15s ease-out, box-shadow 0.15s ease-out;
+  }
+  .facelink:hover .face {
+    translate: 0 -3px;
+    rotate: -3deg;
+    box-shadow: 3px 5px 0 var(--ink);
+  }
+  .person b a:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+}
+.person .role {
+  padding: 2px 6px;
+  background: var(--hi);
+  font: 700 11.5px/1.3 var(--f-type);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.person small {
+  font-size: 13px;
+  line-height: 1.3;
+  color: var(--mute);
+}
+.person p {
+  font-size: 14.5px;
+  line-height: 1.45;
+}
+.person .go {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+/* Sponsorship: a card per tier, listing what it includes. What a tier adds
+   over the one before it is in bold. */
+.tiers {
+  justify-self: stretch;
+  display: grid;
+  gap: 18px;
+  align-items: start;
+}
+.tier {
+  gap: 12px;
+}
+.tier .stamp {
+  margin-left: 2px;
+}
+.ticks {
+  justify-self: stretch;
+  display: grid;
+  gap: 8px;
+}
+.ticks li {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr);
+  gap: 9px;
+  font-size: 14.5px;
+  line-height: 1.35;
+}
+.ticks li::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  margin-top: 3px;
+  border: 2px solid var(--ink);
+  background: var(--ink);
+  box-shadow: inset 0 0 0 2px var(--hi);
+}
+.ticks .new {
+  font-weight: 700;
+}
+.policies {
+  justify-self: stretch;
+}
+.policies li {
+  padding: 12px 0;
+  border-bottom: 2px solid var(--ink);
+  line-height: 1.45;
+}
+.policies li:first-child {
+  padding-top: 0;
+}
+a.mini {
+  display: inline-flex;
+  align-items: center;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+/* ---- 10. Floating bottom bar and social icons ----------------------------- */
+
+/* Both stay in the same place on every page. They are the last things in the
+   page and stick to the bottom, so the page scrolls beneath them and its end
+   is never hidden behind them. Each piece is its own cut-out label, with the
+   page showing through the gaps. */
+.dock {
+  position: sticky;
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  z-index: 6;
+  align-self: center;
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  width: min(100% - 24px, 540px);
+  margin: 8px 0 20px;
+  pointer-events: none;
+}
+.dock > * {
+  pointer-events: auto;
+}
+.tab {
+  flex: 1 1 0;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 3px;
+  min-width: 0;
+  min-height: 52px;
+  padding: 6px 1px 5px;
+  border: 3px solid var(--ink);
+  background: var(--white);
+  box-shadow: 3px 3px 0 var(--ink);
+  color: var(--ink);
+  font: 400 10.5px/1 var(--f-mast);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transform: rotate(var(--r, 0deg));
+}
+.tab:nth-child(odd) {
+  --r: -1.6deg;
+}
+.tab:nth-child(even) {
+  --r: 1.3deg;
+}
+.tab .icon {
+  width: 22px;
+  height: 22px;
+  transform-origin: 50% 85%;
+}
+.tab[aria-current] {
+  background: var(--ink);
+  color: var(--paper);
+}
+.reg {
+  flex: none;
+  position: relative;
+  display: grid;
+  place-content: center;
+  padding: 0 10px;
+  border: 3px solid var(--ink);
+  background: var(--hi);
+  box-shadow: 3px 3px 0 var(--ink);
+  font: 400 16px/1 var(--f-mast);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transform: rotate(-1.2deg);
+}
+.reg::before {
+  content: "";
+  position: absolute;
+  left: calc(50% - 24px);
+  top: -12px;
+  width: 48px;
+  height: 18px;
+  background: var(--tape);
+  transform: rotate(-5deg);
+}
+.tab:active,
+.reg:active {
+  translate: 2px 2px;
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+.foot {
+  position: sticky;
+  bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+  z-index: 6;
+  align-self: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0 0;
+  pointer-events: none;
+}
+.foot > a {
+  pointer-events: auto;
+  display: grid;
+  place-content: center;
+  width: 30px;
+  height: 30px;
+  border: 2px solid var(--ink);
+  background: var(--white);
+  box-shadow: 2px 2px 0 var(--ink);
+  color: var(--ink);
+}
+.foot > a:active {
+  translate: 2px 2px;
+  box-shadow: none;
+}
+.foot .icon {
+  width: 16px;
+  height: 16px;
+  stroke-width: 1.9;
+}
+
+/* ---- 11. Popups ------------------------------------------------------------ */
+
+/* Both popups are native dialogs: the browser keeps focus inside them, closes
+   them on Escape, and dims the page behind. Each fills the screen invisibly
+   and centres a card, so a tap outside the card lands on the dialog itself
+   and closes it. */
+.pop,
+.viewer {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  overflow: hidden;
+}
+.pop[open],
+.viewer[open] {
+  display: grid;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+  place-items: center;
+}
+.pop::backdrop,
+.viewer::backdrop {
+  background: var(--veil);
+}
+@keyframes pop {
+  from {
+    opacity: 0;
+    scale: 0.93;
+  }
+}
+
+/* A site in a frame, or the email form */
+/* The top padding leaves room for the close button above the card. */
+.pop {
+  padding: 62px 30px 36px;
+}
+.pop-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 400px;
+  height: min(78%, 780px);
+  max-height: 100%;
+  border: 3px solid var(--ink);
+  background: var(--paper);
+  box-shadow: 6px 6px 0 var(--ink);
+  animation: pop 0.22s ease-out;
+}
+.pop.small .pop-card {
+  height: auto;
+}
+.pop.small .embed {
+  min-height: 0;
+}
+/* A video: as wide as it can be, and 16 by 9. */
+.pop.video .pop-card {
+  max-width: 900px;
+  height: auto;
+}
+.pop.video .embed {
+  aspect-ratio: 16 / 9;
+  min-height: 0;
+}
+.pop-x,
+.vx {
+  position: absolute;
+  z-index: 4;
+  right: -13px;
+  top: -15px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 3px solid var(--ink);
+  background: var(--white);
+  box-shadow: 3px 3px 0 var(--ink);
+  font: 700 18px/1 var(--f-type);
+  cursor: pointer;
+}
+/* The popup's close button sits above the card, so it never covers what is
+   inside: an embedded page puts its own things in that corner. */
+.pop-x {
+  right: -3px;
+  top: -52px;
+}
+.pop-x:active,
+.vbtn:active {
+  background: var(--ink);
+  color: var(--white);
+}
+.pop-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+}
+.embed {
+  position: relative;
+  min-height: 300px;
+  overflow: hidden;
+  background: var(--white);
+}
+/* A frame stays invisible until its page has loaded, so nothing flickers.
+   The description shows only when there is no frame, or the frame is slow. */
+.embed.framed .embed-fall {
+  visibility: hidden;
+}
+.embed.framed.slow .embed-fall {
+  visibility: visible;
+}
+/* While the page inside loads: the joint swings. It gives way to the
+   description if loading is slow, and to the page once it is there. */
+.loading {
+  display: none;
+  position: absolute;
+  inset: 0;
+  place-content: center;
+  justify-items: center;
+  gap: 12px;
+  margin: 0;
+  font: 700 12px/1 var(--f-type);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+.loading .mark {
+  width: 44px;
+  height: 46px;
+  transform-origin: 50% 60%;
+  animation: swing 0.7s ease-in-out infinite alternate;
+}
+@keyframes swing {
+  from {
+    transform: rotate(-24deg);
+  }
+  to {
+    transform: rotate(24deg);
+  }
+}
+.embed.framed .loading {
+  display: grid;
+}
+.embed.framed.slow .loading,
+.embed.ready .loading {
+  display: none;
+}
+.embed-fall {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  padding: 26px 18px;
+}
+.embed-fall b {
+  font: 400 28px/1 var(--f-mast);
+  text-transform: uppercase;
+}
+.embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.embed iframe {
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+}
+.embed iframe.loaded {
+  opacity: 1;
+  background: var(--white);
+}
+/* Several embedded pages, one under another, in a popup that scrolls. Each
+   is as wide as the card and tall enough to show its whole page, and it is
+   invisible until it has loaded. */
+.popstack {
+  display: block;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.popstack .ctitle {
+  display: block;
+  margin: 0;
+  padding: 24px 18px 4px;
+}
+.popstack .day {
+  margin: 0;
+  padding: 8px 18px;
+}
+.stackframe {
+  position: relative;
+  height: 840px;
+  border-top: 3px solid var(--ink);
+}
+.stackframe .loading {
+  display: grid;
+  inset: 0 0 auto;
+  height: 260px;
+}
+.popstack iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: var(--white);
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+}
+.popstack iframe.loaded {
+  opacity: 1;
+}
+.pop-act {
+  display: flex;
+  justify-content: center;
+  padding: 10px 12px 12px;
+  border-top: 3px solid var(--ink);
+  background: var(--paper);
+}
+.pop-act .btn {
+  min-height: 44px;
+  font-size: 14px;
+}
+
+.compose {
+  display: grid;
+  gap: 6px;
+  padding: 22px 16px 14px;
+}
+.ctitle {
+  margin-bottom: 4px;
+  font: 400 28px/1 var(--f-mast);
+  text-transform: uppercase;
+}
+.clab {
+  margin-top: 4px;
+  font: 400 13px/1.2 var(--f-mast);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.compose .mail {
+  font-size: 14px;
+}
+.compose input,
+.compose textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  background: var(--white);
+  font: 16px/1.4 var(--f-type); /* 16px stops iOS zooming in on focus */
+  resize: none;
+}
+.compose input:focus-visible,
+.compose textarea:focus-visible {
+  outline-offset: 2px;
+}
+
+/* One photo, video or map: a taped print. The frame is one size on a given
+   screen, so the card and its arrows never move between items. */
+.viewer {
+  padding: 16px;
+  font: 13.5px/1.35 var(--f-type);
+  touch-action: none;
+  user-select: none;
+}
+.vcard {
+  position: relative;
+  display: grid;
+  gap: 8px;
+  max-width: 100%;
+  margin: 0;
+  padding: 8px 8px 10px;
+  border: 3px solid var(--ink);
+  background: var(--white);
+  box-shadow: 6px 6px 0 var(--ink);
+  rotate: -0.6deg;
+  animation: pop 0.22s ease-out;
+}
+.vstage {
+  --avail: min(100vw - 54px, 960px);
+  --h: min(58dvh, var(--avail) * 0.75);
+  position: relative;
+  width: min(var(--avail), var(--h) * 1.5);
+  height: var(--h);
+  overflow: hidden;
+  background: var(--ink);
+}
+.vstage img,
+.vstage video,
+.vstage iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  border: 0;
+  object-fit: contain;
+  background: var(--ink);
+}
+.vstage iframe {
+  background: var(--paper);
+}
+/* A product picture on a white background: the frame is white too, so the
+   picture has no black bars beside it. */
+.viewer.light .vstage,
+.viewer.light .vstage img {
+  background: var(--white);
+}
+.vcap {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  height: 4.05em;
+  max-width: 100%;
+  padding: 0 2px;
+  overflow: hidden;
+}
+.vcap a {
+  font-weight: 700;
+}
+/* No caption, only a credit: one line. */
+.viewer.nocap .vcap {
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  height: 1.35em;
+  min-height: 0;
+}
+.vrow {
+  display: grid;
+  grid-template-columns: 48px 1fr 48px;
+  align-items: center;
+  gap: 8px;
+}
+.vrow b {
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.vbtn {
+  display: grid;
+  place-content: center;
+  width: 48px;
+  height: 44px;
+  padding: 0;
+  border: 3px solid var(--ink);
+  background: var(--white);
+  cursor: pointer;
+}
+.vbtn .icon {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2.8;
+}
+.vbtn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.vx {
+  width: 44px;
+  font: 700 18px/1 var(--f-type);
+}
+/* A single item: no arrows or counter. */
+.viewer.solo .vrow {
+  display: none;
+}
+.viewer.solo .vcap {
+  height: auto;
+  min-height: 2.7em;
+  padding-bottom: 4px;
+}
+/* Nothing to say under the picture: no empty line either. */
+.viewer .vcap:empty {
+  display: none;
+}
+
+/* ---- 12. Motion ------------------------------------------------------------ */
+
+@keyframes pivot {
+  from {
+    transform: rotate(-34deg);
+  }
+  60% {
+    transform: rotate(8deg);
+  }
+  to {
+    transform: none;
+  }
+}
+.tab[aria-current] .icon {
+  animation: pivot 0.45s ease-out;
+}
+
+/* Pointing at things: they lift and swing about a pivot, like the joint the
+   site is named after. Phones have no hover, so none of this applies there. */
+@media (hover: hover) {
+  .tab,
+  .reg,
+  .foot > a,
+  .chip,
+  .backb,
+  .win,
+  .vlink {
+    transition: translate 0.15s ease-out, rotate 0.15s ease-out, box-shadow 0.15s ease-out;
+  }
+  .tab:hover:not(:active) {
+    translate: 0 -5px;
+    rotate: -2deg;
+    box-shadow: 4px 8px 0 var(--ink);
+  }
+  .tab:nth-child(even):hover:not(:active) {
+    rotate: 2deg;
+  }
+  .tab:hover .icon,
+  .foot > a:hover .icon {
+    animation: pivot 0.45s ease-out;
+  }
+  .reg:hover:not(:active) {
+    translate: 0 -5px;
+    rotate: -3deg;
+    box-shadow: 4px 8px 0 var(--ink);
+  }
+  .chip:hover:not([aria-current="true"]):not(:active) {
+    translate: 0 -4px;
+    rotate: -2deg;
+  }
+  .chip:nth-of-type(even):hover:not([aria-current="true"]):not(:active) {
+    rotate: 2deg;
+  }
+  .backb:hover:not(:active):not([aria-disabled="true"]) {
+    translate: 0 -3px;
+  }
+  .backb .icon {
+    transition: translate 0.15s ease-out;
+  }
+  .backb:hover .icon {
+    translate: -3px 0;
+  }
+  .backb.next:hover .icon {
+    translate: 3px 0;
+  }
+  .win .media img {
+    transition: filter 0.2s ease-out;
+  }
+  .win:hover .media img {
+    filter: none;
+  }
+  .win:hover:not(:active) {
+    translate: -1px -2px;
+    box-shadow: 7px 8px 0 var(--ink);
+  }
+  .vlink:hover:not(:active) {
+    translate: 0 -3px;
+    box-shadow: 3px 5px 0 var(--ink);
+  }
+  .tile img,
+  .strip img {
+    transition: transform 0.28s ease-out;
+  }
+  .tile:hover img,
+  .strip a:hover img {
+    transform: scale(1.08) rotate(-1.2deg);
+  }
+  .tile:nth-child(even):hover img,
+  .strip a:nth-child(even):hover img {
+    transform: scale(1.08) rotate(1.2deg);
+  }
+  .tile .dur {
+    transition: background 0.2s ease-out, color 0.2s ease-out;
+  }
+  .tile:hover .dur {
+    background: var(--hi);
+    color: var(--ink);
+  }
+  .foot > a {
+    transform-origin: 50% 100%;
+  }
+  .foot > a:hover:not(:active) {
+    translate: 0 -4px;
+    rotate: -9deg;
+    box-shadow: 3px 6px 0 var(--ink);
+    background: var(--hi);
+  }
+  .foot > a:nth-child(even):hover:not(:active) {
+    rotate: 9deg;
+  }
+}
+
+/* Moving between pages: the old page fades as the new one swings in, the
+   bottom bar and social icons stay where they are, and a project's picture
+   grows from its card into its page. Each page is a real page; the browser
+   animates between them. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+  @keyframes vt-out {
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes vt-in {
+    from {
+      opacity: 0;
+      transform: rotate(-1.4deg);
+    }
+  }
+  ::view-transition-old(root) {
+    animation: vt-out 0.16s ease-out both;
+  }
+  ::view-transition-new(root) {
+    animation: vt-in 0.26s ease-out both;
+    transform-origin: 24px 60px;
+  }
+  .dock {
+    view-transition-name: dock;
+  }
+  .foot {
+    view-transition-name: social;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .tile:hover img,
+  .strip a:hover img {
+    transform: none;
+  }
+}
+
+/* ---- 13. Wider screens ----------------------------------------------------- */
+
+@media (min-width: 700px) {
+  :root {
+    --gut: 40px;
+    --chrome: 162px; /* the sheet's top margin, the social icons, the bar */
+  }
+  .app {
+    background: var(--desk);
+  }
+  .sheet,
+  .proj {
+    width: calc(100% - 48px);
+    max-width: 1040px;
+    margin: 24px auto;
+    padding: 0 40px 40px;
+    background: var(--paper);
+    box-shadow: 0 2px 0 var(--soft);
+  }
+  .sheet {
+    gap: 36px;
+  }
+  .sheet.fit {
+    margin-bottom: 0;
+  }
+  .proj {
+    max-width: 820px;
+    padding-top: 28px;
+  }
+  .hero {
+    margin: 0;
+  }
+  .subnav {
+    justify-content: flex-start;
+    gap: 28px;
+    padding: 12px var(--gut);
+  }
+  .chip {
+    gap: 7px;
+    font-size: 13.5px;
+  }
+  .chip::before {
+    width: 15px;
+    height: 15px;
+  }
+
+  .facts {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .facts .wide {
+    grid-column: auto;
+  }
+  .agenda {
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+
+  .one {
+    gap: 12px;
+    padding: 20px 36px 16px;
+  }
+  .logo .mark {
+    width: 40px;
+    height: 40px;
+  }
+  .logo b {
+    font-size: 40px;
+  }
+  .logo .tagline {
+    font-size: 13px;
+  }
+  .ev {
+    font-size: clamp(56px, 6vw, 88px);
+  }
+  .card.big {
+    gap: 14px;
+    padding: 22px;
+  }
+  .card .ch,
+  .chrow .ch {
+    font-size: 36px;
+  }
+  .card.lead .btn {
+    align-self: start;
+  }
+  /* Four in a row. */
+  .kit {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  .kit .n {
+    font-size: 38px;
+  }
+  .kit b {
+    font-size: 15px;
+  }
+  .vlink {
+    gap: 6px;
+    min-height: 40px;
+    padding: 4px 12px 4px 9px;
+    font-size: 13px;
+  }
+  .vlink .icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .wall {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 26px;
+  }
+  .strip {
+    grid-template-columns: repeat(8, 1fr);
+    gap: 6px;
+  }
+  .strip img {
+    aspect-ratio: 1;
+  }
+
+  .g-nav {
+    padding: 14px 32px;
+  }
+  .grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 3px;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .accts,
+  .orgs {
+    grid-template-columns: 1fr 1fr;
+  }
+  .people {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 36px;
+  }
+  .person:nth-child(2) {
+    padding-top: 0;
+  }
+  .tiers {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .dock {
+    bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .foot {
+    bottom: calc(86px + env(safe-area-inset-bottom, 0px));
+    gap: 10px;
+  }
+
+  .pop {
+    padding: 58px 18px 22px;
+  }
+  .pop-card {
+    max-width: 500px;
+    height: min(92%, 770px);
+  }
+  .stackframe {
+    height: 740px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .grid {
+    grid-template-columns: repeat(7, 1fr);
+  }
+}

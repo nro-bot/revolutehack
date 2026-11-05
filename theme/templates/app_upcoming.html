@@ -1,0 +1,68 @@
+{% extends "app_base.html" %}
+{# The homepage: the upcoming hackathon. Four cards, one per tab, each sized
+   to fit the screen. Content: content/data/page.yaml. #}
+{% block main %}
+<div class="sheet panels fit">
+  {{ ui.subnav([('overview', 'Overview'), ('hardware', 'Hardware'), ('agenda', 'Agenda'), ('faq', 'FAQ')]) }}
+  <div class="one">
+    <div class="logo">{{ ui.mark() }}<b>{{ site.name|e }}</b><span class="tagline">{{ site.tagline|map('e')|join('<br>') }}</span></div>
+
+    <section class="panel" id="overview" aria-label="Overview">
+      <div class="card big lead">
+        <div class="cmedia"><img src="{{ SITEURL }}/images/{{ page.photo.src }}" alt="{{ page.photo.alt|e }}" fetchpriority="high" decoding="async"></div>
+        {% if page.kicker %}<p class="kick">{{ page.kicker|e }}</p>{% endif %}
+        <h1 class="ev">{{ page.title|e }}</h1>
+        {{ ui.facts(page.facts) }}
+        {{ ui.register('btn hi') }}
+      </div>
+    </section>
+
+    <section class="panel" id="hardware" aria-label="Hardware">
+      <div class="card big hw">
+        <div class="chrow">
+          <h2 class="ch">{{ page.hardware.title|e }}</h2>
+          {% set v = page.hardware.video %}
+          {% if v %}
+          <a class="vlink" href="{{ SITEURL }}/images/{{ v.src }}" data-view="video" data-poster="{{ SITEURL }}/images/{{ v.poster }}">{{ ui.icon('play') }}<span>{{ v.label|e }}</span></a>
+          {% endif %}
+        </div>
+        <ul class="kit">
+          {% for it in page.hardware['items'] %}
+          <li>
+            {% if it.youtube %}
+            <a href="{{ it.watch }}" target="_blank" rel="noopener" {{ ui.pop(it.name, '', it.embed, 'Open on YouTube', 'video') }}>
+            {% else %}
+            <a href="{{ SITEURL }}/images/{{ it.photo }}" data-view="photo" data-light data-alt="{{ it.caption|e }}">
+            {% endif %}
+              <span class="n">{{ it.count|e }}</span><b>{{ it.name|e }}</b><span class="kph"><img src="{{ SITEURL }}/images/{{ it.photo }}" alt="" fetchpriority="low" decoding="async"></span>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </section>
+
+    <section class="panel" id="agenda" aria-label="Agenda">
+      <div class="card big">
+        {% set place = page.facts|selectattr('map')|first %}
+        <div class="chrow">
+          <h2 class="ch">Agenda</h2>
+          {% if place %}<p class="meet">Meet @ {{ ui.map_link(place.map, place.map.title, place.map.title ~ ': open the map') }}</p>{% endif %}
+        </div>
+        {{ ui.agenda(page.agenda) }}
+      </div>
+    </section>
+
+    <section class="panel" id="faq" aria-label="FAQ">
+      <div class="card big">
+        <h2 class="ch">FAQ</h2>
+        <div class="faq">
+          {% for item in page.faq %}
+          <details{% if item.open %} open{% endif %}><summary>{{ item.q|e }}</summary><p>{{ item.a|e }}</p></details>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+{% endblock %}

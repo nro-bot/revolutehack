@@ -3,37 +3,102 @@
 A Pelican site for the Revolute hackathon. **All content lives in plain-text
 data files — no HTML to edit.**
 
+The site is built like an app: a floating bar at the bottom moves between four
+pages, each page has a row of tick-box tabs for its sections, and sign-up,
+social accounts, photos and maps open in popups. Each page is still a real
+page with its own address.
+
 ## What goes where
 
-- `content/data/*.yaml` — **the files you normally edit.** Every bit of copy
-  (hero, footer, and all sections) is plain YAML, one file per page. No tags,
-  no closing elements. `page.yaml` is the homepage; any other file, e.g.
-  `sponsorship.yaml`, becomes its own page at `/<filename>/` (see below).
-- `content/images/` — logos and photos referenced from a YAML file live here.
-  Drop a file in and point a `src:`/`img:`/`svg:`/`photo:` field at it by
-  filename.
-- `plugins/yaml_page.py` — reads every `content/data/*.yaml` file and
-  generates a page for each.
-- `theme/templates/page.html` — the layout plus one small macro per section
-  type.
-- `theme/static/css/style.css` — all styling.
+- `content/data/*.yaml` — **the files you normally edit.** One file per page,
+  plus two shared files whose names start with `_`. Each file starts with a
+  comment explaining its fields.
+- `content/images/` — every picture and clip the site publishes. Web-sized
+  files only: keep camera originals out of the repo (`content/raw/` is ignored
+  by git for that purpose).
+- `plugins/yaml_page.py` — turns the YAML files into pages.
+- `theme/templates/app_*.html` — the app pages: one shared shell
+  (`app_base.html`), one template per page, and shared pieces
+  (`app_macros.html`).
+- `theme/static/css/app.css`, `theme/static/js/app.js` — their styling and
+  behaviour. Fonts are in `theme/static/fonts/`.
+- `scripts/check_links.py` — checks a built site for broken local links.
 - `pelicanconf.py` — Pelican config (wires in the plugin).
 
 ## Pages
 
-| File                              | URL             |
-|------------------------------------|-----------------|
-| `content/data/page.yaml`           | `/` (homepage)  |
-| `content/data/sponsorship.yaml`    | `/sponsorship/` |
-| `content/data/organizers.yaml`     | `/organizers/`  |
-| `content/data/events.yaml`         | `/events/`      |
-| `content/data/gallery.yaml`        | `/gallery/`     |
+| File                            | URL                  | What it is |
+|---------------------------------|----------------------|------------|
+| `content/data/page.yaml`        | `/`                  | The upcoming hackathon: Overview, Hardware, Agenda, FAQ |
+| `content/data/previous.yaml`    | `/previous/`         | The last hackathon: Winners, Entries, Agenda, Photos, About |
+| `content/data/gallery.yaml`     | `/gallery/`          | Every photo and video, filtered by All, Photos, Videos |
+| `content/data/community.yaml`   | `/community/`        | Social, Events, Affiliates, Team |
+| `content/data/_projects.yaml`   | `/projects/<slug>/`  | One page per hackathon entry |
+| `content/data/_site.yaml`       | —                    | Shared by every page: the bottom bar, the Register link, social accounts |
 
-To add a new page, drop a new `content/data/<slug>.yaml` file with the same
-top-level shape as the others (`title`, `sections:`, etc.) — it'll build to
-`/<slug>/` automatically. To surface it in the sidebar (and the mobile menu)
-on every page, add it to `NAV_LINKS` in `pelicanconf.py`; a page never lists
-itself, since each entry's `slug` is compared against the current page's.
+A file with a `layout:` line is an app page. The older pages below have no
+`layout:` line and still use the original design. See "Legacy pages".
+
+| File                            | URL             |
+|---------------------------------|-----------------|
+| `content/data/events.yaml`      | `/events/`      |
+
+## Common edits
+
+**Change the Register link.** In `_site.yaml`, under `register:`, set `url` to
+the event's Luma page and `embed` to its "Embed Event Page" address (on Luma:
+the event's manage page, More, "Embed Registration Button"). Every Register
+button on the site follows.
+
+**Change the upcoming hackathon.** Edit `page.yaml`: `title`, the `facts`
+tiles, `hardware`, `agenda`, `faq`. Each tab's card is sized to fit one
+screen, so keep the lists short.
+
+**Add a hackathon entry.** Add a block to `_projects.yaml` and put its media
+in `content/images/projects/<slug>/`: `poster.jpg` (required) and
+`preview.mp4` (optional, a silent 6 to 8 second loop). The entry appears on
+`/previous/` and gets its own page.
+
+**Add photos or videos to the gallery.** Drop them into an album folder in
+`content/images/`, such as `hackday/`. Photos are resized when the site is
+built. Videos are published as they are, so compress them first. Captions are
+optional and go in `gallery.yaml`. A new album folder needs two lines: an
+entry under `albums:` in `gallery.yaml`, and its folder in
+`STATIC_EXCLUDE_PATHS` in `pelicanconf.py`.
+
+**Add an event or an affiliate.** Edit `community.yaml`. Past events drop off
+the page the next time the site is built.
+
+**Add a social account.** Add it under `social:` in `_site.yaml`. It appears
+in the row of icons on every page and on the Community page.
+
+## How the app pages work
+
+- **Tabs are links.** Each tab points at a section's id, such as `#agenda`,
+  and the stylesheet shows the section the address points at. This works with
+  JavaScript turned off, and every section has its own shareable address.
+- **Popups are links too.** A Register button is a link to Luma, a gallery
+  tile is a link to the photo. The script opens them in a popup instead. Open
+  one in a new tab and you get the real page.
+- **Sites shown in popups** (Luma, Instagram, YouTube, a map, affiliates) are
+  loaded in a frame only when the popup opens. The build collects their
+  addresses from every `embed:` line in the YAML and allows exactly those in
+  the page's Content Security Policy. A site that refuses to be framed should
+  have its `embed:` line removed: the popup then shows a short description
+  and a button to the site.
+- **Moving between pages** uses the browser's own page transitions, and pages
+  start loading when a link is hovered or touched.
+
+## Legacy pages
+
+Everything from here to "Build" describes the original design, still used by
+`events.yaml`. That page is rendered by `theme/templates/page.html` and
+styled by `theme/static/css/style.css`. The app pages do not use any of it.
+The organizers are now the Team tab on `/community/` (`team:` in
+`community.yaml`), and `/sponsorship/` is an app page.
+
+To surface a legacy page in the legacy sidebar, add it to `NAV_LINKS` in
+`pelicanconf.py`.
 
 ## The header announcement
 
@@ -108,7 +173,7 @@ To support a brand-new section type, add a macro in
 Inline HTML (like a link) is allowed inside any text value if you need it —
 e.g. `value: '<a href="…">FabLab Kendall</a>, Cambridge'` — but it's optional.
 
-## Build
+## Build (pip)
 
     pip install -r requirements.txt
     pelican content -o output -s pelicanconf.py
@@ -118,9 +183,28 @@ Live preview while editing:
 
     pelican --autoreload --listen content -o output -s pelicanconf.py
 
+## Build (uv)
+    curl -LsSf https://astral.sh/uv/install.sh | sh   # install uv (once)
+    uv venv --python 3.12                             # create .venv (once)
+    uv pip install -r requirements.txt                # install deps (once)
+  
+  Live preview while editing:
+
+    uv run pelican --autoreload --listen content -o output -s pelicanconf.py
+    # open http://127.0.0.1:8000/
+
+Check the built site for broken local links:
+
+    uv run python scripts/check_links.py output
+
+Preview through the local server, not by opening the files directly: the app
+pages load their script as a module, which browsers only allow over http.
+
 ## Deploy (GitHub Pages)
 
 `.github/workflows/deploy.yml` builds and publishes on every push to `main`.
+`.github/workflows/build.yml` builds every other branch and every pull request
+and checks the links, without publishing.
 One-time setup: **Settings → Pages → Build and deployment → Source: GitHub
 Actions**. Dependencies are pinned in `requirements.txt` so local and CI builds
 match.

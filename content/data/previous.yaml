@@ -1,0 +1,76 @@
+# =============================================================================
+#  Revolute: the previous hackathon (content/data/previous.yaml)
+# =============================================================================
+#  Renders to /previous/. Five tabs: Winners, Entries, Agenda, Photos, About.
+#  Winners and Entries come from _projects.yaml. Everything else is here.
+# =============================================================================
+
+layout: previous
+title: "Revolute v1.08"
+description: "Revolute Hackathon v1.08: cooking with robot arms. Aug. 1–2, 2026 at FabLab Kendall, Cambridge. Winners, every entry, the agenda and photos."
+
+# The line under the tabs.
+kicker: "Revolute v1.08 · Cooking with robot arms"
+
+# ---- Agenda -----------------------------------------------------------------
+agenda:
+  - day: "Saturday, Aug. 1"
+    rows:
+      - { when: "10:00 AM", what: "Intro tutorial", note: "Setting up the hardware and software stack" }
+      - { when: "12:01 PM", what: "Opening ceremony" }
+      - { when: "1:00 PM",  what: "Lunch and office hours", note: "Form teams, mentors available for setup" }
+      - { when: "2:00 PM",  what: "Hacking begins" }
+      - { when: "6:15 PM",  what: "Intermission: dinner" }
+      - { when: "10:00 PM", what: "Hacking ends for the day" }
+  - day: "Sunday, Aug. 2"
+    rows:
+      - { when: "10:00 AM", what: "Doors open, breakfast bites" }
+      - { when: "12:01 PM", what: "Lunch" }
+      - { when: "3:00 PM",  what: "Science-fair style demos and judging", note: "Judges go around to tables for demos" }
+      - { when: "4:00 PM",  what: "Final submissions", note: "GitHub, project documentation, and a one-minute video" }
+      - { when: "4:15 PM",  what: "Awards" }
+      - { when: "4:30 PM",  what: "Light snacks and social" }
+      - { when: "5:00 PM",  what: "That’s a wrap!" }
+
+# ---- Photos -----------------------------------------------------------------
+#  A short strip taken from a gallery album (a folder in content/images/).
+#  `pick` lists the photos to show, in order, by any part of their filename.
+#  Captions and the credit for the album are written in gallery.yaml.
+photos:
+  folder: hackday
+  pick: [DSC02691, DSC00696, DSC01429, DSC00691, DSC02415, DSC00830, DSC02517, DSC02452]
+  credit: "Photo: James R Desmond"
+  gallery_label: "Gallery"
+
+# ---- About ------------------------------------------------------------------
+facts:
+  - label: "When"
+    value: "Aug. 1–2, 2026"
+  - label: "Where"
+    value: "FabLab Kendall, Cambridge"
+    map:
+      title: "FabLab Kendall"
+      address: "325 Main St, Cambridge, MA 02142"
+      embed: "https://www.google.com/maps?q=FabLab%20Kendall%2C%20325%20Main%20St%2C%20Cambridge%2C%20MA%2002142&z=16&output=embed"
+      url: "https://www.google.com/maps/search/?api=1&query=FabLab+Kendall%2C+325+Main+St%2C+Cambridge%2C+MA+02142"
+      apple_url: "https://maps.apple.com/?q=FabLab+Kendall&address=325+Main+St%2C+Cambridge%2C+MA+02142"
+  - label: "Hardware"
+    value: "$15k of robot arms"
+
+thanks:
+  - { label: "Host",     value: "Fab Foundation, at FabLab Kendall" }
+  - { label: "Sponsors", value: "Seeed Studio, Minoic Intelligence" }
+  - { label: "Partner",  value: "MITERS" }
+  - { label: "Judges",   value: "Sayam Dhingra (Autodesk), Charis Georgiou (Minoic Intelligence), Erika Tsutshumi (Elemental Machines), Yuki Yamada (Walden Robotics), Charles Yong (Vassar Robotics)" }
+  - { label: "Photos",   value: "James R Desmond" }
+
+# One link each. `note` (a small line under the link) and `embed` are
+# optional: with `embed`, the link opens in a popup.
+links:
+  - text: "Luma"
+    note: "Registration has ended"
+    url: "https://luma.com/kxq4yxr8"
+    embed: "https://luma.com/embed/event/evt-cW5gZ6vjmv8zPmR/simple"
+    action: "Open on Luma"
+  - text: "Devpost"
+    url: "https://revolute-hackathon.devpost.com/project-gallery"

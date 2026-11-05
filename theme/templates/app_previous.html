@@ -1,0 +1,54 @@
+{% extends "app_base.html" %}
+{# The previous hackathon. Content: content/data/previous.yaml, with the
+   entries from content/data/_projects.yaml. #}
+{% block main %}
+<div class="sheet panels">
+  {{ ui.subnav([('winners', 'Winners'), ('entries', 'Entries'), ('agenda', 'Agenda'), ('photos', 'Photos'), ('about', 'About')]) }}
+  <h1 class="pagekick">{{ (page.kicker or page.title)|e }}</h1>
+
+  <section class="panel" id="winners" aria-label="Winners">
+    <div class="wall">
+      {% for p in projects if p.place %}{{ ui.project_card(p) }}{% endfor %}
+    </div>
+  </section>
+
+  <section class="panel" id="entries" aria-label="All entries">
+    <div class="wall">
+      {% for p in projects %}{{ ui.project_card(p) }}{% endfor %}
+    </div>
+  </section>
+
+  <section class="panel" id="agenda" aria-label="Agenda">
+    {{ ui.agenda(page.agenda) }}
+  </section>
+
+  <section class="panel" id="photos" aria-label="Photos">
+    <div class="strip">
+      {% for it in page.photo_items %}
+      <a href="{{ SITEURL }}/images/{{ it.full }}" data-view="photo" data-group="strip" data-thumb="{{ SITEURL }}/images/{{ it.src }}" data-credit="{{ it.credit|e }}"><img src="{{ SITEURL }}/images/{{ it.src }}" alt="{{ it.alt|e }}" loading="lazy" decoding="async"></a>
+      {% endfor %}
+    </div>
+    <div><a class="btn" href="{{ SITEURL }}/gallery/#photos">{{ (page.photos.gallery_label or 'Gallery')|e }}</a></div>
+  </section>
+
+  <section class="panel" id="about" aria-label="About">
+    {{ ui.facts(page.facts) }}
+    <section class="sec">
+      <h2 class="lab">Thanks</h2>
+      <dl class="thanks">
+        {% for t in page.thanks %}
+        <div><dt>{{ t.label|e }}</dt><dd>{{ t.value|e }}</dd></div>
+        {% endfor %}
+      </dl>
+    </section>
+    <section class="sec">
+      <h2 class="lab">Links</h2>
+      <ul class="linklist">
+        {% for l in page.links %}
+        <li><a class="go" href="{{ l.url|e }}" target="_blank" rel="noopener"{% if l.embed %} {{ ui.pop(l.text, l.note or '', l.embed, l.action or 'Open') }}{% endif %}>{{ l.text|e }}</a>{% if l.note %}<small>{{ l.note|e }}</small>{% endif %}</li>
+        {% endfor %}
+      </ul>
+    </section>
+  </section>
+</div>
+{% endblock %}

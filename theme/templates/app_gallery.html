@@ -1,0 +1,20 @@
+{% extends "app_base.html" %}
+{# Every photo and video, with three filters. Content: content/data/gallery.yaml.
+   The filters are plain links: the stylesheet hides the other kind when
+   #photos or #videos is the address's target. #}
+{% block main %}
+<div class="gal">
+  <span class="anchor" id="all"></span><span class="anchor" id="photos"></span><span class="anchor" id="videos"></span>
+  {{ ui.subnav([('all', 'All'), ('photos', 'Photos'), ('videos', 'Videos')], 'Filter', 'g-nav') }}
+  <h1 class="vh">{{ page.title|e }}</h1>
+  <div class="grid">
+    {% for it in page['items'] %}
+    {% if it.kind == 'photo' %}
+    <a class="tile" href="{{ SITEURL }}/images/{{ it.full }}" data-view="photo" data-kind="photo" data-group="gallery" data-thumb="{{ SITEURL }}/images/{{ it.src }}" data-credit="{{ it.credit|e }}"><img src="{{ SITEURL }}/images/{{ it.src }}" alt="{{ it.alt|e }}" loading="lazy" decoding="async"></a>
+    {% else %}
+    <a class="tile" href="{{ SITEURL }}/images/{{ it.video }}" data-view="video" data-kind="video" data-group="gallery"{% if it.poster %} data-poster="{{ SITEURL }}/images/{{ it.poster }}"{% endif %} data-credit="{{ it.credit|replace('Photo:', 'Video:')|e }}">{% if it.poster %}<img src="{{ SITEURL }}/images/{{ it.poster }}" alt="{{ it.alt|e }}" loading="lazy" decoding="async">{% endif %}<span class="dur">{{ (it.duration or 'Video')|e }}</span></a>
+    {% endif %}
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
