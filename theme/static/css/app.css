@@ -70,7 +70,7 @@
 
   /* Side gutter, and the room the bottom bar and social icons take up. */
   --gut: 20px;
-  --chrome: 126px;
+  --chrome: 132px;
 
   color-scheme: light;
 }
@@ -1054,6 +1054,11 @@ textarea {
 .stamp.gold {
   background: var(--hi);
 }
+/* Under a project's picture: "Winner · 1st place · Revolute v1.08". */
+.pmeta {
+  font-size: 15px;
+  line-height: 1.4;
+}
 .ptitle2 {
   font: 400 clamp(48px, 15vw, 88px) / 0.9 var(--f-mast);
   text-transform: uppercase;
@@ -1535,8 +1540,8 @@ a.mini {
   pointer-events: auto;
   display: grid;
   place-content: center;
-  width: 30px;
-  height: 30px;
+  width: 36px;
+  height: 36px;
   border: 2px solid var(--ink);
   background: var(--white);
   box-shadow: 2px 2px 0 var(--ink);
@@ -1547,8 +1552,8 @@ a.mini {
   box-shadow: none;
 }
 .foot .icon {
-  width: 16px;
-  height: 16px;
+  width: 19px;
+  height: 19px;
   stroke-width: 1.9;
 }
 
@@ -1859,6 +1864,13 @@ a.mini {
 .vstage iframe {
   background: var(--paper);
 }
+/* A picture that is a link fills the frame, so a tap anywhere on it follows it. */
+.vstage a {
+  position: absolute;
+  inset: 0;
+  display: block;
+  cursor: pointer;
+}
 /* A product picture on a white background: the frame is white too, so the
    picture has no black bars beside it. */
 .viewer.light .vstage,
@@ -2097,7 +2109,7 @@ a.mini {
 @media (min-width: 700px) {
   :root {
     --gut: 40px;
-    --chrome: 162px; /* the sheet's top margin, the social icons, the bar */
+    --chrome: 168px; /* the sheet's top margin, the social icons, the bar */
   }
   .app {
     background: var(--desk);

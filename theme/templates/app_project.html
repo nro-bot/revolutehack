@@ -9,9 +9,9 @@
     {% if p.preview %}<video src="{{ SITEURL }}/images/{{ p.preview }}" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>{% endif %}
   </div>
   {% if p.place %}
-  <p class="stamp gold">Winner · {{ ui.ORDINAL[p.place] }} place · {{ projects_event|e }}</p>
+  <p class="pmeta">Winner · {{ ui.ORDINAL[p.place] }} place · {{ projects_event|e }}</p>
   {% else %}
-  <p class="stamp">Entry · {{ projects_event|e }}</p>
+  <p class="pmeta">Entry · {{ projects_event|e }}</p>
   {% endif %}
   <h1 class="ptitle2">{{ p.name|e }}</h1>
   <p class="lede">{{ p.tagline|e }}</p>

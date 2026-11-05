@@ -52,8 +52,9 @@ hardware:
   # One tile each, with the maker's own product picture. Tapping a tile opens
   # its picture in a popup, with nothing written under it. The `caption` is
   # not shown: it describes the picture for screen readers. The `credit` is
-  # not shown either: it records whose picture it is. A tile with a
-  # `youtube:` line plays
+  # not shown either: it records whose picture it is. With a `link:` line,
+  # tapping the picture in the popup opens that address, such as the
+  # product's page on its maker's site. A tile with a `youtube:` line plays
   # that video in the popup instead: `youtube` is the part of the video's
   # address after "watch?v=". `youtube_start` skips that many seconds in.
   items:
@@ -67,6 +68,7 @@ hardware:
       photo: "kit/leader-arm.jpg"
       caption: "Leader arm: StarAI Arm Violin. One per team, for teleoperation and imitation learning."
       credit: "Image: Seeed Studio"
+      link: "https://www.seeedstudio.com/StarAi-Arm-Violin-p-6571.html"
     - count: "1×"
       name: "Jetson Orin Nano, 8 GB"
       photo: "kit/jetson.jpg"
@@ -79,6 +81,7 @@ hardware:
       photo: "kit/cameras.jpg"
       caption: "RealSense D405 depth cameras. Two per team: one overhead, one on the wrist."
       credit: "Image: RealSense"
+      link: "https://www.realsenseai.com/products/d405-series/"
 
 # ---- Agenda -----------------------------------------------------------------
 #  CARRIED OVER from the August 2026 hackathon, moved onto the new dates.
