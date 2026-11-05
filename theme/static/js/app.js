@@ -77,7 +77,7 @@ let slowTimer = 0;
 function loadFrame(address, title) {
   clearTimeout(slowTimer);
   popFrame.classList.remove('loaded');
-  embedBox.classList.remove('slow');
+  embedBox.classList.remove('slow', 'ready');
   embedBox.classList.add('framed');
   slowTimer = setTimeout(() => embedBox.classList.add('slow'), 6000);
   popFrame.hidden = false;
@@ -101,7 +101,7 @@ function openPop(link) {
   popFrame.classList.remove('loaded');
   popFrame.removeAttribute('src');
   popFrame.hidden = true;
-  embedBox.classList.remove('framed', 'slow');
+  embedBox.classList.remove('framed', 'slow', 'ready');
 
   // Several pages, one under another: they are written into the page as a
   // <template>, so they only start loading now.
@@ -155,6 +155,7 @@ popFrame.addEventListener('load', () => {
   if (!popFrame.getAttribute('src')) return;
   clearTimeout(slowTimer);
   embedBox.classList.remove('slow');
+  embedBox.classList.add('ready');
   popFrame.classList.add('loaded');
 });
 pop.addEventListener('close', () => {

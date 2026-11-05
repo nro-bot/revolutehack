@@ -26,6 +26,9 @@
 {# The revolute joint: one link swung about a pivot. #}
 {% macro mark() %}<svg class="mark" viewBox="0 0 72 76" aria-hidden="true" focusable="false"><rect class="mark-ink" x="30" y="46" width="12" height="26"/><rect class="mark-ink" x="22" y="68" width="28" height="6"/><g transform="rotate(32 36 46)"><rect class="mark-link" x="30" y="6" width="12" height="44" rx="6"/></g><circle class="mark-pivot" cx="36" cy="46" r="9.5"/><circle class="mark-ink" cx="36" cy="46" r="2.6"/></svg>{% endmacro %}
 
+{# Shown in a popup while the page inside it loads. #}
+{% macro loading() %}<p class="loading" role="status">{{ mark() }}<span>Loading</span></p>{% endmacro %}
+
 {# Attributes that make a link open in the embed popup. The link keeps its
    real address, so it still works without JavaScript. `embed` is optional. #}
 {% macro pop(title, about, embed, action, shape='') %}data-pop="embed" data-title="{{ title|e }}" data-about="{{ about|e }}"{% if embed %} data-embed="{{ embed|e }}"{% endif %}{% if action %} data-action="{{ action|e }}"{% endif %}{% if shape %} data-shape="{{ shape }}"{% endif %}{% endmacro %}

@@ -71,6 +71,7 @@
     <div class="pop-body" id="pop-embed">
       <div class="embed">
         <div class="embed-fall"><b id="pop-title"></b><p id="pop-about"></p></div>
+        {{ ui.loading() }}
         <iframe id="pop-frame" title="" allow="autoplay; fullscreen; payment; encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" hidden></iframe>
       </div>
     </div>
@@ -96,7 +97,7 @@
   {% for heading, group in [('Upcoming', s.upcoming), ('Past', s.past)] if group %}
   <h3 class="day">{{ heading }}</h3>
   {% for ev in group %}
-  <iframe data-src="{{ ev.embed|e }}" title="{{ ev.title|e }}, {{ ev.label|e }}" allow="fullscreen; payment" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+  <div class="stackframe">{{ ui.loading() }}<iframe data-src="{{ ev.embed|e }}" title="{{ ev.title|e }}, {{ ev.label|e }}" allow="fullscreen; payment" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
   {% endfor %}
   {% endfor %}
 </template>
