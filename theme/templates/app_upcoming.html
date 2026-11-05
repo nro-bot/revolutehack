@@ -28,7 +28,7 @@
         </div>
         <ul class="kit">
           {% for it in page.hardware['items'] %}
-          <li><a href="{{ SITEURL }}/images/{{ it.photo }}" data-view="photo" data-cap="{{ it.caption|e }}" data-credit="{{ (it.credit or '')|e }}"><span class="n">{{ it.count|e }}</span><b>{{ it.name|e }}</b><span class="kph"><img src="{{ SITEURL }}/images/{{ it.photo }}" alt="" loading="lazy" decoding="async"></span></a></li>
+          <li><a href="{{ SITEURL }}/images/{{ it.photo }}" data-view="photo" data-cap="{{ it.caption|e }}" data-credit="{{ (it.credit or '')|e }}"><span class="n">{{ it.count|e }}</span><b>{{ it.name|e }}</b><span class="kph"><img src="{{ SITEURL }}/images/{{ it.photo }}" alt="" fetchpriority="low" decoding="async"></span></a></li>
           {% endfor %}
         </ul>
       </div>

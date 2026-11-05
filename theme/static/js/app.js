@@ -5,7 +5,7 @@
 // adds the app feel on top. It has no dependencies and builds nothing.
 //
 //   1. Section tabs    mark the current tab
-//   2. Popups          shared open/close, with the phone's back button
+//   2. Popups          closing on a tap outside the card
 //   3. Embed popup     Luma, Instagram, YouTube, affiliates, and the email form
 //   4. Media viewer    one photo, video or map, with stepping through a group
 //   5. Preview clips   which project clip is playing
@@ -29,31 +29,17 @@ function syncTabs() {
 }
 
 // ---- 2. Popups --------------------------------------------------------------
-// Both popups are <dialog> elements, so the browser handles focus, Escape and
-// the dimmed page behind. Opening one adds a step to the browser's history,
-// which makes the back button (or the back gesture on a phone) close it.
-
-function openDialog(dialog) {
-  if (dialog.open) return;
-  dialog.showModal();
-  history.pushState({ ...history.state, dialog: dialog.id }, '');
-}
+// Both popups are <dialog> elements opened with showModal(), so the browser
+// does the hard parts: it keeps focus inside, dims and disables the page
+// behind, and closes on Escape and on Android's back button or back gesture.
+// The only thing added here is closing on a tap outside the card.
 
 for (const dialog of $$('dialog')) {
   dialog.addEventListener('click', (event) => {
     // A click on the dialog itself is a click outside its card.
     if (event.target === dialog || event.target.closest('[data-close]')) dialog.close();
   });
-  dialog.addEventListener('close', () => {
-    if (history.state?.dialog === dialog.id) history.back();
-  });
 }
-
-addEventListener('popstate', () => {
-  for (const dialog of $$('dialog[open]')) {
-    if (history.state?.dialog !== dialog.id) dialog.close();
-  }
-});
 
 // ---- 3. Embed popup ---------------------------------------------------------
 // A link with data-pop="embed" opens its site in a frame, with a button to the
@@ -105,11 +91,12 @@ function openPop(link) {
       popFrame.src = embed;
     }
   }
-  openDialog(pop);
+  if (!pop.open) pop.showModal();
 }
 
 popFrame.addEventListener('load', () => popFrame.classList.add('loaded'));
 pop.addEventListener('close', () => {
+  if (pop.open) return; // already reopened
   // Emptying the frame stops whatever was playing in it.
   popFrame.removeAttribute('src');
   popFrame.hidden = true;
@@ -206,6 +193,7 @@ function step(offset) {
 prevButton.addEventListener('click', () => step(-1));
 nextButton.addEventListener('click', () => step(1));
 viewer.addEventListener('close', () => {
+  if (viewer.open) return; // already reopened
   stage.replaceChildren(); // stops a playing video
   shown = null;
 });
@@ -236,16 +224,22 @@ viewer.addEventListener('pointerup', (event) => {
 // still frames.
 
 const clips = $$('[data-clip]');
-const onScreen = new Set();
 let pointedAt = null;
 
 function inViewport(el) {
   const box = el.getBoundingClientRect();
   return box.width > 0 && box.bottom > 0 && box.top < innerHeight;
 }
+// The part of the screen a clip has to reach before it plays: clear of the
+// tabs at the top and of the bottom bar.
+function inPlayZone(el) {
+  const box = el.getBoundingClientRect();
+  return box.width > 0 && box.bottom > innerHeight * 0.08 && box.top < innerHeight * 0.72;
+}
 
 function pickClip() {
-  const playing = pointedAt && inViewport(pointedAt) ? pointedAt : clips.find((clip) => onScreen.has(clip) && isShown(clip));
+  if (!clips.length || reducedMotion) return;
+  const playing = pointedAt && inViewport(pointedAt) ? pointedAt : clips.find(inPlayZone);
   for (const clip of clips) {
     const video = $('video', clip);
     if (clip === playing) {
@@ -260,19 +254,13 @@ function pickClip() {
   }
 }
 
-if (clips.length && !reducedMotion && 'IntersectionObserver' in window) {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (entry.isIntersecting) onScreen.add(entry.target);
-        else onScreen.delete(entry.target);
-      }
-      pickClip();
-    },
-    { rootMargin: '-8% 0px -28% 0px' },
-  );
+if (clips.length && !reducedMotion) {
+  // Look again whenever a clip scrolls into or out of the play zone.
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(pickClip, { rootMargin: '-8% 0px -28% 0px' });
+    for (const clip of clips) observer.observe(clip);
+  }
   for (const clip of clips) {
-    observer.observe(clip);
     // Pointing anywhere on a project's card counts, not only at its picture.
     (clip.closest('.win') ?? clip).addEventListener('pointerenter', (event) => {
       if (event.pointerType === 'touch') return;
@@ -280,6 +268,7 @@ if (clips.length && !reducedMotion && 'IntersectionObserver' in window) {
       pickClip();
     });
   }
+  pickClip();
 }
 
 // ---- 6. Small things --------------------------------------------------------
@@ -344,7 +333,7 @@ document.addEventListener('click', (event) => {
   } else if (link.dataset.view) {
     event.preventDefault();
     show(link);
-    openDialog(viewer);
+    if (!viewer.open) viewer.showModal();
   } else if (link.hasAttribute('data-back')) {
     if (canGoBack()) {
       event.preventDefault();
