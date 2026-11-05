@@ -231,6 +231,8 @@ function show(link) {
   const text = [link.dataset.cap, link.dataset.credit].filter(Boolean).join('  ·  ');
   caption.replaceChildren(text);
   viewer.classList.toggle('nocap', !link.dataset.cap);
+  // A product picture on white: no black around it where it does not fill the frame.
+  viewer.classList.toggle('light', 'light' in link.dataset);
   if (kind === 'map') {
     // The link under the map opens the Maps app: Apple Maps on an iPhone or
     // iPad, where it is the one already installed, and Google Maps elsewhere.

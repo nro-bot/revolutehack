@@ -1723,6 +1723,12 @@ a.mini {
 .vstage iframe {
   background: var(--paper);
 }
+/* A product picture on a white background: the frame is white too, so the
+   picture has no black bars beside it. */
+.viewer.light .vstage,
+.viewer.light .vstage img {
+  background: var(--white);
+}
 .vcap {
   display: -webkit-box;
   -webkit-box-orient: vertical;
