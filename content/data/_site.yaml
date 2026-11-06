@@ -72,29 +72,51 @@ social:
     icon: luma
     url: "https://luma.com/user/usr-KxkVCLYqVvA7jev"
     about: "Every Revolute event, upcoming and past."
-    # The popup is this account's Luma page, rebuilt here: the name and the
-    # `about` line, then the events below as a list, upcoming first and then
-    # past, newest first. Tapping an event shows its Luma page in the popup.
+    # The popup is this account's Luma page, rebuilt here: the events below
+    # as a list, upcoming first and then past, newest first. Tapping an
+    # event shows its Luma page in the popup.
     # Luma does not allow its profile page (the `url` above) inside another
     # site, and its calendar embed lists upcoming events only, so each event
     # is listed here. Add each new event:
     #   title  the event's name
     #   date   "YYYY-MM-DD", the day it starts
+    #   time   optional, when it starts, such as "6:00 PM"
+    #   photo  optional, the event's poster: a square picture in
+    #          content/images/, about 360 px wide. Without one, the card
+    #          shows the date on a black tab instead.
     #   url    the event's page on Luma
     #   embed  the event's "Embed Event Page" address on Luma
     # An event moves from Upcoming to Past the next time the site is built
     # after its date.
     events:
+      - title: "Revolute Fall Hackathon Planning"
+        date: 2026-11-13
+        time: "6:00 PM"
+        photo: "events/planning-nov-13.jpg"
+        url: "https://luma.com/v2wk8ooy"
+        embed: "https://luma.com/embed/event/evt-mw8IEOcfJ4phLxU/simple"
+      - title: "Revolute Fall Hackathon Planning"
+        date: 2026-11-06
+        time: "6:00 PM"
+        photo: "events/planning-nov-6.jpg"
+        url: "https://luma.com/zawcl8a8"
+        embed: "https://luma.com/embed/event/evt-9cZNiuL57cW7kFA/simple"
       - title: "Revolute ReBot Arms Workshop #2"
         date: 2026-10-16
+        time: "6:00 PM"
+        photo: "events/workshop-2.jpg"
         url: "https://luma.com/v07bw75c"
         embed: "https://luma.com/embed/event/evt-qZIW6ZSK2pjJvi8/simple"
       - title: "Revolute ReBot Arms Workshop"
         date: 2026-10-09
+        time: "6:00 PM"
+        photo: "events/workshop-1.jpg"
         url: "https://luma.com/61s4kwai"
         embed: "https://luma.com/embed/event/evt-MqCSTuliAjAPRXQ/simple"
       - title: "Revolute Hackathon 2026"
         date: 2026-08-01
+        time: "10:00 AM"
+        photo: "events/hackathon-2026.jpg"
         url: "https://luma.com/kxq4yxr8"
         embed: "https://luma.com/embed/event/evt-cW5gZ6vjmv8zPmR/simple"
     verb: "Events"

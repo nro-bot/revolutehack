@@ -122,6 +122,13 @@ class YamlPageGenerator(Generator):
                 event["day"] = day
                 event["label"] = f"{day:%A}, {day:%B} {day.day}, {day.year}"
                 event["month"] = f"{day:%b}"
+                # The short line on a card with a poster: "Fri, Nov 6 · 6:00 PM".
+                when = f"{day:%a}, {day:%b} {day.day}"
+                if day.year != today.year:
+                    when += f", {day.year}"
+                if event.get("time"):
+                    when += f" · {event['time']}"
+                event["when"] = when
             account["upcoming"] = sorted((e for e in events if e["day"] >= today), key=lambda e: e["day"])
             account["past"] = sorted((e for e in events if e["day"] < today), key=lambda e: e["day"], reverse=True)
 
