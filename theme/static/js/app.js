@@ -47,7 +47,8 @@ for (const dialog of $$('dialog')) {
 // ---- 3. Embed popup ---------------------------------------------------------
 // A link with data-pop="embed" opens its site in a frame, with a button to the
 // real page. Without data-embed it shows a short description and the button.
-// A link with data-pop="stack" shows several pages, one under another.
+// A link with data-pop="profile" shows an account's events as a list; tapping
+// one shows that event's page in the same popup, with a button back to the list.
 // A link with data-pop="email" opens the email form.
 
 const pop = $('#pop');
@@ -67,10 +68,13 @@ function mailHref() {
 }
 
 const popEmbed = $('#pop-embed');
-const popStack = $('#pop-stack');
+const popProfile = $('#pop-profile');
+const popBack = $('#pop-back');
 const popAct = $('#pop-act');
 const embedBox = $('.embed', popEmbed);
 let slowTimer = 0;
+let profileLink = null; // the account whose list of events is, or was, showing
+let eventAddress = ''; // the event opened from that list
 
 // Shows nothing until the page inside has loaded. If it takes a long time,
 // or the site refuses to load here, the description shows instead.
@@ -88,14 +92,19 @@ function loadFrame(address, title) {
 function openPop(link) {
   // One popup at a time: a picture that opens a page gives way to it.
   if (viewer.open) viewer.close();
-  const kind = link.dataset.pop; // embed | stack | email
+  const kind = link.dataset.pop; // embed | profile | email
+  // An event opened from an account's list can go back to that list.
+  const fromProfile = popProfile.contains(link);
+  profileLink = kind === 'profile' ? link : fromProfile ? profileLink : null;
+  if (fromProfile) eventAddress = link.href;
   const embed = kind === 'embed' ? link.dataset.embed : '';
   const action = kind === 'email' ? 'Open in mail app' : link.dataset.action;
 
   popEmbed.hidden = kind !== 'embed';
-  popStack.hidden = kind !== 'stack';
+  popProfile.hidden = kind !== 'profile';
+  popBack.hidden = !fromProfile;
   $('#pop-email').hidden = kind !== 'email';
-  pop.classList.toggle('small', kind === 'email' || (kind === 'embed' && !embed));
+  pop.classList.toggle('small', kind === 'email' || kind === 'profile' || (kind === 'embed' && !embed));
   pop.classList.toggle('video', link.dataset.shape === 'video');
 
   // Whatever was in the frame is from the last popup.
@@ -105,11 +114,9 @@ function openPop(link) {
   popFrame.hidden = true;
   embedBox.classList.remove('framed', 'slow', 'ready');
 
-  // Several pages, one under another: they are written into the page as a
-  // <template>, so they only start loading now.
-  popStack.replaceChildren(kind === 'stack' ? $(`#${link.dataset.stack}`).content.cloneNode(true) : '');
-  popStack.scrollTop = 0;
-  for (const frame of $$('iframe', popStack)) nearStack.observe(frame);
+  // An account's list of events is written into the page as a <template>.
+  popProfile.replaceChildren(kind === 'profile' ? $(`#${link.dataset.profile}`).content.cloneNode(true) : '');
+  popProfile.scrollTop = 0;
 
   // The button to the real page. A popup without `data-action` has none.
   popAct.hidden = !action;
@@ -130,28 +137,18 @@ function openPop(link) {
     if (embed) loadFrame(embed, link.dataset.title);
   }
   if (!pop.open) pop.showModal();
+  // The tapped event has just left the page, and focus with it.
+  if (fromProfile) popBack.focus();
 }
 
-// Each page in a stack starts loading when it is scrolled near, and appears
-// once it has loaded. A load event does not bubble, so it is caught on its
-// way down.
-const nearStack = new IntersectionObserver(
-  (entries) => {
-    for (const entry of entries) {
-      if (!entry.isIntersecting) continue;
-      nearStack.unobserve(entry.target);
-      entry.target.src = entry.target.dataset.src;
-    }
-  },
-  { root: popStack, rootMargin: '600px 0px' },
-);
-popStack.addEventListener(
-  'load',
-  (event) => {
-    if (event.target.getAttribute('src')) event.target.classList.add('loaded');
-  },
-  true,
-);
+// Back from an event to the list it came from, with focus on that event.
+popBack.addEventListener('click', () => {
+  if (!profileLink) return;
+  openPop(profileLink);
+  $$('a', popProfile)
+    .find((card) => card.href === eventAddress)
+    ?.focus();
+});
 
 popFrame.addEventListener('load', () => {
   if (!popFrame.getAttribute('src')) return;
@@ -166,7 +163,9 @@ pop.addEventListener('close', () => {
   clearTimeout(slowTimer);
   popFrame.removeAttribute('src');
   popFrame.hidden = true;
-  popStack.replaceChildren();
+  popProfile.replaceChildren();
+  popBack.hidden = true;
+  profileLink = null;
 });
 mailSubject.addEventListener('input', mailHref);
 mailBody.addEventListener('input', mailHref);

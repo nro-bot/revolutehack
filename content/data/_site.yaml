@@ -72,14 +72,18 @@ social:
     icon: luma
     url: "https://luma.com/user/usr-KxkVCLYqVvA7jev"
     about: "Every Revolute event, upcoming and past."
-    # The popup shows Luma itself: the Luma page of every event below, one
-    # under another, upcoming first and then past, newest first. Luma has no
-    # single page of all events that it allows inside another site (its
-    # profile page refuses, and its calendar embed lists upcoming events
-    # only), so each event is listed here. Add each new event:
+    # The popup is this account's Luma page, rebuilt here: the name and the
+    # `about` line, then the events below as a list, upcoming first and then
+    # past, newest first. Tapping an event shows its Luma page in the popup.
+    # Luma does not allow its profile page (the `url` above) inside another
+    # site, and its calendar embed lists upcoming events only, so each event
+    # is listed here. Add each new event:
+    #   title  the event's name
     #   date   "YYYY-MM-DD", the day it starts
     #   url    the event's page on Luma
     #   embed  the event's "Embed Event Page" address on Luma
+    # An event moves from Upcoming to Past the next time the site is built
+    # after its date.
     events:
       - title: "Revolute ReBot Arms Workshop #2"
         date: 2026-10-16
