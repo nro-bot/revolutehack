@@ -30,7 +30,7 @@ page with its own address.
 | File                            | URL                  | What it is |
 |---------------------------------|----------------------|------------|
 | `content/data/page.yaml`        | `/`                  | The upcoming hackathon: Overview, Hardware, Agenda, FAQ |
-| `content/data/previous.yaml`    | `/previous/`         | The last hackathon: Winners, Entries, Agenda, Photos, About |
+| `content/data/previous.yaml`    | `/previous/`         | The last hackathon: Entries, Agenda, Photos, About          |
 | `content/data/gallery.yaml`     | `/gallery/`          | Every photo and video, filtered by All, Photos, Videos |
 | `content/data/community.yaml`   | `/community/`        | Social, Events, Affiliates, Team |
 | `content/data/_projects.yaml`   | `/projects/<slug>/`  | One page per hackathon entry |
