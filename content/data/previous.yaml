@@ -1,8 +1,8 @@
 # =============================================================================
 #  Revolute: the previous hackathon (content/data/previous.yaml)
 # =============================================================================
-#  Renders to /previous/. Five tabs: Winners, Entries, Agenda, Photos, About.
-#  Winners and Entries come from _projects.yaml. Everything else is here.
+#  Renders to /previous/. Four tabs: Entries, Agenda, Photos, About.
+#  Entries come from _projects.yaml, winners first. Everything else is here.
 # =============================================================================
 
 layout: previous

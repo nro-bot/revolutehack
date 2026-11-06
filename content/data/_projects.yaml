@@ -1,7 +1,7 @@
 # =============================================================================
 #  Revolute: hackathon entries (content/data/_projects.yaml)
 # =============================================================================
-#  One block per project. Each appears under Winners and Entries on
+#  One block per project. Each appears under Entries on
 #  /previous/ and gets its own page at /projects/<slug>/.
 #
 #  Media for a project lives in content/images/projects/<slug>/:

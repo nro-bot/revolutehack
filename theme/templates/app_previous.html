@@ -3,14 +3,8 @@
    entries from content/data/_projects.yaml. #}
 {% block main %}
 <div class="sheet panels">
-  {{ ui.subnav([('winners', 'Winners'), ('entries', 'Entries'), ('agenda', 'Agenda'), ('photos', 'Photos'), ('about', 'About')]) }}
+  {{ ui.subnav([('entries', 'Entries'), ('agenda', 'Agenda'), ('photos', 'Photos'), ('about', 'About')]) }}
   <h1 class="pagekick">{{ (page.kicker or page.title)|e }}</h1>
-
-  <section class="panel" id="winners" aria-label="Winners">
-    <div class="wall">
-      {% for p in projects if p.place %}{{ ui.project_card(p) }}{% endfor %}
-    </div>
-  </section>
 
   <section class="panel" id="entries" aria-label="All entries">
     <div class="wall">
