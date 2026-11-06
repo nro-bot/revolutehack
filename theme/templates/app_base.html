@@ -68,6 +68,7 @@
   <div class="pop-card">
     <span class="tape" aria-hidden="true"></span>
     <button class="pop-x" type="button" data-close aria-label="Close">✕</button>
+    <button class="pop-x pop-back" id="pop-back" type="button" aria-label="Back to all events" hidden>{{ ui.icon('left') }}</button>
     <div class="pop-body" id="pop-embed">
       <div class="embed">
         <div class="embed-fall"><b id="pop-title"></b><p id="pop-about"></p></div>
@@ -75,7 +76,7 @@
         <iframe id="pop-frame" title="" allow="autoplay; fullscreen; payment; encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" hidden></iframe>
       </div>
     </div>
-    <div class="pop-body popstack" id="pop-stack" hidden></div>
+    <div class="pop-body popprofile" id="pop-profile" hidden></div>
     <form class="pop-body compose" id="pop-email" novalidate hidden>
       <b class="ctitle">New message</b>
       <p class="mail"><span class="clab">To</span><code>{{ site.email|e }}</code><button class="mini" type="button" data-copy="{{ site.email|e }}">Copy</button></p>
@@ -88,17 +89,38 @@
   </div>
 </dialog>
 
-{# Event pages shown one under another in the popup: one set per social
-   account that lists events. The script copies the matching set in when
-   its icon is tapped, and loads each page as it is scrolled near. #}
+{# A social account's own page, rebuilt for the popup: its events, upcoming
+   and past. One per account that lists events. The script copies the
+   matching one in when its icon is tapped. Tapping an event shows that
+   event's page in the same popup. #}
 {% for s in site.social if s.events %}
-<template id="stack-{{ s.id }}">
-  <b class="ctitle">{{ s.handle|e }}</b>
-  {% for heading, group in [('Upcoming', s.upcoming), ('Past', s.past)] if group %}
+<template id="profile-{{ s.id }}">
+  {# Upcoming always shows, even when empty. Past shows when there is any. #}
+  {% for heading, group in [('Upcoming', s.upcoming), ('Past', s.past)] if group or heading == 'Upcoming' %}
   <h3 class="day">{{ heading }}</h3>
-  {% for ev in group %}
-  <div class="stackframe">{{ ui.loading() }}<iframe data-src="{{ ev.embed|e }}" title="{{ ev.title|e }}, {{ ev.label|e }}" allow="fullscreen; payment" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
-  {% endfor %}
+  {% if group %}
+  <ul class="evs">
+    {% for ev in group %}
+    <li>
+      {# With a poster: the poster, then when and what. Without: the date
+         on a black tab, as on the Community page. #}
+      {% if ev.photo %}
+      <a class="ev-card has-photo" href="{{ ev.url|e }}" target="_blank" rel="noopener" {{ ui.pop(ev.title, ev.label, ev.embed, '') }}>
+        <span class="ev-photo"><img src="{{ SITEURL }}/images/{{ ev.photo }}" alt="" decoding="async"></span>
+        <span class="ev-text"><span class="ev-when">{{ ev.when|e }}</span><b>{{ ev.title|e }}</b></span>
+      </a>
+      {% else %}
+      <a class="ev-card" href="{{ ev.url|e }}" target="_blank" rel="noopener" {{ ui.pop(ev.title, ev.label, ev.embed, '') }}>
+        <span class="ev-date"><span>{{ ev.month|e }}</span><b>{{ ev.day.day }}</b></span>
+        <span class="ev-text"><b>{{ ev.title|e }}</b><small>{{ ev.label|e }}</small></span>
+      </a>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="none">Nothing scheduled right now.</p>
+  {% endif %}
   {% endfor %}
 </template>
 {% endfor %}

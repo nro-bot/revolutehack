@@ -33,9 +33,9 @@
    real address, so it still works without JavaScript. `embed` is optional. #}
 {% macro pop(title, about, embed, action, shape='') %}data-pop="embed" data-title="{{ title|e }}" data-about="{{ about|e }}"{% if embed %} data-embed="{{ embed|e }}"{% endif %}{% if action %} data-action="{{ action|e }}"{% endif %}{% if shape %} data-shape="{{ shape }}"{% endif %}{% endmacro %}
 
-{# Opens a social account's popup: its events' pages if it lists events,
+{# Opens a social account's popup: the list of its events if it lists any,
    otherwise its embedded page, or its description if it has no embed. #}
-{% macro social_pop(s) %}{% if s.events %}data-pop="stack" data-stack="stack-{{ s.id }}" data-title="{{ s.handle|e }}"{% else %}{{ pop(s.handle, s.about, s.embed, s.action) }}{% endif %}{% endmacro %}
+{% macro social_pop(s) %}{% if s.events %}data-pop="profile" data-profile="profile-{{ s.id }}" data-title="{{ s.handle|e }}"{% else %}{{ pop(s.handle, s.about, s.embed, s.action) }}{% endif %}{% endmacro %}
 
 {# A link that opens a place's map in a popup. `m` is a `map:` block. #}
 {% macro map_link(m, text, label='') %}<a href="{{ m.url|e }}" target="_blank" rel="noopener" data-view="map" data-embed="{{ m.embed|e }}"{% if m.apple_url %} data-apple="{{ m.apple_url|e }}"{% endif %} data-title="{{ m.title|e }}" data-address="{{ m.address|e }}" data-cap="{{ (m.title ~ ', ' ~ m.address)|e }}"{% if label %} aria-label="{{ label|e }}"{% endif %}>{{ text|e }}</a>{% endmacro %}

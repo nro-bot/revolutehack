@@ -1261,6 +1261,29 @@ textarea {
   line-height: 1.3;
   color: var(--mute);
 }
+/* A card with the event's poster in place of the date tab. The date
+   moves into the text, above the title. */
+.ev-card.has-photo {
+  grid-template-columns: 93px minmax(0, 1fr); /* a 90px square and its border */
+  min-height: 96px;
+}
+.ev-photo {
+  position: relative;
+  border-right: 3px solid var(--ink);
+  background: var(--ink);
+}
+.ev-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ev-when {
+  font: 700 11.5px/1.3 var(--f-type);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
 .ev-card:active {
   translate: 2px 2px;
   box-shadow: 1px 1px 0 var(--ink);
@@ -1663,6 +1686,19 @@ a.mini {
   right: -3px;
   top: -52px;
 }
+/* Back from one event's page to the account's list: the same button, at
+   the card's other corner. */
+.pop-back {
+  right: auto;
+  left: -3px;
+}
+.pop-back .icon {
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin: auto;
+  stroke-width: 2.8;
+}
 .pop-x:active,
 .vbtn:active {
   background: var(--ink);
@@ -1748,45 +1784,24 @@ a.mini {
   opacity: 1;
   background: var(--white);
 }
-/* Several embedded pages, one under another, in a popup that scrolls. Each
-   is as wide as the card and tall enough to show its whole page, and it is
-   invisible until it has loaded. */
-.popstack {
+/* An account's own page, rebuilt in the popup: its events as cards, under
+   "Upcoming" and "Past". The popup is as tall as the list, and the list
+   scrolls if it is taller than the screen. */
+.popprofile {
   display: block;
   overflow-y: auto;
   overscroll-behavior: contain;
+  padding: 24px 16px 22px;
 }
-.popstack .ctitle {
-  display: block;
-  margin: 0;
-  padding: 24px 18px 4px;
+.popprofile .day {
+  margin: 22px 0 10px;
 }
-.popstack .day {
-  margin: 0;
-  padding: 8px 18px;
+.popprofile .day:first-child {
+  margin-top: 0;
 }
-.stackframe {
-  position: relative;
-  height: 840px;
-  border-top: 3px solid var(--ink);
-}
-.stackframe .loading {
-  display: grid;
-  inset: 0 0 auto;
-  height: 260px;
-}
-.popstack iframe {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-  background: var(--white);
-  opacity: 0;
-  transition: opacity 0.2s ease-out;
-}
-.popstack iframe.loaded {
-  opacity: 1;
+.popprofile .none {
+  font-size: 14px;
+  color: var(--mute);
 }
 .pop-act {
   display: flex;
@@ -2279,9 +2294,6 @@ a.mini {
   .pop-card {
     max-width: 500px;
     height: min(92%, 770px);
-  }
-  .stackframe {
-    height: 740px;
   }
 }
 

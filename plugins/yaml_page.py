@@ -111,7 +111,7 @@ class YamlPageGenerator(Generator):
 
     def _prepare_social(self, site):
         """Split an account's `events:` into upcoming (soonest first) and
-        past (newest first), for its popup."""
+        past (newest first), for the list in its popup."""
         today = datetime.date.today()
         for account in site.get("social") or []:
             events = account.get("events")
@@ -120,7 +120,15 @@ class YamlPageGenerator(Generator):
             for event in events:
                 day = self._as_date(event["date"])
                 event["day"] = day
-                event["label"] = f"{day:%B} {day.day}, {day.year}"
+                event["label"] = f"{day:%A}, {day:%B} {day.day}, {day.year}"
+                event["month"] = f"{day:%b}"
+                # The short line on a card with a poster: "Fri, Nov 6 · 6:00 PM".
+                when = f"{day:%a}, {day:%b} {day.day}"
+                if day.year != today.year:
+                    when += f", {day.year}"
+                if event.get("time"):
+                    when += f" · {event['time']}"
+                event["when"] = when
             account["upcoming"] = sorted((e for e in events if e["day"] >= today), key=lambda e: e["day"])
             account["past"] = sorted((e for e in events if e["day"] < today), key=lambda e: e["day"], reverse=True)
 
