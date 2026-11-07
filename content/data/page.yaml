@@ -61,13 +61,11 @@ hardware:
   # that video in the popup instead: `youtube` is the part of the video's
   # address after "watch?v=". `youtube_start` skips that many seconds in.
   items:
-    - count: "1×"
-      name: "reBot Arm B601 RS"
+    - name: "reBot Arm B601 RS"
       photo: "kit/arm.jpg"
       caption: "reBot Arm B601 RS. One per team, with 48 V QDD motors and a 2.5 kg payload."
       youtube: "qOhz4Im6hcM"         # Seeed Studio's gravity compensation demo
-    - count: "1×"
-      name: "Leader arm"
+    - name: "Leader arm"
       photo: "kit/leader-arm.jpg"
       caption: "Leader arm: StarAI Arm Violin. One per team, for teleoperation and imitation learning."
       credit: "Image: Seeed Studio"
@@ -76,20 +74,18 @@ hardware:
       # Its product page, for reference. A tile that plays a video has no
       # picture popup, so a `link:` line here would not be used:
       # https://www.seeedstudio.com/StarAi-Arm-Violin-p-6571.html
-    - count: "1×"
-      name: "Jetson Orin Nano, 8 GB"
+    - name: "Jetson Orin Nano, 8 GB"
       photo: "kit/jetson.jpg"
       caption: "Jetson Orin Nano, 8 GB. Edge compute for inference, one per team."
       credit: "Image: NVIDIA, via Generation Robots"
       youtube: "S9L2WGf1KrM"         # NVIDIA's Jetson Orin Nano video
       youtube_start: 2               # seconds in, optional
-    - count: "2×"
-      name: "RealSense D405"
+    - name: "UVC Camera"
+      # TODO: this picture still shows a RealSense D405. Replace it with the
+      # camera the teams get, and set `credit` to whose picture it is.
       photo: "kit/cameras.jpg"
-      caption: "RealSense D405 depth cameras. Two per team: one overhead, one on the wrist."
+      caption: "UVC camera: a USB camera for the robot's eyes."
       credit: "Image: RealSense"
-      link: "https://www.realsenseai.com/products/d405-series/"
-      embed: "https://www.realsenseai.com/products/d405-series/"   # RealSense allows this; Seeed does not
 
 # ---- Agenda -----------------------------------------------------------------
 #  CARRIED OVER from the August 2026 hackathon, moved onto the new dates.

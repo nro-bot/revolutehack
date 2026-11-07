@@ -796,12 +796,9 @@ textarea {
   background: var(--ink);
   color: var(--white);
 }
-.kit .n {
-  display: block;
-  font: 400 32px/1 var(--f-mast);
-}
 .kit b {
   display: block;
+  padding-right: 16px; /* clear of the + or play mark in the corner */
   font-size: 14px;
   line-height: 1.25;
 }
@@ -890,9 +887,6 @@ textarea {
     .fit .rows li {
       padding: 5px 0;
       font-size: 14.5px;
-    }
-    .fit .kit .n {
-      font-size: 26px;
     }
     .fit .kph {
       aspect-ratio: 16 / 9;
@@ -2223,9 +2217,6 @@ a.mini {
   .kit {
     grid-template-columns: repeat(4, 1fr);
     gap: 14px;
-  }
-  .kit .n {
-    font-size: 38px;
   }
   .kit b {
     font-size: 15px;
