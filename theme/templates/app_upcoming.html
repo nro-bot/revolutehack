@@ -20,17 +20,13 @@
 
     <section class="panel" id="hardware" aria-label="Hardware">
       <div class="card big hw">
-        <div class="chrow">
-          <h2 class="ch">{{ page.hardware.title|e }}</h2>
-          {% set v = page.hardware.video %}
-          {% if v %}
-          <a class="vlink" href="{{ SITEURL }}/images/{{ v.src }}" data-view="video" data-poster="{{ SITEURL }}/images/{{ v.poster }}">{{ ui.icon('play') }}<span>{{ v.label|e }}</span></a>
-          {% endif %}
-        </div>
+        <h2 class="ch">{{ page.hardware.title|e }}</h2>
         <ul class="kit">
           {% for it in page.hardware['items'] %}
           <li>
-            {% if it.youtube %}
+            {% if it.video %}
+            <a href="{{ SITEURL }}/images/{{ it.video }}" data-view="video" data-poster="{{ SITEURL }}/images/{{ it.poster or it.photo }}" data-alt="{{ it.caption|e }}">
+            {% elif it.youtube %}
             <a href="{{ it.watch }}" target="_blank" rel="noopener" {{ ui.pop(it.name, '', it.embed, 'Open on YouTube', 'video') }}>
             {% else %}
             <a href="{{ SITEURL }}/images/{{ it.photo }}" data-view="photo" data-light data-alt="{{ it.caption|e }}"{% if it.link %} data-link="{{ it.link|e }}"{% if it.embed %} data-link-embed="{{ it.embed|e }}" data-title="{{ it.name|e }}"{% endif %}{% endif %}>

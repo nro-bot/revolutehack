@@ -733,30 +733,6 @@ textarea {
   text-transform: uppercase;
   text-align: right;
 }
-.vlink {
-  flex: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  min-height: 34px;
-  padding: 3px 7px 3px 5px;
-  border: 2px solid var(--ink);
-  background: var(--hi);
-  box-shadow: 2px 2px 0 var(--ink);
-  font: 700 10px/1.1 var(--f-type);
-  text-transform: uppercase;
-  text-decoration: none;
-}
-.vlink .icon {
-  flex: none;
-  width: 15px;
-  height: 15px;
-}
-.vlink:active {
-  translate: 2px 2px;
-  box-shadow: none;
-}
-
 /* Kit tiles: count, name, picture. Each opens a popup. The tiles are only
    as big as their content, and the picture is shown whole, never cropped. */
 .card.hw {
@@ -787,7 +763,8 @@ textarea {
   font: 400 20px/1.2 var(--f-mast);
 }
 /* A tile that plays a video is marked with a play triangle. */
-.kit a[data-pop]::after {
+.kit a[data-pop]::after,
+.kit a[data-view="video"]::after {
   content: "\25B6\FE0E";
   top: 6px;
   font: 12px/1.2 var(--f-type);
@@ -1993,8 +1970,7 @@ a.mini {
   .foot > a,
   .chip,
   .backb,
-  .win,
-  .vlink {
+  .win {
     transition: translate 0.15s ease-out, rotate 0.15s ease-out, box-shadow 0.15s ease-out;
   }
   .tab:hover:not(:active) {
@@ -2042,10 +2018,6 @@ a.mini {
   .win:hover:not(:active) {
     translate: -1px -2px;
     box-shadow: 7px 8px 0 var(--ink);
-  }
-  .vlink:hover:not(:active) {
-    translate: 0 -3px;
-    box-shadow: 3px 5px 0 var(--ink);
   }
   .tile img,
   .strip img {
@@ -2221,17 +2193,6 @@ a.mini {
   .kit b {
     font-size: 15px;
   }
-  .vlink {
-    gap: 6px;
-    min-height: 40px;
-    padding: 4px 12px 4px 9px;
-    font-size: 13px;
-  }
-  .vlink .icon {
-    width: 18px;
-    height: 18px;
-  }
-
   .wall {
     grid-template-columns: repeat(3, 1fr);
     gap: 26px;
