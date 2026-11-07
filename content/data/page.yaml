@@ -81,11 +81,9 @@ hardware:
       youtube: "S9L2WGf1KrM"         # NVIDIA's Jetson Orin Nano video
       youtube_start: 2               # seconds in, optional
     - name: "UVC Camera"
-      # TODO: this picture still shows a RealSense D405. Replace it with the
-      # camera the teams get, and set `credit` to whose picture it is.
-      photo: "kit/cameras.jpg"
-      caption: "UVC camera: a USB camera for the robot's eyes."
-      credit: "Image: RealSense"
+      photo: "kit/camera.jpg"
+      caption: "UVC camera: an Arducam USB camera on a small stand, for the robot's eyes."
+      credit: "Image: Arducam, via Core Electronics"
 
 # ---- Agenda -----------------------------------------------------------------
 #  CARRIED OVER from the August 2026 hackathon, moved onto the new dates.
