@@ -74,12 +74,6 @@ hardware:
       # Its product page, for reference. A tile that plays a video has no
       # picture popup, so a `link:` line here would not be used:
       # https://www.seeedstudio.com/StarAi-Arm-Violin-p-6571.html
-    - name: "Jetson Orin Nano, 8 GB"
-      photo: "kit/jetson.jpg"
-      caption: "Jetson Orin Nano, 8 GB. Edge compute for inference, one per team."
-      credit: "Image: NVIDIA, via Generation Robots"
-      youtube: "S9L2WGf1KrM"         # NVIDIA's Jetson Orin Nano video
-      youtube_start: 2               # seconds in, optional
     - name: "UVC Camera"
       photo: "kit/camera.jpg"
       caption: "UVC camera: an Arducam USB camera on a small stand, for the robot's eyes."

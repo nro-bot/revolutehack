@@ -2213,9 +2213,9 @@ a.mini {
   .card.lead .btn {
     align-self: start;
   }
-  /* Four in a row. */
+  /* Three in a row. */
   .kit {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 14px;
   }
   .kit b {
