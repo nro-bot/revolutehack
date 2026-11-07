@@ -42,13 +42,6 @@ facts:
 #  CARRIED OVER from the August 2026 hackathon. Confirm for this event.
 hardware:
   title: "What you get"
-  # The yellow link beside the title. It opens this video in a popup, with
-  # nothing written under it. The `caption` is kept as a note of what it shows.
-  video:
-    label: "Imitation learning"
-    src: "kit/imitation.mp4"
-    poster: "kit/imitation.jpg"
-    caption: "Imitation learning: move the leader arm by hand and the follower arm copies you."
   # One tile each, with the maker's own product picture. Tapping a tile opens
   # its picture in a popup, with nothing written under it. The `caption` is
   # not shown: it describes the picture for screen readers. The `credit` is
@@ -57,56 +50,50 @@ hardware:
   # product's page on its maker's site, in a new tab. Add an `embed:` line
   # with the same address to show that page in a popup on this site
   # instead: only for sites that allow being embedded, or the popup stays
-  # blank. A tile with a `youtube:` line plays
-  # that video in the popup instead: `youtube` is the part of the video's
-  # address after "watch?v=". `youtube_start` skips that many seconds in.
+  # blank.
+  # A tile with a `video:` line plays that file (in content/images/) in the
+  # popup instead, with `poster` as the still shown before it starts. A tile
+  # with a `youtube:` line plays that video instead: `youtube` is the part
+  # of the video's address after "watch?v=", and `youtube_start` skips that
+  # many seconds in.
   items:
-    - count: "1×"
-      name: "reBot Arm B601 RS"
+    - name: "reBot Arm B601 RS"
       photo: "kit/arm.jpg"
       caption: "reBot Arm B601 RS. One per team, with 48 V QDD motors and a 2.5 kg payload."
       youtube: "qOhz4Im6hcM"         # Seeed Studio's gravity compensation demo
-    - count: "1×"
-      name: "Leader arm"
+    - name: "Leader arm"
       photo: "kit/leader-arm.jpg"
       caption: "Leader arm: StarAI Arm Violin. One per team, for teleoperation and imitation learning."
       credit: "Image: Seeed Studio"
-      youtube: "pPusiho4JLQ"         # Seeed Studio's StarAI arm object grasping video
-      youtube_start: 5               # seconds in, optional
-      # Its product page, for reference. A tile that plays a video has no
-      # picture popup, so a `link:` line here would not be used:
+      # Imitation learning: move the leader arm by hand and the follower arm
+      # copies you. Made from the original clip in ../content/imitation-robot.mp4.
+      video: "kit/imitation.mp4"
+      poster: "kit/imitation.jpg"
+      # For reference: Seeed's StarAI arm video is youtube pPusiho4JLQ (from
+      # 5 s), and its product page is
       # https://www.seeedstudio.com/StarAi-Arm-Violin-p-6571.html
-    - count: "1×"
-      name: "Jetson Orin Nano, 8 GB"
-      photo: "kit/jetson.jpg"
-      caption: "Jetson Orin Nano, 8 GB. Edge compute for inference, one per team."
-      credit: "Image: NVIDIA, via Generation Robots"
-      youtube: "S9L2WGf1KrM"         # NVIDIA's Jetson Orin Nano video
-      youtube_start: 2               # seconds in, optional
-    - count: "2×"
-      name: "RealSense D405"
-      photo: "kit/cameras.jpg"
-      caption: "RealSense D405 depth cameras. Two per team: one overhead, one on the wrist."
-      credit: "Image: RealSense"
-      link: "https://www.realsenseai.com/products/d405-series/"
-      embed: "https://www.realsenseai.com/products/d405-series/"   # RealSense allows this; Seeed does not
+    - name: "UVC Camera"
+      photo: "kit/camera.jpg"
+      caption: "UVC camera: an Arducam USB camera on a small stand, for the robot's eyes."
+      credit: "Image: Arducam, via Core Electronics"
 
 # ---- Agenda -----------------------------------------------------------------
-#  CARRIED OVER from the August 2026 hackathon, moved onto the new dates.
+#  PLACEHOLDER until the schedule is set. One row per item:
+#     when   the time, in the left column
+#     what   what happens
+#     note   optional, a smaller line under it
 #  Keep it to about four rows a day so the card fits a phone screen.
+#  For reference, the August 2026 hackathon ran: Friday 10:00 AM intro
+#  tutorial, 12:01 PM opening ceremony, 2:00 PM hacking begins, 10:00 PM
+#  hacking ends for the day; Saturday 10:00 AM doors open, 3:00 PM demos
+#  and judging, 4:15 PM awards, 5:00 PM wrap.
 agenda:
   - day: "Friday, Nov. 20"
     rows:
-      - { when: "10:00 AM", what: "Intro tutorial" }
-      - { when: "12:01 PM", what: "Opening ceremony" }
-      - { when: "2:00 PM",  what: "Hacking begins" }
-      - { when: "10:00 PM", what: "Hacking ends for the day" }
+      - { when: "TBA", what: "Full schedule coming soon" }
   - day: "Saturday, Nov. 21"
     rows:
-      - { when: "10:00 AM", what: "Doors open" }
-      - { when: "3:00 PM",  what: "Demos and judging" }
-      - { when: "4:15 PM",  what: "Awards" }
-      - { when: "5:00 PM",  what: "That’s a wrap" }
+      - { when: "TBA", what: "Full schedule coming soon" }
 
 # ---- Prizes -----------------------------------------------------------------
 #  PLACEHOLDER: nothing here is decided yet. One row per prize.
