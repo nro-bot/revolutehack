@@ -80,21 +80,22 @@ hardware:
       credit: "Image: Arducam, via Core Electronics"
 
 # ---- Agenda -----------------------------------------------------------------
-#  CARRIED OVER from the August 2026 hackathon, moved onto the new dates.
+#  PLACEHOLDER until the schedule is set. One row per item:
+#     when   the time, in the left column
+#     what   what happens
+#     note   optional, a smaller line under it
 #  Keep it to about four rows a day so the card fits a phone screen.
+#  For reference, the August 2026 hackathon ran: Friday 10:00 AM intro
+#  tutorial, 12:01 PM opening ceremony, 2:00 PM hacking begins, 10:00 PM
+#  hacking ends for the day; Saturday 10:00 AM doors open, 3:00 PM demos
+#  and judging, 4:15 PM awards, 5:00 PM wrap.
 agenda:
   - day: "Friday, Nov. 20"
     rows:
-      - { when: "10:00 AM", what: "Intro tutorial" }
-      - { when: "12:01 PM", what: "Opening ceremony" }
-      - { when: "2:00 PM",  what: "Hacking begins" }
-      - { when: "10:00 PM", what: "Hacking ends for the day" }
+      - { when: "TBA", what: "Full schedule coming soon" }
   - day: "Saturday, Nov. 21"
     rows:
-      - { when: "10:00 AM", what: "Doors open" }
-      - { when: "3:00 PM",  what: "Demos and judging" }
-      - { when: "4:15 PM",  what: "Awards" }
-      - { when: "5:00 PM",  what: "That’s a wrap" }
+      - { when: "TBA", what: "Full schedule coming soon" }
 
 # ---- Prizes -----------------------------------------------------------------
 #  PLACEHOLDER: nothing here is decided yet. One row per prize.
