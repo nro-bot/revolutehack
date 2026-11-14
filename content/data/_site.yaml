@@ -31,12 +31,10 @@ email: "revolutehack@gmail.com"
 #   url    the event's page on Luma
 #   embed  the same event as Luma's "Embed Event Page" address. Find it on the
 #          event's manage page, under More, "Embed Registration Button".
-# PLACEHOLDER: this is the August 2026 hackathon, whose registration has
-# closed. Swap both lines when the next event is on Luma.
 register:
   label: "Register"
-  url: "https://luma.com/kxq4yxr8"
-  embed: "https://luma.com/embed/event/evt-cW5gZ6vjmv8zPmR/simple"
+  url: "https://luma.com/yiif4l7u"
+  embed: "https://luma.com/embed/event/evt-8DHK4DgRL2Xuvoc/simple"
   title: "Register on Luma"
   about: "Luma's sign-up page for the event loads here."
   # No `action:` line, so the popup has no button under the Luma page. Add
