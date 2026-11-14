@@ -43,9 +43,12 @@ A file with a `layout:` line is an app page. The older pages below have no
 |---------------------------------|-----------------|
 | `content/data/events.yaml`      | `/events/`      |
 
-`content/original/index.html` (`/original/`) is the first hand-written site,
-kept as it was and linked from the Links list on `/previous/`. It is copied
-through as is, not built from YAML; its photos come from `content/images/`.
+`content/previous/<version>/` holds each past hackathon's own event site,
+kept as it was and copied through as is, not built from YAML. It is served at
+`/previous/<version>/` and linked from the Links list on `/previous/`.
+`v1.08/` is the first hand-written site; its photos come from
+`content/images/`. When a hackathon ends, put its site in a new folder here
+(such as `v1.11/`).
 
 ## Common edits
 
