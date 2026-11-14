@@ -28,7 +28,7 @@ AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
 
 # Copy images straight through to output/images/.
-STATIC_PATHS = ["images"]
+STATIC_PATHS = ["images", "previous"]
 # Gallery albums are not copied as they are: the plugin writes web-sized
 # copies and thumbnails of each instead. List every album folder here.
 STATIC_EXCLUDE_PATHS = ["images/hackday", "images/arms"]
