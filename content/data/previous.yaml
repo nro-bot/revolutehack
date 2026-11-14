@@ -74,3 +74,6 @@ links:
     action: "Open on Luma"
   - text: "Devpost"
     url: "https://revolute-hackathon.devpost.com/project-gallery"
+  - text: "Original site"
+    note: "The event page as it was before the hackathon"
+    url: "../original/"

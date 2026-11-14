@@ -43,6 +43,10 @@ A file with a `layout:` line is an app page. The older pages below have no
 |---------------------------------|-----------------|
 | `content/data/events.yaml`      | `/events/`      |
 
+`content/original/index.html` (`/original/`) is the first hand-written site,
+kept as it was and linked from the Links list on `/previous/`. It is copied
+through as is, not built from YAML; its photos come from `content/images/`.
+
 ## Common edits
 
 **Change the Register link.** In `_site.yaml`, under `register:`, set `url` to
