@@ -25,6 +25,8 @@ steps:
   - calibrate.md
   - teleoperate.md
   - cameras.md
+  - dataset.md
+  - train.md
 
 # Where the steps come from. Shown as "Based on <text>" at the end of every
 # step.
