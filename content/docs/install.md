@@ -1,4 +1,4 @@
-# LeRobot Installation (Seeed reBot)
+# LeRobot Installation
 
 ## 1. System Packages
 
