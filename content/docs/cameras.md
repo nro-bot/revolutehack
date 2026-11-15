@@ -1,4 +1,4 @@
-# Cameras
+# Camera Setup
 
 Set up the ports first, as in Teleoperation.
 

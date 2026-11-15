@@ -1,4 +1,4 @@
-# Calibration
+# Robot Calibration
 
 ## 1. Follower Arm
 
