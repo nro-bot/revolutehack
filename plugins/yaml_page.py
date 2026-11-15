@@ -7,9 +7,10 @@ text edit.
 Two kinds of page are built:
 
 * **App pages** carry a `layout:` key (`upcoming`, `previous`, `gallery`,
-  `community`). Each renders through `theme/templates/app_<layout>.html` and
-  shares one shell: section tabs, the floating bottom bar, and the popups.
-  `page.yaml` is the homepage; any other file writes to `/<name>/`.
+  `community`, `sponsorship`). Each renders through
+  `theme/templates/app_<layout>.html` and shares one shell: section tabs, the
+  floating bottom bar, and the popups. `page.yaml` is the homepage; any other
+  file writes to `/<name>/`.
 * **Legacy pages** have no `layout:` key and still render through
   `page.html`, section by section.
 
@@ -18,6 +19,8 @@ Files whose name starts with `_` are data, never pages:
 * `_site.yaml`      site-wide settings: navigation, sign-up, social links.
 * `_projects.yaml`  hackathon entries. Each also gets a page at
                     `/projects/<slug>/`.
+* `_tutorial.yaml`  the Tutorial tab on the homepage: the order of the steps,
+                    which are Markdown files in content/docs/.
 """
 
 import datetime
@@ -27,6 +30,7 @@ import re
 import shutil
 from urllib.parse import urlsplit
 
+import markdown
 import yaml
 from PIL import Image, ImageOps
 from pelican import signals
@@ -40,6 +44,8 @@ WEB_MAX_PX = 1800  # longest side of the popup copy of a gallery photo
 THUMB_MAX_PX = 640  # longest side of the grid thumbnail
 GITHUB_FILE_LIMIT = 100 * 1024 * 1024
 APP_LAYOUTS = {"upcoming", "previous", "gallery", "community", "sponsorship"}
+# GitHub-style alerts in the tutorial files: "> [!CAUTION]" and so on.
+ALERT = re.compile(r"^> \[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]\s*\n((?:>.*\n?)*)", re.M)
 
 
 def _load(path):
@@ -65,13 +71,14 @@ class YamlPageGenerator(Generator):
         self.site = data_file("_site.yaml")
         self._prepare_social(self.site)
         self.projects = self._prepare_projects(data_file("_projects.yaml"))
+        self.tutorial = data_file("_tutorial.yaml")
+        self._prepare_tutorial(self.tutorial)
 
         raw = {
             os.path.splitext(name)[0]: _load(os.path.join(data_dir, name))
             for name in sorted(os.listdir(data_dir))
             if name.endswith(".yaml") and not name.startswith("_")
         }
-
         for slug, data in raw.items():
             data["slug"] = slug
             data["is_home"] = slug == "page"
@@ -131,6 +138,58 @@ class YamlPageGenerator(Generator):
                 event["when"] = when
             account["upcoming"] = sorted((e for e in events if e["day"] >= today), key=lambda e: e["day"])
             account["past"] = sorted((e for e in events if e["day"] < today), key=lambda e: e["day"], reverse=True)
+
+    def _prepare_tutorial(self, data):
+        """Read each step's Markdown file from content/docs/, in the order
+        `steps` gives. The file's first heading is the step's title. Each
+        step is a section of the homepage, with the id `tutorial-<name>`."""
+        docs_dir = os.path.join(self.path, "docs")
+        names = [str(n) for n in data.get("steps") or []]
+        steps = []
+        for name in names:
+            path = os.path.join(docs_dir, name)
+            if not os.path.exists(path):
+                log.error("_tutorial.yaml lists %s, but there is no such file in %s", name, docs_dir)
+                continue
+            with open(path, encoding="utf-8") as fh:
+                text = fh.read()
+            heading = re.match(r"\s*#\s+(.+?)\s*\n", text)
+            title = heading.group(1).strip() if heading else os.path.splitext(name)[0].replace("-", " ").title()
+            body = text[heading.end():] if heading else text
+            slug = os.path.splitext(name)[0]
+            steps.append({"slug": slug, "id": f"tutorial-{slug}", "file": name, "title": title, "html": self._render_markdown(body)})
+        if os.path.isdir(docs_dir):
+            for name in sorted(os.listdir(docs_dir)):
+                if name.endswith(".md") and name not in names:
+                    log.warning("content/docs/%s is not listed in _tutorial.yaml, so it is not built", name)
+        total = len(steps)
+        for i, step in enumerate(steps):
+            step["number"] = i + 1
+            step["total"] = total
+            step["prev"] = steps[i - 1] if i else None
+            step["next"] = steps[i + 1] if i + 1 < total else None
+        data["steps_data"] = steps
+
+    @staticmethod
+    def _render_markdown(text):
+        """Markdown to HTML, the way GitHub shows it: fenced code blocks (each
+        with a Copy button), and "> [!CAUTION]" alerts as callouts."""
+
+        def alert(match):
+            kind = match.group(1).lower()
+            inner = "\n".join(line[1:].lstrip() for line in match.group(2).splitlines())
+            body = markdown.markdown(inner)
+            return f'<div class="callout {kind}" role="note"><b>{kind.capitalize()}</b>{body}</div>\n'
+
+        text = ALERT.sub(alert, text + "\n")
+        html = markdown.markdown(text, extensions=["fenced_code", "sane_lists"])
+        # Every code block gets a Copy button, wired up by app.js.
+        return re.sub(
+            r"<pre>(.*?)</pre>",
+            r'<div class="code"><pre>\1</pre><button class="mini copy" type="button" data-copy>Copy</button></div>',
+            html,
+            flags=re.S,
+        )
 
     def _prepare_projects(self, data):
         """Fill in each project's poster, optional preview clip, and neighbours."""
@@ -351,6 +410,7 @@ class YamlPageGenerator(Generator):
                     "site": self.site,
                     "projects": self.projects.get("projects", []),
                     "projects_event": self.projects.get("event", ""),
+                    "tutorial": self.tutorial,
                 },
                 relative_urls=self.settings["RELATIVE_URLS"],
             )

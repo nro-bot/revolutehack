@@ -1,0 +1,33 @@
+# =============================================================================
+#  Revolute: the Tutorial (content/data/_tutorial.yaml)
+# =============================================================================
+#  Setting up the robot software, step by step. Not a page of its own: it is
+#  the Tutorial tab on the homepage. The tab lists the steps, and tapping one
+#  shows that step in the same place, at /#tutorial-<name>.
+#
+#  The steps themselves are Markdown files in content/docs/. Each file's
+#  first heading ("# ...") is the step's title; everything under it is the
+#  step. Fenced code blocks ("```bash") get a Copy button. A GitHub-style
+#  alert ("> [!CAUTION]" and the lines after it) becomes a callout. A
+#  picture goes in content/images/ and is written as
+#  ![what it shows](/images/<file>).
+#
+#  To add a step: put its .md file in content/docs/ and add its name to
+#  `steps`, in the place it belongs. A file that is not listed is not built,
+#  and the build says so.
+# =============================================================================
+
+title: "Tutorial"
+
+# The steps, in order: one Markdown file each, in content/docs/.
+steps:
+  - install.md
+  - calibrate.md
+  - teleoperate.md
+  - cameras.md
+
+# Where the steps come from. Shown as "Based on <text>" at the end of every
+# step.
+source:
+  text: "Seeed Studio's guide to the reBot Arm B601 RS with LeRobot"
+  url: "https://wiki.seeedstudio.com/rebot_arm_b601_rs_lerobot/"

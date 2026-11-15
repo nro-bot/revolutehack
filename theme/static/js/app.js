@@ -22,12 +22,15 @@ const isAppleTouchDevice =
 
 // ---- 1. Section tabs --------------------------------------------------------
 // The stylesheet shows the panel that the address points at. All that is left
-// to do here is tell the tab row which tab that is.
+// to do here is tell the tab row which tab that is. A panel inside a tab (a
+// tutorial step, at #tutorial-install) names its tab in data-tab.
 
 function syncTabs() {
   const tabs = $$('.subnav .chip');
   if (!tabs.length) return;
-  const current = tabs.find((tab) => tab.hash && tab.hash === location.hash) ?? tabs[0];
+  const panel = location.hash.length > 1 ? document.getElementById(location.hash.slice(1)) : null;
+  const wanted = panel?.dataset.tab ? `#${panel.dataset.tab}` : location.hash;
+  const current = tabs.find((tab) => tab.hash && tab.hash === wanted) ?? tabs[0];
   for (const tab of tabs) tab.setAttribute('aria-current', String(tab === current));
 }
 
@@ -364,16 +367,17 @@ if (clips.length && !reducedMotion) {
 
 // ---- 6. Small things --------------------------------------------------------
 
-// Copy buttons: <button data-copy="text">.
+// Copy buttons: <button data-copy="text">. With nothing in data-copy, the
+// button copies the code beside it (a tutorial's code block).
 for (const button of $$('[data-copy]')) {
   button.addEventListener('click', async () => {
     const label = button.textContent;
+    const code = button.parentElement.querySelector('code');
     try {
-      await navigator.clipboard.writeText(button.dataset.copy);
+      await navigator.clipboard.writeText(button.dataset.copy || code?.textContent || '');
       button.textContent = 'Copied';
     } catch {
       // No clipboard access: select the text beside the button instead.
-      const code = button.parentElement.querySelector('code');
       if (code) getSelection().selectAllChildren(code);
       button.textContent = 'Selected';
     }

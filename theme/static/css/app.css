@@ -556,36 +556,6 @@ textarea {
   color: var(--mute);
 }
 
-.faq {
-  justify-self: stretch;
-}
-.faq details {
-  padding: 6px 0;
-  border-bottom: 1px solid var(--ink);
-}
-.faq summary {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 44px;
-  font-weight: 700;
-  cursor: pointer;
-  list-style: none;
-}
-.faq summary::-webkit-details-marker {
-  display: none;
-}
-.faq summary::before {
-  content: "+";
-  width: 16px;
-  font: 400 22px/1 var(--f-mast);
-}
-.faq details[open] summary::before {
-  content: "\2212";
-}
-.faq details p {
-  padding: 0 0 10px 24px;
-}
 
 .dash {
   justify-self: stretch;
@@ -686,7 +656,6 @@ textarea {
 .card .facts,
 .card .kit,
 .card .rows,
-.card .faq,
 .card .agenda {
   justify-self: stretch;
 }
@@ -1082,6 +1051,165 @@ textarea {
   gap: 12px;
   padding-top: 14px;
   border-top: 3px solid var(--ink);
+}
+
+/* ---- 7b. Tutorial ---------------------------------------------------------- */
+/* Lives in the Tutorial tab on the homepage: a card listing the steps, and
+   one card per step, shown in its place. */
+
+.steps {
+  justify-self: stretch;
+}
+.steps li {
+  border-bottom: 1px solid var(--ink);
+}
+.steps li:last-child {
+  border-bottom: 0;
+}
+.steps a {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr) 20px;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 8px 0;
+  font-weight: 700;
+  text-decoration: none;
+}
+.steps .num {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 2px solid var(--ink);
+  background: var(--white);
+  font: 400 16px/1 var(--f-mast);
+}
+.steps .icon {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2.8;
+}
+/* The top of a step: back to the list, and which step this is. */
+.steprow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.steprow .pmeta {
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.card.tut .ch {
+  overflow-wrap: anywhere;
+}
+/* A step's text, as written in its Markdown file. */
+.md {
+  justify-self: stretch;
+  display: grid;
+  gap: 14px;
+}
+.md > * {
+  min-width: 0;
+  margin: 0;
+}
+.md h2 {
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ink);
+  font: 400 24px/1.1 var(--f-mast);
+  text-transform: uppercase;
+}
+.md h3 {
+  font: 700 16px/1.3 var(--f-type);
+  text-transform: uppercase;
+}
+.md ul,
+.md ol {
+  display: grid;
+  gap: 4px;
+  padding-left: 22px;
+}
+.md a {
+  font-weight: 700;
+}
+.md code {
+  padding: 0 4px;
+  background: var(--faint);
+  font: inherit;
+  font-weight: 700;
+}
+/* A code block: the commands to run, under a Copy button in its corner. The
+   button sits above the lines rather than over them, so a long line that
+   scrolls sideways is never hidden under it. */
+.code {
+  justify-self: stretch;
+  display: grid;
+  border: 2px solid var(--ink);
+  background: var(--white);
+  box-shadow: 3px 3px 0 var(--ink);
+}
+.code pre {
+  order: 2;
+  margin: 0;
+  padding: 4px 14px 14px;
+  overflow-x: auto;
+  font: 13.5px/1.5 var(--f-type);
+  tab-size: 4;
+}
+.code pre code {
+  padding: 0;
+  background: none;
+  font: inherit;
+}
+.code .copy {
+  order: 1;
+  justify-self: end;
+  margin: -2px -2px 0 0;
+  min-height: 28px;
+  padding: 2px 8px;
+  font-size: 11px;
+}
+/* A "> [!CAUTION]" alert from the Markdown. */
+.callout {
+  justify-self: stretch;
+  display: grid;
+  gap: 6px;
+  padding: 12px 14px;
+  border: 2px dashed var(--ink);
+}
+.callout.caution,
+.callout.warning {
+  border-style: solid;
+  background: var(--hi);
+}
+.callout > b {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.callout p {
+  margin: 0;
+}
+.cite {
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--mute);
+}
+.card .pn {
+  justify-self: stretch;
+  padding-top: 12px;
+}
+.card .pn .backb {
+  min-height: 40px;
+  padding: 4px 10px 4px 6px;
+  font-size: 12px;
+  border-width: 2px;
+}
+.card .pn .backb.next {
+  padding: 4px 6px 4px 10px;
 }
 
 /* ---- 8. Gallery: deliberately plain, so the media is the focus ------------ */

@@ -103,3 +103,15 @@
   </span>
 </a>
 {% endmacro %}
+
+{# The tutorial's steps, numbered, each a link to its section of the page. #}
+{% macro tutorial_steps(steps) %}
+<ol class="steps">
+  {% for st in steps %}
+  <li><a href="#{{ st.id }}"><span class="num">{{ st.number }}</span><span>{{ st.title|e }}</span>{{ icon('right') }}</a></li>
+  {% endfor %}
+</ol>
+{% endmacro %}
+
+{# Where the tutorial comes from: `source:` in _tutorial.yaml. #}
+{% macro tutorial_source(source) %}{% if source %}<p class="cite">Based on <a class="go" href="{{ source.url|e }}" target="_blank" rel="noopener">{{ source.text|e }}</a>.</p>{% endif %}{% endmacro %}

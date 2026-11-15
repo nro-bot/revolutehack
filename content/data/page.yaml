@@ -1,8 +1,9 @@
 # =============================================================================
 #  Revolute homepage: the upcoming hackathon (content/data/page.yaml)
 # =============================================================================
-#  Renders to /. The page is four cards, one per tab: Overview, Hardware,
-#  Agenda, FAQ. Each card is sized to fit one screen, so keep them short.
+#  Renders to /. The page is one card per tab: Overview, Tutorial, Hardware,
+#  Agenda. Each card is sized to fit one screen, so keep them short. The
+#  Tutorial tab comes from _tutorial.yaml and content/docs/.
 #
 #  The "Register" button is set once for the whole site, in _site.yaml.
 # =============================================================================
@@ -94,30 +95,3 @@ agenda:
   - day: "Saturday, Nov. 21"
     rows:
       - { when: "TBA", what: "Full schedule coming soon" }
-
-# ---- Prizes -----------------------------------------------------------------
-#  PLACEHOLDER: nothing here is decided yet. One row per prize.
-#     place   the label at the left, such as "1st place" or "Best demo"
-#     prize   what it wins
-#     note    optional, a smaller line under the prize
-prizes:
-  title: "Prizes"
-  note: "To be announced closer to the event."
-  items:
-    - place: "1st place"
-      prize: "TBA"
-    - place: "2nd place"
-      prize: "TBA"
-    - place: "3rd place"
-      prize: "TBA"
-
-# ---- FAQ --------------------------------------------------------------------
-#  `open: true` shows the answer straight away.
-faq:
-  - q: "What is Revolute?"
-    a: "Not a company. “Boston Embodied / Physical AI Robot Hackathon” was too much of a mouthful, so it is named after the revolute joint."
-    open: true
-  - q: "Who should be on a team?"
-    a: "At least one person familiar with hardware, software, or robotics."
-  - q: "More questions?"
-    a: "Email revolutehack@gmail.com."

@@ -29,7 +29,8 @@ page with its own address.
 
 | File                            | URL                  | What it is |
 |---------------------------------|----------------------|------------|
-| `content/data/page.yaml`        | `/`                  | The upcoming hackathon: Overview, Hardware, Agenda, FAQ |
+| `content/data/page.yaml`        | `/`                  | The upcoming hackathon: Overview, Tutorial, Hardware, Agenda |
+| `content/data/_tutorial.yaml`   | `/#tutorial`         | The Tutorial tab: the order of the steps, which are Markdown files in `content/docs/` |
 | `content/data/previous.yaml`    | `/previous/`         | The last hackathon: Entries, Agenda, Photos, About          |
 | `content/data/gallery.yaml`     | `/gallery/`          | Every photo and video, filtered by All, Photos, Videos |
 | `content/data/community.yaml`   | `/community/`        | Social, Events, Affiliates, Team |
@@ -58,8 +59,14 @@ the event's manage page, More, "Embed Registration Button"). Every Register
 button on the site follows.
 
 **Change the upcoming hackathon.** Edit `page.yaml`: `title`, the `facts`
-tiles, `hardware`, `agenda`, `faq`. Each tab's card is sized to fit one
+tiles, `hardware`, `agenda`. Each tab's card is sized to fit one
 screen, so keep the lists short.
+
+**Add a tutorial step.** Write it as a Markdown file in `content/docs/` (its
+first heading is the step's title) and add the file's name to `steps:` in
+`_tutorial.yaml`, in the place it belongs. The step appears in the Tutorial
+tab on the homepage, at `/#tutorial-<name>`. Code blocks get a Copy button and
+`> [!CAUTION]` alerts become callouts, as on GitHub.
 
 **Add a hackathon entry.** Add a block to `_projects.yaml` and put its media
 in `content/images/projects/<slug>/`: `poster.jpg` (required) and
