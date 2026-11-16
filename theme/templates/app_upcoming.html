@@ -1,9 +1,12 @@
 {% extends "app_base.html" %}
-{# The homepage: the upcoming hackathon. Four cards, one per tab, each sized
-   to fit the screen. Content: content/data/page.yaml. #}
+{# The homepage: the upcoming hackathon. One card per tab, each sized to fit
+   the screen. Content: content/data/page.yaml. The Tutorial tab lists the
+   steps from content/data/_tutorial.yaml; the steps' pages sit side by side
+   in the same card, and the address (#tutorial-<name>) says which one shows.
+   app.js moves between them; without it the pages stack under the list. #}
 {% block main %}
 <div class="sheet panels fit">
-  {{ ui.subnav([('overview', 'Overview'), ('hardware', 'Hardware'), ('agenda', 'Agenda'), ('prizes', 'Prizes'), ('faq', 'FAQ')]) }}
+  {{ ui.subnav([('overview', 'Overview'), ('tutorial', 'Tutorial'), ('hardware', 'Hardware'), ('agenda', 'Agenda')]) }}
   <div class="one">
     <div class="logo">{{ ui.mark() }}<b>{{ site.name|e }}</b><span class="tagline">{{ site.tagline|map('e')|join('<br>') }}</span></div>
 
@@ -15,6 +18,30 @@
         <h1 class="ev">{{ page.title|e }}</h1>
         {{ ui.facts(page.facts) }}
         {{ ui.register('btn hi') }}
+      </div>
+    </section>
+
+    <section class="panel" id="tutorial" aria-label="Tutorials">
+      <div class="card big tcard" id="tcard">
+        <h2 class="ch">{{ tutorial.title|e }}</h2>
+        {{ ui.tutorial_steps(tutorial.steps_data) }}
+        <div class="tpanel">
+          <div class="thead">
+            <a class="backb" href="#tutorial">{{ ui.icon('left') }}<span>Back</span></a>
+            <nav class="strip" aria-label="Steps">
+              {% for st in tutorial.steps_data %}<a class="tchip" href="#{{ st.id }}">{{ st.number }}. {{ st.title|e }}</a>{% endfor %}
+            </nav>
+          </div>
+          <div class="tview">
+            <div class="ttrack">
+              {% for st in tutorial.steps_data %}
+              {# Built from the Markdown file, so not escaped here. #}
+              <article class="tpage" id="{{ st.id }}" aria-label="{{ st.title|e }}" data-tab="tutorial"><div class="md">{{ st.html }}</div></article>
+              {% endfor %}
+            </div>
+          </div>
+          {{ ui.tutorial_source(tutorial.source) }}
+        </div>
       </div>
     </section>
 
@@ -50,28 +77,6 @@
       </div>
     </section>
 
-    <section class="panel" id="prizes" aria-label="Prizes">
-      <div class="card big">
-        <h2 class="ch">{{ (page.prizes.title or 'Prizes')|e }}</h2>
-        {% if page.prizes.note %}<p class="note">{{ page.prizes.note|e }}</p>{% endif %}
-        <ul class="rows">
-          {% for item in page.prizes['items'] %}
-          <li><span class="t">{{ item.place|e }}</span><span>{{ item.prize|e }}{% if item.note %}<small>{{ item.note|e }}</small>{% endif %}</span></li>
-          {% endfor %}
-        </ul>
-      </div>
-    </section>
-
-    <section class="panel" id="faq" aria-label="FAQ">
-      <div class="card big">
-        <h2 class="ch">FAQ</h2>
-        <div class="faq">
-          {% for item in page.faq %}
-          <details{% if item.open %} open{% endif %}><summary>{{ item.q|e }}</summary><p>{{ item.a|e }}</p></details>
-          {% endfor %}
-        </div>
-      </div>
-    </section>
   </div>
 </div>
 {% endblock %}

@@ -325,8 +325,9 @@ textarea {
 }
 
 /* Panels: one section of a page at a time. The tab links point at a panel's
-   id, and the panel that is the address's target is the one shown. With no
-   target, the first panel shows. Browsers without :has() show every panel. */
+   id, and the panel that is the address's target is the one shown. A target
+   inside a panel (a tutorial step) shows that panel too. With no target, the
+   first panel shows. Browsers without :has() show every panel. */
 .panel {
   display: grid;
   gap: 26px;
@@ -342,8 +343,8 @@ textarea {
   padding-top: 0;
 }
 @supports selector(:has(*)) {
-  .panels:has(.panel:target) .panel:not(:target),
-  .panels:not(:has(.panel:target)) .panel:not(:first-of-type) {
+  .panels:has(.panel:target, .panel :target) .panel:not(:target, :has(:target)),
+  .panels:not(:has(.panel:target, .panel :target)) .panel:not(:first-of-type) {
     display: none;
   }
 }
@@ -556,36 +557,6 @@ textarea {
   color: var(--mute);
 }
 
-.faq {
-  justify-self: stretch;
-}
-.faq details {
-  padding: 6px 0;
-  border-bottom: 1px solid var(--ink);
-}
-.faq summary {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 44px;
-  font-weight: 700;
-  cursor: pointer;
-  list-style: none;
-}
-.faq summary::-webkit-details-marker {
-  display: none;
-}
-.faq summary::before {
-  content: "+";
-  width: 16px;
-  font: 400 22px/1 var(--f-mast);
-}
-.faq details[open] summary::before {
-  content: "\2212";
-}
-.faq details p {
-  padding: 0 0 10px 24px;
-}
 
 .dash {
   justify-self: stretch;
@@ -686,7 +657,6 @@ textarea {
 .card .facts,
 .card .kit,
 .card .rows,
-.card .faq,
 .card .agenda {
   justify-self: stretch;
 }
@@ -1082,6 +1052,276 @@ textarea {
   gap: 12px;
   padding-top: 14px;
   border-top: 3px solid var(--ink);
+}
+
+/* ---- 7b. Tutorial ---------------------------------------------------------- */
+/* The Tutorial card on the homepage. At rest: the heading and the list of
+   steps. With a step open (the address is #tutorial-<name>) the panel takes
+   the card: a Back button, the strip of step names, the steps' pages side by
+   side (app.js slides between them), and the source link pinned under them.
+   Wide screens show the list and the panel side by side; see section 13. */
+.tcard {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.fit .card.big.tcard {
+  overflow: hidden;
+}
+.tcard > .ch {
+  flex: none;
+}
+.tcard > .steps {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+.tcard > .steps::-webkit-scrollbar {
+  display: none;
+}
+.tpanel {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 8px;
+}
+/* With the script: the list or the panel, never both, on a phone. */
+.tcard.js:not(.open) .tpanel {
+  display: none;
+}
+.tcard.js.open > .ch,
+.tcard.js.open > .steps {
+  display: none;
+}
+.thead {
+  display: grid;
+  gap: 6px;
+  padding-bottom: 8px;
+  border-bottom: 3px solid var(--ink);
+}
+.thead .backb {
+  justify-self: start;
+  min-height: 40px;
+  padding: 4px 10px 4px 6px;
+  border-width: 2px;
+  font-size: 12px;
+}
+/* The strip of step names scrolls sideways; its faded ends say so. */
+.strip {
+  display: flex;
+  gap: 18px;
+  margin: 0 -14px;
+  padding: 0 18px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 36px), transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 36px), transparent);
+}
+.strip::-webkit-scrollbar {
+  display: none;
+}
+.tchip {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  color: var(--mute);
+  font: 400 11px/1 var(--f-type);
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.tchip[aria-current] {
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--hi);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 4px;
+}
+.tview {
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+.ttrack {
+  display: flex;
+  height: 100%;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  touch-action: pan-y;
+}
+.ttrack.drag {
+  transition: none;
+  user-select: none;
+}
+.tpage {
+  flex: 0 0 100%;
+  min-width: 0;
+  height: 100%;
+  padding: 10px 2px 6px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  /* The address points here; the slide, not a scroll, brings it into view. */
+  scroll-margin: 100vh 0 0 100vw;
+}
+.tfoot {
+  padding-top: 8px;
+  border-top: 1px solid var(--ink);
+  font-size: 13px;
+  line-height: 1.45;
+}
+/* Without the script: the pages stack under the list and the card scrolls. */
+.tcard:not(.js) .thead {
+  display: none;
+}
+.tcard:not(.js) .tview {
+  height: auto;
+  overflow: visible;
+}
+.tcard:not(.js) .ttrack {
+  display: grid;
+  gap: 24px;
+  height: auto;
+}
+.tcard:not(.js) .tpage {
+  height: auto;
+  overflow: visible;
+}
+
+.steps {
+  justify-self: stretch;
+}
+.steps li {
+  border-bottom: 1px solid var(--ink);
+}
+.steps li:last-child {
+  border-bottom: 0;
+}
+.steps a {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr) 20px;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 8px 0;
+  font-weight: 700;
+  text-decoration: none;
+}
+.steps .num {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 2px solid var(--ink);
+  background: var(--white);
+  font: 400 16px/1 var(--f-mast);
+}
+.steps .icon {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2.8;
+}
+.steps a.cur .num {
+  background: var(--ink);
+  color: var(--paper);
+  box-shadow: inset 0 0 0 2px var(--hi);
+}
+/* A step's text, as written in its Markdown file. */
+.md {
+  justify-self: stretch;
+  display: grid;
+  gap: 14px;
+}
+.md > * {
+  min-width: 0;
+  margin: 0;
+}
+.md h2 {
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ink);
+  font: 400 24px/1.1 var(--f-mast);
+  text-transform: uppercase;
+}
+.md > h2:first-child {
+  margin-top: 0;
+  padding-top: 4px;
+  border-top: 0;
+}
+.md h3 {
+  font: 700 16px/1.3 var(--f-type);
+  text-transform: uppercase;
+}
+.md ul,
+.md ol {
+  display: grid;
+  gap: 4px;
+  padding-left: 22px;
+}
+.md a {
+  font-weight: 700;
+}
+.md code {
+  padding: 0 4px;
+  background: var(--faint);
+  font: inherit;
+  font-weight: 700;
+}
+/* A code block: the commands to run, under a Copy button in its corner. The
+   button sits above the lines rather than over them, so a long line that
+   scrolls sideways is never hidden under it. */
+.code {
+  justify-self: stretch;
+  display: grid;
+  border: 2px solid var(--ink);
+  background: var(--white);
+  box-shadow: 3px 3px 0 var(--ink);
+}
+.code pre {
+  order: 2;
+  margin: 0;
+  padding: 4px 14px 14px;
+  overflow-x: auto;
+  font: 13.5px/1.5 var(--f-type);
+  tab-size: 4;
+}
+.code pre code {
+  padding: 0;
+  background: none;
+  font: inherit;
+}
+.code .copy {
+  order: 1;
+  justify-self: end;
+  margin: -2px -2px 0 0;
+  min-height: 28px;
+  padding: 2px 8px;
+  font-size: 11px;
+}
+/* A "> [!CAUTION]" alert from the Markdown. */
+.callout {
+  justify-self: stretch;
+  display: grid;
+  gap: 6px;
+  padding: 12px 14px;
+  border: 2px dashed var(--ink);
+}
+.callout.caution,
+.callout.warning {
+  border-style: solid;
+  background: var(--hi);
+}
+.callout > b {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.callout p {
+  margin: 0;
 }
 
 /* ---- 8. Gallery: deliberately plain, so the media is the focus ------------ */
@@ -2252,5 +2492,55 @@ a.mini {
 @media (min-width: 1400px) {
   .grid {
     grid-template-columns: repeat(7, 1fr);
+  }
+}
+
+/* The Tutorial card on a wide screen: the list on the left, the open step
+   beside it, both always showing. The strip and the Back button are not
+   needed; the list is the navigation. */
+@media (min-width: 700px) {
+  .tcard,
+  .tcard.js:not(.open) {
+    display: grid;
+    grid-template-columns: 270px minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    column-gap: 22px;
+    row-gap: 14px;
+    align-items: stretch;
+  }
+  .tcard > .ch,
+  .tcard.js.open > .ch {
+    display: block;
+    grid-row: 1;
+    grid-column: 1;
+    align-self: start;
+    font-size: 28px;
+  }
+  .tcard > .steps,
+  .tcard.js.open > .steps {
+    display: block;
+    grid-row: 2;
+    grid-column: 1;
+  }
+  .tcard .tpanel,
+  .tcard.js:not(.open) .tpanel {
+    display: grid;
+    grid-row: 1 / span 2;
+    grid-column: 2;
+    grid-template-rows: minmax(0, 1fr) auto;
+    padding-left: 22px;
+    border-left: 3px solid var(--ink);
+  }
+  .tcard .thead {
+    display: none;
+  }
+  .tcard .steps a {
+    grid-template-columns: 30px minmax(0, 1fr);
+  }
+  .tcard .steps .icon {
+    display: none;
+  }
+  .tpage {
+    padding-top: 0;
   }
 }
