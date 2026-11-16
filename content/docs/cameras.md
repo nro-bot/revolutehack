@@ -1,7 +1,5 @@
 # Camera Setup
 
-Set up the ports first, as in Teleoperation.
-
 ## 1. Find the Cameras
 
 Find the camera indices (use `realsense` instead of `opencv` for Intel RealSense cameras):
