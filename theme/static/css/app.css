@@ -1211,12 +1211,6 @@ textarea {
   font-weight: 700;
   text-decoration: none;
 }
-/* A long name stays on one line, cut short if it has to. */
-.steps a > span:nth-child(2) {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
 .steps .num {
   display: grid;
   place-items: center;
@@ -2508,7 +2502,7 @@ a.mini {
   .tcard,
   .tcard.js:not(.open) {
     display: grid;
-    grid-template-columns: 230px minmax(0, 1fr);
+    grid-template-columns: 270px minmax(0, 1fr);
     grid-template-rows: auto minmax(0, 1fr);
     column-gap: 22px;
     row-gap: 14px;
