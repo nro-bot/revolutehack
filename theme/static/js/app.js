@@ -10,6 +10,7 @@
 //   4. Media viewer    one photo, video or map, with stepping through a group
 //   5. Preview clips   which project clip is playing
 //   6. Small things    copy buttons, the back button
+//   7. Tutorial        the steps side by side, moved by swipe or address
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -396,6 +397,89 @@ function canGoBack() {
 function syncBack() {
   const onHome = document.body.classList.contains('page-upcoming');
   for (const back of $$('[data-back]')) back.setAttribute('aria-disabled', String(onHome && !canGoBack()));
+}
+
+// ---- 7. Tutorial ------------------------------------------------------------
+// The Tutorial card on the homepage. The address says which step is open
+// (#tutorial-<name>). The steps' pages sit side by side; a swipe, a name in
+// the strip, or a row in the list moves between them by changing the
+// address, so the browser's history follows along.
+
+const tcard = $('#tcard');
+if (tcard) {
+  tcard.classList.add('js');
+  const pages = $$('.tpage', tcard);
+  const track = $('.ttrack', tcard);
+  const view = $('.tview', tcard);
+  const strip = $('.strip', tcard);
+  const chips = $$('.tchip', tcard);
+  const rows = $$('.steps a', tcard);
+  let cur = 0;
+  const at = (hash) => pages.findIndex((p) => `#${p.id}` === hash);
+
+  function goTo(i, animate) {
+    cur = Math.max(0, Math.min(pages.length - 1, i));
+    track.classList.toggle('drag', !animate);
+    track.style.transform = `translateX(${-cur * 100}%)`;
+    if (!animate) requestAnimationFrame(() => track.classList.remove('drag'));
+    // The browser scrolls the address's target into view; the slide does that here.
+    view.scrollLeft = 0;
+    chips.forEach((chip, k) => (k === cur ? chip.setAttribute('aria-current', 'true') : chip.removeAttribute('aria-current')));
+    rows.forEach((row, k) => row.classList.toggle('cur', k === cur));
+    pages.forEach((page, k) => page.toggleAttribute('inert', k !== cur));
+    const chip = chips[cur];
+    strip.scrollTo({ left: chip.offsetLeft - (strip.clientWidth - chip.offsetWidth) / 2, behavior: animate && !reducedMotion ? 'smooth' : 'auto' });
+  }
+  function syncTutorial() {
+    const i = at(location.hash);
+    const wasOpen = tcard.classList.contains('open');
+    tcard.classList.toggle('open', i >= 0);
+    goTo(i >= 0 ? i : cur, wasOpen && i >= 0 && i !== cur);
+  }
+  const stepTo = (i) => {
+    if (i >= 0 && i < pages.length) location.hash = `#${pages[i].id}`;
+  };
+
+  // A sideways swipe (or drag with the mouse) follows the finger, then snaps
+  // to the nearest step. Up and down is left to the page's own scrolling.
+  let x0 = 0, y0 = 0, dx = 0, t0 = 0, dragging = null, pointer = null;
+  track.addEventListener('pointerdown', (e) => {
+    if (e.button !== 0 || e.target.closest('button, a, pre')) return;
+    dragging = 'maybe'; x0 = e.clientX; y0 = e.clientY; dx = 0; t0 = performance.now(); pointer = e.pointerId;
+  });
+  track.addEventListener('pointermove', (e) => {
+    if (!dragging || e.pointerId !== pointer) return;
+    const mx = e.clientX - x0, my = e.clientY - y0;
+    if (dragging === 'maybe') {
+      if (Math.abs(mx) < 8 && Math.abs(my) < 8) return;
+      if (Math.abs(my) > Math.abs(mx)) { dragging = null; return; }
+      dragging = 'yes'; track.classList.add('drag'); track.setPointerCapture(pointer);
+    }
+    dx = mx;
+    const edge = (cur === 0 && dx > 0) || (cur === pages.length - 1 && dx < 0);
+    track.style.transform = `translateX(calc(${-cur * 100}% + ${edge ? dx * 0.3 : dx}px))`;
+  });
+  const settle = (e) => {
+    if (dragging !== 'yes' || e.pointerId !== pointer) { dragging = null; return; }
+    dragging = null;
+    track.classList.remove('drag');
+    const speed = dx / Math.max(1, performance.now() - t0);
+    const far = track.clientWidth / 4;
+    const step = dx < -far || speed < -0.5 ? 1 : dx > far || speed > 0.5 ? -1 : 0;
+    track.style.transform = `translateX(${-cur * 100}%)`;
+    if (step && cur + step >= 0 && cur + step < pages.length) stepTo(cur + step);
+  };
+  track.addEventListener('pointerup', settle);
+  track.addEventListener('pointercancel', settle);
+  tcard.addEventListener('keydown', (e) => {
+    if (e.target.closest('input, textarea')) return;
+    if (e.key === 'ArrowRight') stepTo(cur + 1);
+    if (e.key === 'ArrowLeft') stepTo(cur - 1);
+  });
+  addEventListener('hashchange', syncTutorial);
+  syncTutorial();
+  // The strip's widths change once the fonts are in; centre the name again.
+  document.fonts?.ready.then(() => goTo(cur, false));
 }
 
 // ---- Wiring -----------------------------------------------------------------

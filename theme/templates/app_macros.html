@@ -113,5 +113,5 @@
 </ol>
 {% endmacro %}
 
-{# Where the tutorial comes from: `source:` in _tutorial.yaml. #}
-{% macro tutorial_source(source) %}{% if source %}<p class="cite">Based on <a class="go" href="{{ source.url|e }}" target="_blank" rel="noopener">{{ source.text|e }}</a>.</p>{% endif %}{% endmacro %}
+{# Where the tutorial comes from: `source:` in _tutorial.yaml, as a link. #}
+{% macro tutorial_source(source) %}{% if source %}<p class="tfoot"><a class="go" href="{{ source.url|e }}" target="_blank" rel="noopener">{{ source.text|e }}</a></p>{% endif %}{% endmacro %}

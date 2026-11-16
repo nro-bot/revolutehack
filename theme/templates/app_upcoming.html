@@ -1,8 +1,9 @@
 {% extends "app_base.html" %}
 {# The homepage: the upcoming hackathon. One card per tab, each sized to fit
    the screen. Content: content/data/page.yaml. The Tutorial tab lists the
-   steps from content/data/_tutorial.yaml; each step is a section of its own,
-   shown in the tab's place when it is tapped. #}
+   steps from content/data/_tutorial.yaml; the steps' pages sit side by side
+   in the same card, and the address (#tutorial-<name>) says which one shows.
+   app.js moves between them; without it the pages stack under the list. #}
 {% block main %}
 <div class="sheet panels fit">
   {{ ui.subnav([('overview', 'Overview'), ('tutorial', 'Tutorial'), ('hardware', 'Hardware'), ('agenda', 'Agenda')]) }}
@@ -20,30 +21,29 @@
       </div>
     </section>
 
-    <section class="panel" id="tutorial" aria-label="Tutorial">
-      <div class="card big">
+    <section class="panel" id="tutorial" aria-label="Tutorials">
+      <div class="card big tcard" id="tcard">
         <h2 class="ch">{{ tutorial.title|e }}</h2>
         {{ ui.tutorial_steps(tutorial.steps_data) }}
-      </div>
-    </section>
-    {% for st in tutorial.steps_data %}
-    <section class="panel" id="{{ st.id }}" aria-label="{{ st.title|e }}" data-tab="tutorial">
-      <div class="card big tut">
-        <div class="steprow">
-          <a class="backb sq" href="#tutorial" aria-label="All steps">{{ ui.icon('left') }}</a>
-          <p class="pmeta">Step {{ st.number }} of {{ st.total }}</p>
+        <div class="tpanel">
+          <div class="thead">
+            <a class="backb" href="#tutorial">{{ ui.icon('left') }}<span>Back</span></a>
+            <nav class="strip" aria-label="Steps">
+              {% for st in tutorial.steps_data %}<a class="tchip" href="#{{ st.id }}">{{ st.number }}. {{ st.title|e }}</a>{% endfor %}
+            </nav>
+          </div>
+          <div class="tview">
+            <div class="ttrack">
+              {% for st in tutorial.steps_data %}
+              {# Built from the Markdown file, so not escaped here. #}
+              <article class="tpage" id="{{ st.id }}" aria-label="{{ st.title|e }}" data-tab="tutorial"><div class="md">{{ st.html }}</div></article>
+              {% endfor %}
+            </div>
+          </div>
+          {{ ui.tutorial_source(tutorial.source) }}
         </div>
-        <h2 class="ch">{{ st.title|e }}</h2>
-        {# Built from the Markdown file, so not escaped here. #}
-        <div class="md">{{ st.html }}</div>
-        {{ ui.tutorial_source(tutorial.source) }}
-        <nav class="pn" aria-label="More steps">
-          {% if st.prev %}<a class="backb" href="#{{ st.prev.id }}">{{ ui.icon('left') }}<span>{{ st.prev.title|e }}</span></a>{% else %}<span></span>{% endif %}
-          {% if st.next %}<a class="backb next" href="#{{ st.next.id }}"><span>{{ st.next.title|e }}</span>{{ ui.icon('right') }}</a>{% endif %}
-        </nav>
       </div>
     </section>
-    {% endfor %}
 
     <section class="panel" id="hardware" aria-label="Hardware">
       <div class="card big hw">

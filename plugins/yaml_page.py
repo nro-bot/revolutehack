@@ -142,7 +142,7 @@ class YamlPageGenerator(Generator):
     def _prepare_tutorial(self, data):
         """Read each step's Markdown file from content/docs/, in the order
         `steps` gives. The file's first heading is the step's title. Each
-        step is a section of the homepage, with the id `tutorial-<name>`."""
+        step is a page inside the Tutorial card, with the id `tutorial-<name>`."""
         docs_dir = os.path.join(self.path, "docs")
         names = [str(n) for n in data.get("steps") or []]
         steps = []

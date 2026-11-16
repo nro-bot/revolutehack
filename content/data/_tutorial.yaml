@@ -2,8 +2,10 @@
 #  Revolute: the Tutorial (content/data/_tutorial.yaml)
 # =============================================================================
 #  Setting up the robot software, step by step. Not a page of its own: it is
-#  the Tutorial tab on the homepage. The tab lists the steps, and tapping one
-#  shows that step in the same place, at /#tutorial-<name>.
+#  the Tutorial tab on the homepage. On a phone the tab lists the steps, and
+#  tapping one opens it in the card, at /#tutorial-<name>, with a strip of
+#  the step names above it; a swipe moves to the next or previous step. On a
+#  wider screen the list stays on the left and the step shows beside it.
 #
 #  The steps themselves are Markdown files in content/docs/. Each file's
 #  first heading ("# ...") is the step's title; everything under it is the
@@ -17,7 +19,7 @@
 #  and the build says so.
 # =============================================================================
 
-title: "Tutorial"
+title: "Tutorials"
 
 # The steps, in order: one Markdown file each, in content/docs/.
 steps:
@@ -28,8 +30,7 @@ steps:
   - dataset.md
   - train.md
 
-# Where the steps come from. Shown as "Based on <text>" at the end of every
-# step.
+# Where the steps come from: a link, always in view under the open step.
 source:
-  text: "Seeed Studio's guide to the reBot Arm B601 RS with LeRobot"
+  text: "Seeed Studio's reBot Arm guide"
   url: "https://wiki.seeedstudio.com/rebot_arm_b601_rs_lerobot/"
