@@ -440,11 +440,12 @@ if (tcard) {
     if (i >= 0 && i < pages.length) location.hash = `#${pages[i].id}`;
   };
 
-  // A sideways swipe (or drag with the mouse) follows the finger, then snaps
-  // to the nearest step. Up and down is left to the page's own scrolling.
+  // A sideways swipe follows the finger, then snaps to the nearest step. Up
+  // and down is left to the page's own scrolling. A mouse is not a finger:
+  // dragging with it selects text, as anywhere else.
   let x0 = 0, y0 = 0, dx = 0, t0 = 0, dragging = null, pointer = null;
   track.addEventListener('pointerdown', (e) => {
-    if (e.button !== 0 || e.target.closest('button, a, pre')) return;
+    if (e.pointerType === 'mouse' || e.button !== 0 || e.target.closest('button, a, pre')) return;
     dragging = 'maybe'; x0 = e.clientX; y0 = e.clientY; dx = 0; t0 = performance.now(); pointer = e.pointerId;
   });
   track.addEventListener('pointermove', (e) => {
