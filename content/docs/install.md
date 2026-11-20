@@ -54,4 +54,4 @@ uv pip install -e ".[all]"
 ```
 
 > [!NOTE]
-> The reBot arm is built into this fork, so no extra plugin packages are needed. If `lerobot-calibrate` warns that your NVIDIA driver is too old, install the torch build for CUDA 12.8: `uv pip install torch --index-url https://download.pytorch.org/whl/cu128`.
+> The reBot arm is built into this fork, so no extra plugin packages are needed. If LeRobot warns that your NVIDIA driver is too old, either update the driver to 580 or newer, or before installing LeRobot take the CUDA 12 build of PyTorch: `uv pip install --torch-backend cu126 torch torchvision` and `uv pip install --index-url https://download.pytorch.org/whl/cpu torchcodec`.
