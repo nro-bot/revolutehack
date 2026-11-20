@@ -780,7 +780,7 @@ textarea {
     }
     .fit .one {
       grid-template-rows: auto minmax(0, 1fr);
-      overflow: hidden;
+      overflow: clip;
     }
     .fit .panel {
       grid-template-rows: minmax(0, 1fr);
@@ -1065,8 +1065,10 @@ textarea {
   flex-direction: column;
   align-items: stretch;
 }
+/* Clipped, not hidden: a hidden box can still be scrolled by a drag
+   selection in some browsers, which would shift the pages. */
 .fit .card.big.tcard {
-  overflow: hidden;
+  overflow: clip;
 }
 .tcard > .ch {
   flex: none;
@@ -1145,7 +1147,7 @@ textarea {
 .tview {
   min-height: 0;
   height: 100%;
-  overflow: hidden;
+  overflow: clip;
 }
 .ttrack {
   display: flex;
