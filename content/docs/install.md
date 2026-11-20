@@ -31,13 +31,9 @@ conda activate lerobot
 # Install ffmpeg (if video errors occur, use ffmpeg=7.1.1 instead)
 conda install -y ffmpeg -c conda-forge
 
-# Install LeRobot and the Seeed plugins
+# Install LeRobot
 cd ~/rebot_lerobot/lerobot
 pip install -e ".[all]"
-pip install lerobot-robot-seeed-b601 lerobot-teleoperator-rebot-arm-102
-
-# Activate environment
-conda activate lerobot
 ```
 
 ## 3B. Install with uv
@@ -53,7 +49,9 @@ cd ~/rebot_lerobot/lerobot
 uv venv --python 3.12
 source .venv/bin/activate
 
-# Install LeRobot and the Seeed plugins
+# Install LeRobot
 uv pip install -e ".[all]"
-uv pip install lerobot-robot-seeed-b601 lerobot-teleoperator-rebot-arm-102
 ```
+
+> [!NOTE]
+> The reBot arm is built into this fork, so no extra plugin packages are needed. If `lerobot-calibrate` warns that your NVIDIA driver is too old, install the torch build for CUDA 12.8: `uv pip install torch --index-url https://download.pytorch.org/whl/cu128`.

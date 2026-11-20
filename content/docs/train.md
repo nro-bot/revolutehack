@@ -27,9 +27,9 @@ Run the policy on the robot. This records 10 episodes of the policy's own attemp
 
 ```bash
 lerobot-record \
-    --robot.type=seeed_b601_rs_follower \
+    --robot.type=rebot_b601_follower \
+    --robot.motor_family=rs \
     --robot.port=can0 \
-    --robot.can_adapter=socketcan \
     --robot.id=follower1 \
     --robot.cameras="{ front: {type: opencv, index_or_path: 0, width: 640, height: 480, fps: 30, fourcc: MJPG}, side: {type: opencv, index_or_path: 2, width: 640, height: 480, fps: 30, fourcc: MJPG}}" \
     --display_data=false \

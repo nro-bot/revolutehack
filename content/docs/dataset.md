@@ -6,14 +6,14 @@ Set up the ports and cameras first, as in Camera Setup. Then record five episode
 
 ```bash
 lerobot-record \
-    --robot.type=seeed_b601_rs_follower \
+    --robot.type=rebot_b601_follower \
+    --robot.motor_family=rs \
     --robot.port=can0 \
     --robot.id=follower1 \
-    --robot.can_adapter=socketcan \
     --robot.cameras="{ front: {type: opencv, index_or_path: 0, width: 640, height: 480, fps: 30, fourcc: MJPG}, side: {type: opencv, index_or_path: 2, width: 640, height: 480, fps: 30, fourcc: MJPG}}" \
-    --teleop.type=rebot_arm_102_leader \
+    --teleop.type=rebot_102_leader \
     --teleop.port=/dev/ttyUSB0 \
-    --teleop.id=rebot_arm_102_leader \
+    --teleop.id=leader1 \
     --display_data=true \
     --dataset.repo_id=seeed_rebot_b601_rs/test \
     --dataset.num_episodes=5 \
@@ -51,9 +51,9 @@ The robot repeats the first episode:
 
 ```bash
 lerobot-replay \
-    --robot.type=seeed_b601_rs_follower \
+    --robot.type=rebot_b601_follower \
+    --robot.motor_family=rs \
     --robot.port=can0 \
-    --robot.can_adapter=socketcan \
     --robot.id=follower1 \
     --dataset.repo_id=seeed_rebot_b601_rs/test \
     --dataset.episode=0
