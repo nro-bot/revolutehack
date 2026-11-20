@@ -94,80 +94,181 @@ Checkpoints are saved under the output folder's `checkpoints/`, so you can stop 
 
 ## 2. Evaluate
 
-Run the policy on the robot. This records 10 episodes of the policy's own attempts, with the same cameras as the dataset.
+Run the policy on the robot with `lerobot-rollout`. It drives the arm for 10 episodes and records them as a dataset of its own. Use the block that matches the cameras in the dataset you trained on: the policy only works with the same cameras, under the same names.
+
+> [!CAUTION]
+> Stand clear of the arm. A policy trained on a few episodes moves unpredictably, and the arm goes limp when the run ends.
 
 <!-- tabs -->
 ### ACT
 
+**One camera:**
+
 ```bash
-lerobot-record \
+lerobot-rollout \
+    --strategy.type=episodic \
+    --policy.path=outputs/train/act_rebot_test/checkpoints/last/pretrained_model \
+    --robot.type=rebot_b601_follower \
+    --robot.motor_family=rs \
+    --robot.port=can0 \
+    --robot.id=follower1 \
+    --robot.cameras="{ front: {type: opencv, index_or_path: 0, width: 640, height: 480, fps: 30, fourcc: MJPG, rotation: 0}}" \
+    --dataset.repo_id=seeed_rebot_b601_rs/test_eval \
+    --dataset.single_task="Grab the black cube" \
+    --dataset.num_episodes=10 \
+    --dataset.episode_time_s=30 \
+    --dataset.reset_time_s=10 \
+    --dataset.push_to_hub=false \
+    --dataset.no_stamp=true
+```
+
+**Two cameras:**
+
+```bash
+lerobot-rollout \
+    --strategy.type=episodic \
+    --policy.path=outputs/train/act_rebot_test/checkpoints/last/pretrained_model \
     --robot.type=rebot_b601_follower \
     --robot.motor_family=rs \
     --robot.port=can0 \
     --robot.id=follower1 \
     --robot.cameras="{ front: {type: opencv, index_or_path: 0, width: 640, height: 480, fps: 30, fourcc: MJPG, rotation: 0}, side: {type: opencv, index_or_path: 2, width: 640, height: 480, fps: 30, fourcc: MJPG, rotation: 0}}" \
-    --display_data=false \
-    --dataset.repo_id=seeed_rebot_b601_rs/eval_test \
+    --dataset.repo_id=seeed_rebot_b601_rs/test_eval \
     --dataset.single_task="Grab the black cube" \
     --dataset.num_episodes=10 \
+    --dataset.episode_time_s=30 \
+    --dataset.reset_time_s=10 \
     --dataset.push_to_hub=false \
-    --dataset.no_stamp=true \
-    --policy.path=outputs/train/act_rebot_test/checkpoints/last/pretrained_model
+    --dataset.no_stamp=true
 ```
 
 ### SmolVLA
 
+**One camera:**
+
 ```bash
-lerobot-record \
+lerobot-rollout \
+    --strategy.type=episodic \
+    --policy.path=outputs/train/smolvla_rebot_test/checkpoints/last/pretrained_model \
+    --robot.type=rebot_b601_follower \
+    --robot.motor_family=rs \
+    --robot.port=can0 \
+    --robot.id=follower1 \
+    --robot.cameras="{ front: {type: opencv, index_or_path: 0, width: 640, height: 480, fps: 30, fourcc: MJPG, rotation: 0}}" \
+    --dataset.repo_id=seeed_rebot_b601_rs/test_eval \
+    --dataset.single_task="Grab the black cube" \
+    --dataset.num_episodes=10 \
+    --dataset.episode_time_s=30 \
+    --dataset.reset_time_s=10 \
+    --dataset.push_to_hub=false \
+    --dataset.no_stamp=true
+```
+
+**Two cameras:**
+
+```bash
+lerobot-rollout \
+    --strategy.type=episodic \
+    --policy.path=outputs/train/smolvla_rebot_test/checkpoints/last/pretrained_model \
     --robot.type=rebot_b601_follower \
     --robot.motor_family=rs \
     --robot.port=can0 \
     --robot.id=follower1 \
     --robot.cameras="{ front: {type: opencv, index_or_path: 0, width: 640, height: 480, fps: 30, fourcc: MJPG, rotation: 0}, side: {type: opencv, index_or_path: 2, width: 640, height: 480, fps: 30, fourcc: MJPG, rotation: 0}}" \
-    --display_data=false \
-    --dataset.repo_id=seeed_rebot_b601_rs/eval_test \
+    --dataset.repo_id=seeed_rebot_b601_rs/test_eval \
     --dataset.single_task="Grab the black cube" \
     --dataset.num_episodes=10 \
+    --dataset.episode_time_s=30 \
+    --dataset.reset_time_s=10 \
     --dataset.push_to_hub=false \
-    --dataset.no_stamp=true \
-    --policy.path=outputs/train/smolvla_rebot_test/checkpoints/last/pretrained_model
+    --dataset.no_stamp=true
 ```
 
 ### Pi0
 
+**One camera:**
+
 ```bash
-lerobot-record \
+lerobot-rollout \
+    --strategy.type=episodic \
+    --policy.path=outputs/train/pi0_rebot_test/checkpoints/last/pretrained_model \
+    --robot.type=rebot_b601_follower \
+    --robot.motor_family=rs \
+    --robot.port=can0 \
+    --robot.id=follower1 \
+    --robot.cameras="{ front: {type: opencv, index_or_path: 0, width: 640, height: 480, fps: 30, fourcc: MJPG, rotation: 0}}" \
+    --dataset.repo_id=seeed_rebot_b601_rs/test_eval \
+    --dataset.single_task="Grab the black cube" \
+    --dataset.num_episodes=10 \
+    --dataset.episode_time_s=30 \
+    --dataset.reset_time_s=10 \
+    --dataset.push_to_hub=false \
+    --dataset.no_stamp=true
+```
+
+**Two cameras:**
+
+```bash
+lerobot-rollout \
+    --strategy.type=episodic \
+    --policy.path=outputs/train/pi0_rebot_test/checkpoints/last/pretrained_model \
     --robot.type=rebot_b601_follower \
     --robot.motor_family=rs \
     --robot.port=can0 \
     --robot.id=follower1 \
     --robot.cameras="{ front: {type: opencv, index_or_path: 0, width: 640, height: 480, fps: 30, fourcc: MJPG, rotation: 0}, side: {type: opencv, index_or_path: 2, width: 640, height: 480, fps: 30, fourcc: MJPG, rotation: 0}}" \
-    --display_data=false \
-    --dataset.repo_id=seeed_rebot_b601_rs/eval_test \
+    --dataset.repo_id=seeed_rebot_b601_rs/test_eval \
     --dataset.single_task="Grab the black cube" \
     --dataset.num_episodes=10 \
+    --dataset.episode_time_s=30 \
+    --dataset.reset_time_s=10 \
     --dataset.push_to_hub=false \
-    --dataset.no_stamp=true \
-    --policy.path=outputs/train/pi0_rebot_test/checkpoints/last/pretrained_model
+    --dataset.no_stamp=true
 ```
 
 ### Pi0.5
 
+**One camera:**
+
 ```bash
-lerobot-record \
+lerobot-rollout \
+    --strategy.type=episodic \
+    --policy.path=outputs/train/pi05_rebot_test/checkpoints/last/pretrained_model \
+    --robot.type=rebot_b601_follower \
+    --robot.motor_family=rs \
+    --robot.port=can0 \
+    --robot.id=follower1 \
+    --robot.cameras="{ front: {type: opencv, index_or_path: 0, width: 640, height: 480, fps: 30, fourcc: MJPG, rotation: 0}}" \
+    --dataset.repo_id=seeed_rebot_b601_rs/test_eval \
+    --dataset.single_task="Grab the black cube" \
+    --dataset.num_episodes=10 \
+    --dataset.episode_time_s=30 \
+    --dataset.reset_time_s=10 \
+    --dataset.push_to_hub=false \
+    --dataset.no_stamp=true
+```
+
+**Two cameras:**
+
+```bash
+lerobot-rollout \
+    --strategy.type=episodic \
+    --policy.path=outputs/train/pi05_rebot_test/checkpoints/last/pretrained_model \
     --robot.type=rebot_b601_follower \
     --robot.motor_family=rs \
     --robot.port=can0 \
     --robot.id=follower1 \
     --robot.cameras="{ front: {type: opencv, index_or_path: 0, width: 640, height: 480, fps: 30, fourcc: MJPG, rotation: 0}, side: {type: opencv, index_or_path: 2, width: 640, height: 480, fps: 30, fourcc: MJPG, rotation: 0}}" \
-    --display_data=false \
-    --dataset.repo_id=seeed_rebot_b601_rs/eval_test \
+    --dataset.repo_id=seeed_rebot_b601_rs/test_eval \
     --dataset.single_task="Grab the black cube" \
     --dataset.num_episodes=10 \
+    --dataset.episode_time_s=30 \
+    --dataset.reset_time_s=10 \
     --dataset.push_to_hub=false \
-    --dataset.no_stamp=true \
-    --policy.path=outputs/train/pi05_rebot_test/checkpoints/last/pretrained_model
+    --dataset.no_stamp=true
 ```
 <!-- /tabs -->
 
-If you see `mean is infinity`, the camera names (`front`, `side`) do not match the ones used when recording.
+Keys: `→` ends the episode early, `←` discards it and re-records, `Esc` stops. Between episodes the arm returns to where it started.
+
+Visualize the result with the dataset step's command and the name `seeed_rebot_b601_rs/test_eval`.

@@ -212,7 +212,7 @@ class YamlPageGenerator(Generator):
     # The fork's command-line scripts, and where each one lives.
     LEROBOT_SRC = "https://github.com/Seeed-Projects/lerobot/blob/main/src/lerobot/scripts/"
     LEROBOT_SCRIPTS = {"lerobot-calibrate", "lerobot-teleoperate", "lerobot-record", "lerobot-replay",
-                       "lerobot-train", "lerobot-eval", "lerobot-dataset-viz", "lerobot-find-cameras",
+                       "lerobot-train", "lerobot-eval", "lerobot-rollout", "lerobot-dataset-viz", "lerobot-find-cameras",
                        "lerobot-find-port", "lerobot-setup-motors"}
 
     @staticmethod
@@ -270,8 +270,8 @@ class YamlPageGenerator(Generator):
             inner = re.sub(r"\b((act|smolvla|pi0|pi05)_rebot_test)\b",
                            lambda f: field("train", "job_" + f.group(2), f.group(1), numeric=False), inner)
             inner = re.sub(r"(--steps=)(\d+)\b", lambda f: f.group(1) + field("train", "steps", f.group(2)), inner)
-            inner = re.sub(r"\b(seeed_rebot_b601_rs/eval_test)\b", lambda f: field("eval", "repo_id", f.group(1), numeric=False), inner)
-            if "eval_test" in inner:
+            inner = re.sub(r"\b(seeed_rebot_b601_rs/test_eval)\b", lambda f: field("eval", "repo_id", f.group(1), numeric=False), inner)
+            if "test_eval" in inner:
                 inner = re.sub(r"(--dataset\.num_episodes=)(\d+)\b",
                                lambda f: f.group(1) + field("eval", "num_episodes", f.group(2)), inner)
             # The LeRobot command the block runs, linked to its source in the
