@@ -46,6 +46,7 @@ steps:
       - cameras.md
       - dataset.md
       - train.md
+      - sim.md
 
 # Where the steps come from: a link, always in view under the open step.
 source:
