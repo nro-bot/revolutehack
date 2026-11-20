@@ -28,7 +28,9 @@ uv venv --python 3.12
 source .venv/bin/activate
 ```
 
-NVIDIA GPU (optional): check the driver version. Older than 580: install PyTorch for CUDA 12 first.
+### NVIDIA GPU (optional)
+
+Check the driver version. Older than 580: install PyTorch for CUDA 12 first.
 
 ```bash
 nvidia-smi --query-gpu=driver_version --format=csv,noheader
@@ -38,6 +40,8 @@ nvidia-smi --query-gpu=driver_version --format=csv,noheader
 uv pip install --torch-backend cu126 torch torchvision
 uv pip install --index-url https://download.pytorch.org/whl/cpu torchcodec
 ```
+
+### Install LeRobot
 
 ```bash
 # Install LeRobot and the Seeed plugins

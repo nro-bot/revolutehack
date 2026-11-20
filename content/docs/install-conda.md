@@ -32,7 +32,9 @@ conda activate lerobot
 conda install -y ffmpeg -c conda-forge
 ```
 
-NVIDIA GPU (optional): check the driver version. Older than 580: install PyTorch for CUDA 12 first.
+### NVIDIA GPU (optional)
+
+Check the driver version. Older than 580: install PyTorch for CUDA 12 first.
 
 ```bash
 nvidia-smi --query-gpu=driver_version --format=csv,noheader
@@ -42,6 +44,8 @@ nvidia-smi --query-gpu=driver_version --format=csv,noheader
 pip install --index-url https://download.pytorch.org/whl/cu126 torch torchvision
 pip install --index-url https://download.pytorch.org/whl/cpu torchcodec
 ```
+
+### Install LeRobot
 
 ```bash
 # Install LeRobot and the Seeed plugins
