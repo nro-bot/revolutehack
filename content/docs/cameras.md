@@ -7,7 +7,7 @@
 lerobot-find-cameras opencv
 ```
 
-Each camera's `Id` is its `index_or_path`. A test image from each camera is saved to `outputs/captured_images` in the current directory.
+This lists every camera, including a laptop's built-in webcam. Each camera's `Id` is its `index_or_path`, and a test image from each is saved to `outputs/captured_images`. Open the images to see which `Id` is the USB camera on the robot, usually not `0`, and use that `Id` below.
 
 ## 2. Teleoperate with One Camera
 
@@ -23,6 +23,8 @@ lerobot-teleoperate \
     --teleop.id=leader1 \
     --display_data=true
 ```
+
+`index_or_path: 0` is the USB camera's `Id` from step 1.
 
 ## 3. Teleoperate with Two Cameras
 
