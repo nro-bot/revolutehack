@@ -7,11 +7,10 @@
 lerobot-find-cameras opencv
 ```
 
-This lists every camera, including a laptop's built-in webcam, and saves a test image from each to `outputs/captured_images`.
-
-Which camera is which, by name. A camera's Id is the number of the first `/dev/videoN` under it; the USB camera is usually not 0.
+Test images: `outputs/captured_images`.
 
 ```bash
+# Cameras by name. The Id is the N of the first /dev/videoN listed under a camera
 sudo apt install -y v4l-utils
 v4l2-ctl --list-devices
 
