@@ -23,6 +23,7 @@ lerobot-record \
     --dataset.push_to_hub=false \
     --dataset.episode_time_s=30 \
     --dataset.reset_time_s=30 \
+    --dataset.no_stamp=true \
     --resume=false
 ```
 
@@ -45,10 +46,11 @@ lerobot-record \
     --dataset.push_to_hub=false \
     --dataset.episode_time_s=30 \
     --dataset.reset_time_s=30 \
+    --dataset.no_stamp=true \
     --resume=false
 ```
 
-- `repo_id`: the dataset's name. Saved under `~/.cache/huggingface/lerobot/`.
+- `repo_id`: the dataset's name. Saved under `~/.cache/huggingface/lerobot/`. Without `no_stamp`, LeRobot adds the date and time to the name on every run.
 - `single_task`: what the episodes show, in a few words.
 - `num_episodes`: how many to record.
 - `episode_time_s`, `reset_time_s`: seconds per episode, and to put things back between episodes.
@@ -65,8 +67,7 @@ Keys while recording: **right arrow** ends the episode early, **left arrow** rec
 ```bash
 lerobot-dataset-viz \
     --repo-id seeed_rebot_b601_rs/test \
-    --episode-index 0 \
-    --display-compressed-images=false
+    --episode-index 0
 ```
 
 ## 3. Replay
