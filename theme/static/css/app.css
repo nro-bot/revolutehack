@@ -1392,7 +1392,7 @@ textarea {
   padding: 4px 14px 14px;
   white-space: pre-wrap; /* long lines wrap; nothing scrolls sideways */
   overflow-wrap: anywhere;
-  font: 13.5px/1.5 var(--f-type);
+  font: 12.5px/1.5 var(--f-type); /* 40 characters across a phone card: a flag line fits */
   tab-size: 4;
 }
 .code pre code {
@@ -2520,6 +2520,9 @@ a.mini {
     justify-content: flex-start;
     gap: 28px;
     padding: 12px var(--gut);
+  }
+  .code pre {
+    font-size: 13.5px;
   }
   .chip {
     gap: 7px;
