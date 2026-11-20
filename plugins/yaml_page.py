@@ -261,7 +261,8 @@ class YamlPageGenerator(Generator):
             # length; the evaluation's own dataset and episode count.
             inner = re.sub(r"(--dataset\.single_task=&quot;)([^&]+)(&quot;)",  # quotes are escaped in the HTML
                            lambda f: f.group(1) + field("dataset", "task", f.group(2), numeric=False) + f.group(3), inner)
-            inner = re.sub(r"\b(act_rebot_test)\b", lambda f: field("train", "job", f.group(1), numeric=False), inner)
+            inner = re.sub(r"\b((act|smolvla|pi0|pi05)_rebot_test)\b",
+                           lambda f: field("train", "job_" + f.group(2), f.group(1), numeric=False), inner)
             inner = re.sub(r"(--steps=)(\d+)\b", lambda f: f.group(1) + field("train", "steps", f.group(2)), inner)
             inner = re.sub(r"\b(seeed_rebot_b601_rs/eval_test)\b", lambda f: field("eval", "repo_id", f.group(1), numeric=False), inner)
             if "eval_test" in inner:
@@ -272,7 +273,26 @@ class YamlPageGenerator(Generator):
                         '<button class="mini copy" type="button" data-copy>Copy</button></div><pre>' + inner + "</pre></div>")
             return '<div class="code"><pre>' + inner + '</pre><button class="mini copy" type="button" data-copy>Copy</button></div>'
 
-        return re.sub(r"<pre>(.*?)</pre>", block, html, flags=re.S)
+        html = re.sub(r"<pre>(.*?)</pre>", block, html, flags=re.S)
+
+        # A run of "### " sections between <!-- tabs --> and <!-- /tabs -->
+        # becomes a row of tabs with one panel each. app.js switches them,
+        # and keeps the same choice across every tab row with those names.
+        def tabs(m):
+            parts = re.split(r"<h3>(.*?)</h3>", m.group(1))
+            names = parts[1::2]
+            bodies = parts[2::2]
+            if not names:
+                return m.group(1)
+            buttons = "".join(
+                f'<button class="stab-btn" type="button" role="tab" data-tab="{n}" aria-selected="{"true" if i == 0 else "false"}">{n}</button>'
+                for i, n in enumerate(names))
+            panels = "".join(
+                f'<div class="stab" role="tabpanel" data-tab="{n}"{"" if i == 0 else " hidden"}>{b}</div>'
+                for i, (n, b) in enumerate(zip(names, bodies)))
+            return f'<div class="subtabs"><div class="stabs" role="tablist">{buttons}</div>{panels}</div>'
+
+        return re.sub(r"<!-- tabs -->(.*?)<!-- /tabs -->", tabs, html, flags=re.S)
 
     def _prepare_projects(self, data):
         """Fill in each project's poster, optional preview clip, and neighbours."""

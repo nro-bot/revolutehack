@@ -433,6 +433,32 @@ if (camFields.length) {
   }
 }
 
+// Sub-tabs inside a tutorial step (the model to train, say). Picking a tab
+// picks the same-named tab in every other row that has it, and the choice
+// is kept for the next visit.
+const subtabs = $$('.subtabs');
+if (subtabs.length) {
+  const KEY = 'tutorial-tab';
+  const pick = (name) => {
+    for (const group of subtabs) {
+      if (!group.querySelector(`.stab-btn[data-tab="${CSS.escape(name)}"]`)) continue;
+      for (const b of group.querySelectorAll('.stab-btn')) b.setAttribute('aria-selected', String(b.dataset.tab === name));
+      for (const p of group.querySelectorAll('.stab')) p.hidden = p.dataset.tab !== name;
+    }
+  };
+  let saved = null;
+  try { saved = localStorage.getItem(KEY); } catch {}
+  if (saved) pick(saved);
+  for (const group of subtabs) {
+    group.addEventListener('click', (e) => {
+      const b = e.target.closest('.stab-btn');
+      if (!b) return;
+      pick(b.dataset.tab);
+      try { localStorage.setItem(KEY, b.dataset.tab); } catch {}
+    });
+  }
+}
+
 // ---- 7. Tutorial ------------------------------------------------------------
 // The Tutorial card on the homepage. The address says which step is open
 // (#tutorial-<name>). The steps' pages sit side by side; a swipe, a name in

@@ -1419,6 +1419,34 @@ textarea {
 .code.editable:focus-within {
   box-shadow: 3px 3px 0 var(--hi);
 }
+/* Sub-tabs inside a step: one row of names, one panel showing. */
+.subtabs {
+  margin-top: 14px;
+}
+.stabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin-bottom: 12px;
+  border-bottom: 2px solid var(--ink);
+}
+.stab-btn {
+  padding: 8px 2px;
+  border: 0;
+  background: none;
+  font: 700 12px/1 var(--f-type);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--mute);
+  cursor: pointer;
+}
+.stab-btn[aria-selected="true"] {
+  color: var(--ink);
+  box-shadow: inset 0 -3px 0 var(--hi);
+}
+.stab > * + * {
+  margin-top: 14px;
+}
 /* A field inside a command: the one part that can be typed into. */
 .code .val {
   display: inline-block;
