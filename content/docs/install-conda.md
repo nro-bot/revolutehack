@@ -45,5 +45,3 @@ cd ~/rebot_lerobot/lerobot
 pip install -e ".[all]"
 pip install lerobot-robot-seeed-b601 lerobot-teleoperator-rebot-arm-102
 ```
-
-The fork has the arm built in as `rebot_b601_follower` and `rebot_102_leader`; the plugins add the names Seeed's wiki uses, `seeed_b601_rs_follower` and `rebot_arm_102_leader`, so either set works.
