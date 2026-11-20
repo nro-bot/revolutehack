@@ -11,8 +11,8 @@ This lists every camera, including a laptop's built-in webcam, and saves a test 
 
 ## 2. Teleoperate with One Camera
 
-```{ .bash .edit }
-# Edit here: index_or_path is the camera's Id from step 1.
+```bash
+# index_or_path is the camera's Id from step 1.
 # Image upside down: rotation: 180.
 lerobot-teleoperate \
     --robot.type=rebot_b601_follower \
@@ -28,8 +28,8 @@ lerobot-teleoperate \
 
 ## 3. Teleoperate with Two Cameras
 
-```{ .bash .edit }
-# Edit here: one index_or_path per camera, from step 1.
+```bash
+# One index_or_path per camera, from step 1.
 lerobot-teleoperate \
     --robot.type=rebot_b601_follower \
     --robot.motor_family=rs \

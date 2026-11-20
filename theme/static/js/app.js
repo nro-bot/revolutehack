@@ -399,55 +399,29 @@ function syncBack() {
   for (const back of $$('[data-back]')) back.setAttribute('aria-disabled', String(onHome && !canGoBack()));
 }
 
-// Camera settings in the tutorial's commands. Each camera is written as
-// `front: {type: opencv, index_or_path: 0, ...}`. What is typed into an
-// editable block (the camera's Id, a rotation) carries over to every other
-// command that names the same camera, and is kept for the next visit.
-const CAMERA = /\b(front|side)\s*:\s*\{([^}]*)\}/g;
-const FIELD = (name) => new RegExp(`${name}:\\s*([^,}\\s]+)`);
-const camBlocks = $$('.code code').filter((code) => CAMERA.test(code.textContent) && !CAMERA.test(''));
-if (camBlocks.length) {
+// Camera settings in the tutorial's commands: the camera's Id and rotation
+// are fields that can be typed into. A value typed in one command carries
+// over to every other command that names the same camera, and is kept in
+// the browser for the next visit.
+const camFields = $$('.code .val');
+if (camFields.length) {
   const KEY = 'tutorial-cameras';
-  const readCameras = (text) => {
-    const out = {};
-    for (const [, name, body] of text.matchAll(CAMERA)) {
-      out[name] = { index: FIELD('index_or_path').exec(body)?.[1], rotation: FIELD('rotation').exec(body)?.[1] };
-    }
-    return out;
-  };
-  const applyCameras = (text, cams) =>
-    text.replace(CAMERA, (all, name, body) => {
-      const cam = cams[name];
-      if (!cam) return all;
-      let b = body;
-      if (cam.index !== undefined) b = b.replace(FIELD('index_or_path'), `index_or_path: ${cam.index}`);
-      if (cam.rotation !== undefined) {
-        b = FIELD('rotation').test(b) ? b.replace(FIELD('rotation'), `rotation: ${cam.rotation}`) : b.replace(/\s*$/, `, rotation: ${cam.rotation}`);
-      } else {
-        b = b.replace(/,\s*rotation:\s*[^,}\s]+/, '');
-      }
-      return `${name}: {${b}}`;
-    });
   let cams = {};
   try { cams = JSON.parse(localStorage.getItem(KEY)) || {}; } catch {}
-  const spread = (from) => {
-    for (const code of camBlocks) {
-      if (code === from) continue;
-      const next = applyCameras(code.textContent, cams);
-      if (next !== code.textContent) code.textContent = next;
+  const apply = (except) => {
+    for (const f of camFields) {
+      const v = cams[f.dataset.cam]?.[f.dataset.field];
+      if (f !== except && v !== undefined && f.textContent !== v) f.textContent = v;
     }
   };
-  if (Object.keys(cams).length) spread(null);
-  let pending = 0;
-  for (const code of camBlocks) {
-    if (!code.isContentEditable) continue;
-    code.addEventListener('input', () => {
-      clearTimeout(pending);
-      pending = setTimeout(() => {
-        cams = { ...cams, ...readCameras(code.textContent) };
-        try { localStorage.setItem(KEY, JSON.stringify(cams)); } catch {}
-        spread(code);
-      }, 400);
+  apply(null);
+  for (const f of camFields) {
+    f.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); f.blur(); } });
+    f.addEventListener('input', () => {
+      const v = f.textContent.replace(/\s+/g, '');
+      cams = { ...cams, [f.dataset.cam]: { ...cams[f.dataset.cam], [f.dataset.field]: v } };
+      try { localStorage.setItem(KEY, JSON.stringify(cams)); } catch {}
+      apply(f);
     });
   }
 }

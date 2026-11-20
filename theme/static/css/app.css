@@ -1418,9 +1418,19 @@ textarea {
 .code.editable:focus-within {
   box-shadow: 3px 3px 0 var(--hi);
 }
-.code.editable code {
+/* A field inside a command: the one part that can be typed into. */
+.code .val {
+  display: inline-block;
+  min-width: 1.2em;
+  padding: 0 3px;
+  background: var(--hi);
+  border-bottom: 2px solid var(--ink);
   outline: none;
   cursor: text;
+}
+.code .val:focus {
+  background: var(--white);
+  box-shadow: 0 0 0 2px var(--ink);
 }
 .code .copy {
   order: 1;

@@ -224,21 +224,28 @@ class YamlPageGenerator(Generator):
         html = markdown.markdown(text, extensions=["fenced_code", "sane_lists", "tables", "attr_list"])
         # Links to other sites open in a new tab, as everywhere on the site.
         html = re.sub(r'<a href="(https?://[^"]*)">', r'<a href="\1" target="_blank" rel="noopener">', html)
-        # Every code block gets a Copy button, wired up by app.js. A fence
-        # written as ```{ .bash .edit } can be typed into, and Copy copies
-        # what is there now.
-        html = re.sub(
-            r'<pre class="edit"><code([^>]*)>(.*?)</code></pre>',
-            r'<div class="code editable"><div class="cbar"><span class="edit-tag">Editable</span><button class="mini copy" type="button" data-copy>Copy</button></div><pre class="edit"><code\1 contenteditable="plaintext-only" spellcheck="false">\2</code></pre></div>',
-            html,
-            flags=re.S,
-        )
-        return re.sub(
-            r"<pre>(.*?)</pre>",
-            r'<div class="code"><pre>\1</pre><button class="mini copy" type="button" data-copy>Copy</button></div>',
-            html,
-            flags=re.S,
-        )
+        # Every code block gets a Copy button, wired up by app.js. In a block
+        # with camera settings (`front: {type: opencv, index_or_path: 0, ...}`)
+        # the camera's Id and rotation become fields that can be typed into;
+        # the rest of the command stays as it is.
+        def field(name, which, value):
+            return (f'<span class="val" contenteditable="plaintext-only" spellcheck="false" inputmode="numeric" '
+                    f'data-cam="{name}" data-field="{which}" aria-label="{name} camera {which}">{value}</span>')
+
+        def camera(m):
+            name, body = m.group(1), m.group(2)
+            body = re.sub(r"(index_or_path:\s*)([^,}\s]+)", lambda f: f.group(1) + field(name, "index", f.group(2)), body)
+            body = re.sub(r"(rotation:\s*)([^,}\s]+)", lambda f: f.group(1) + field(name, "rotation", f.group(2)), body)
+            return f"{name}: {{{body}}}"
+
+        def block(m):
+            inner = re.sub(r"\b(front|side):\s*\{([^}]*)\}", camera, m.group(1))
+            if inner != m.group(1):
+                return ('<div class="code editable"><div class="cbar"><span class="edit-tag">Editable fields</span>'
+                        '<button class="mini copy" type="button" data-copy>Copy</button></div><pre>' + inner + "</pre></div>")
+            return '<div class="code"><pre>' + inner + '</pre><button class="mini copy" type="button" data-copy>Copy</button></div>'
+
+        return re.sub(r"<pre>(.*?)</pre>", block, html, flags=re.S)
 
     def _prepare_projects(self, data):
         """Fill in each project's poster, optional preview clip, and neighbours."""
