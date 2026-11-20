@@ -68,6 +68,11 @@ first heading is the step's title) and add the file's name to `steps:` in
 tab on the homepage, at `/#tutorial-<name>`. Code blocks get a Copy button and
 `> [!CAUTION]` alerts become callouts, as on GitHub.
 
+**Add a track.** Write it as a Markdown file in `content/tracks/` (its first
+heading is the track's name) and add the file's name under `tracks:` in
+`page.yaml`. It appears under the agenda on the homepage and unfolds when
+tapped.
+
 **Add a hackathon entry.** Add a block to `_projects.yaml` and put its media
 in `content/images/projects/<slug>/`: `poster.jpg` (required) and
 `preview.mp4` (optional, a silent 6 to 8 second loop). The entry appears on

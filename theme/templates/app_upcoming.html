@@ -74,6 +74,15 @@
           {% if place %}<p class="meet">Meet @ {{ ui.map_link(place.map, place.map.title, place.map.title ~ ': open the map') }}</p>{% endif %}
         </div>
         {{ ui.agenda(page.agenda) }}
+        {% if page.tracks_data %}
+        <div class="tracks">
+          <h3 class="day">{{ (page.tracks.title or 'Tracks')|e }}</h3>
+          {% for t in page.tracks_data %}
+          {# Built from the Markdown file, so not escaped here. #}
+          <details class="track" id="track-{{ t.slug }}"><summary>{{ t.title|e }}</summary><div class="md">{{ t.html }}</div></details>
+          {% endfor %}
+        </div>
+        {% endif %}
       </div>
     </section>
 

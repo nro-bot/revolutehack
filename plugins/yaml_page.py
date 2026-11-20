@@ -161,18 +161,7 @@ class YamlPageGenerator(Generator):
                 groups.append({"title": "", "entries": entries([item])})
         names = [f for g in groups for e in g["entries"] for f in e]
 
-        def read(name):
-            path = os.path.join(docs_dir, name)
-            if not os.path.exists(path):
-                log.error("_tutorial.yaml lists %s, but there is no such file in %s", name, docs_dir)
-                return None
-            with open(path, encoding="utf-8") as fh:
-                text = fh.read()
-            heading = re.match(r"\s*#\s+(.+?)\s*\n", text)
-            title = heading.group(1).strip() if heading else os.path.splitext(name)[0].replace("-", " ").title()
-            body = text[heading.end():] if heading else text
-            slug = os.path.splitext(name)[0]
-            return {"slug": slug, "id": f"tutorial-{slug}", "file": name, "title": title, "html": self._render_markdown(body)}
+        read = lambda name: self._read_doc(docs_dir, name, "_tutorial.yaml")  # noqa: E731
 
         steps = [s for s in (read(n) for n in names) if s]
         by_file = {s["file"]: s for s in steps}
@@ -204,6 +193,21 @@ class YamlPageGenerator(Generator):
             step["prev"] = steps[i - 1] if i else None
             step["next"] = steps[i + 1] if i + 1 < total else None
         data["steps_data"] = steps
+
+    def _read_doc(self, folder, name, listed_in):
+        """A Markdown file as a page: its first heading is the title, the rest
+        is rendered. None, with an error logged, if the file is missing."""
+        path = os.path.join(folder, name)
+        if not os.path.exists(path):
+            log.error("%s lists %s, but there is no such file in %s", listed_in, name, folder)
+            return None
+        with open(path, encoding="utf-8") as fh:
+            text = fh.read()
+        heading = re.match(r"\s*#\s+(.+?)\s*\n", text)
+        slug = os.path.splitext(name)[0]
+        title = heading.group(1).strip() if heading else slug.replace("-", " ").title()
+        body = text[heading.end():] if heading else text
+        return {"slug": slug, "id": f"tutorial-{slug}", "file": name, "title": title, "html": self._render_markdown(body)}
 
     @staticmethod
     def _render_markdown(text):
@@ -258,6 +262,10 @@ class YamlPageGenerator(Generator):
         if layout == "upcoming":
             for item in (data.get("hardware") or {}).get("items") or []:
                 self._add_youtube(item)
+            # The tracks under the agenda: Markdown files in content/tracks/.
+            tracks_dir = os.path.join(self.path, "tracks")
+            files = (data.get("tracks") or {}).get("files") or []
+            data["tracks_data"] = [t for t in (self._read_doc(tracks_dir, str(f), "page.yaml") for f in files) if t]
         elif layout == "previous":
             photos = data.get("photos") or {}
             if photos.get("folder"):
