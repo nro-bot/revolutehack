@@ -145,22 +145,28 @@ class YamlPageGenerator(Generator):
         step is a page inside the Tutorial card, with the id `tutorial-<name>`."""
         docs_dir = os.path.join(self.path, "docs")
         names = [str(n) for n in data.get("steps") or []]
-        steps = []
-        for name in names:
+
+        def read(name):
             path = os.path.join(docs_dir, name)
             if not os.path.exists(path):
                 log.error("_tutorial.yaml lists %s, but there is no such file in %s", name, docs_dir)
-                continue
+                return None
             with open(path, encoding="utf-8") as fh:
                 text = fh.read()
             heading = re.match(r"\s*#\s+(.+?)\s*\n", text)
             title = heading.group(1).strip() if heading else os.path.splitext(name)[0].replace("-", " ").title()
             body = text[heading.end():] if heading else text
             slug = os.path.splitext(name)[0]
-            steps.append({"slug": slug, "id": f"tutorial-{slug}", "file": name, "title": title, "html": self._render_markdown(body)})
+            return {"slug": slug, "id": f"tutorial-{slug}", "file": name, "title": title, "html": self._render_markdown(body)}
+
+        steps = [s for s in (read(n) for n in names) if s]
+        # The About entry: a page like the steps, but not numbered.
+        about = read(str(data["about"])) if data.get("about") else None
+        data["about"] = about
+        data["pages"] = ([about] if about else []) + steps
         if os.path.isdir(docs_dir):
             for name in sorted(os.listdir(docs_dir)):
-                if name.endswith(".md") and name not in names:
+                if name.endswith(".md") and name not in names and name != (about or {}).get("file"):
                     log.warning("content/docs/%s is not listed in _tutorial.yaml, so it is not built", name)
         total = len(steps)
         for i, step in enumerate(steps):

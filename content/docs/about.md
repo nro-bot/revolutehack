@@ -1,4 +1,4 @@
-# The reBot Arm and LeRobot
+# About
 
 ## What is a reBot Arm?
 

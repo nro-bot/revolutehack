@@ -104,9 +104,11 @@
 </a>
 {% endmacro %}
 
-{# The tutorial's steps, numbered, each a link to its section of the page. #}
-{% macro tutorial_steps(steps) %}
+{# The tutorial's steps, numbered, each a link to its page in the card, with
+   the About entry first when there is one. #}
+{% macro tutorial_steps(steps, about=None) %}
 <ol class="steps">
+  {% if about %}<li class="about"><a href="#{{ about.id }}"><span class="num">i</span><span>{{ about.title|e }}</span>{{ icon('right') }}</a></li>{% endif %}
   {% for st in steps %}
   <li><a href="#{{ st.id }}"><span class="num">{{ st.number }}</span><span>{{ st.title|e }}</span>{{ icon('right') }}</a></li>
   {% endfor %}

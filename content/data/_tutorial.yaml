@@ -22,9 +22,12 @@
 
 title: "Tutorials"
 
+# An About entry at the top of the list, not numbered: what the arm and
+# LeRobot are, what you need, the specifications and the safety rules.
+about: about.md
+
 # The steps, in order: one Markdown file each, in content/docs/.
 steps:
-  - overview.md
   - install.md
   - calibrate.md
   - teleoperate.md

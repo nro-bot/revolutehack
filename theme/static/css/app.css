@@ -1225,6 +1225,10 @@ textarea {
   height: 20px;
   stroke-width: 2.8;
 }
+.steps .about .num {
+  font: 400 italic 16px/1 var(--f-type);
+  text-transform: lowercase;
+}
 .steps a.cur .num {
   background: var(--ink);
   color: var(--paper);
