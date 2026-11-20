@@ -20,6 +20,10 @@ nvidia-smi --query-gpu=driver_version --format=csv,noheader
 ### 2A. Driver older than 580: update it
 
 ```bash
+# Remove the old driver first: its packages conflict with the new ones
+sudo apt purge '*nvidia*570*'
+sudo apt autoremove
+
 sudo apt install -y nvidia-driver-580-open
 sudo reboot
 ```
