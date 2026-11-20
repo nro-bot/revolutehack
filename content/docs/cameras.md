@@ -13,7 +13,9 @@ Test images: `outputs/captured_images`.
 # Cameras by name. The Id is the N of the first /dev/videoN listed under a camera
 sudo apt install -y v4l-utils
 v4l2-ctl --list-devices
+```
 
+```bash
 # Watch one live
 ffplay -f v4l2 /dev/video0
 ```
