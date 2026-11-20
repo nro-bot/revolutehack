@@ -48,18 +48,16 @@ lerobot-record \
     --resume=false
 ```
 
-`repo_id` is any name you like. The dataset is saved under `~/.cache/huggingface/lerobot/`.
+- `repo_id`: the dataset's name. Saved under `~/.cache/huggingface/lerobot/`.
+- `single_task`: what the episodes show, in a few words.
+- `num_episodes`: how many to record.
+- `resume`: `true` continues an interrupted recording; `num_episodes` is then how many more to add.
+- `index_or_path`, `rotation`: the cameras, as in Camera Setup.
 
-Keys while recording:
-
-- **Right arrow**: end the episode (or the reset) early and move on.
-- **Left arrow**: cancel the episode and record it again.
-- **Esc**: stop, encode the videos and finish.
-
-To continue an interrupted recording, set `resume` to `true` and `num_episodes` to how many more episodes to add.
+Keys while recording: **right arrow** ends the episode early, **left arrow** records it again, **Esc** stops and saves.
 
 > [!TIP]
-> Keep the cameras fixed, grasp the same way every time, and keep the object in view. Aim for 50 or more episodes. You should be able to do the task yourself from the camera images alone.
+> Keep the cameras fixed, grasp the same way every time, and keep the object in view. Aim for 50 or more episodes.
 
 ## 2. Visualize
 
