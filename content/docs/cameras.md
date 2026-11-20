@@ -7,11 +7,13 @@
 lerobot-find-cameras opencv
 ```
 
-This lists every camera, including a laptop's built-in webcam. Each camera's `Id` is its `index_or_path`, and a test image from each is saved to `outputs/captured_images`. Open the images to see which `Id` is the USB camera on the robot, usually not `0`, and use that `Id` below.
+This lists every camera, including a laptop's built-in webcam, and saves a test image from each to `outputs/captured_images`. Open the images to see which `Id` is the USB camera on the robot.
 
 ## 2. Teleoperate with One Camera
 
-```bash
+```{ .bash .edit }
+# Edit here: index_or_path is the camera's Id from step 1.
+# Image upside down: add rotation: 180 after fourcc: MJPG.
 lerobot-teleoperate \
     --robot.type=rebot_b601_follower \
     --robot.motor_family=rs \
@@ -24,11 +26,10 @@ lerobot-teleoperate \
     --display_data=true
 ```
 
-`index_or_path: 0` is the USB camera's `Id` from step 1.
-
 ## 3. Teleoperate with Two Cameras
 
-```bash
+```{ .bash .edit }
+# Edit here: one index_or_path per camera, from step 1.
 lerobot-teleoperate \
     --robot.type=rebot_b601_follower \
     --robot.motor_family=rs \

@@ -221,10 +221,18 @@ class YamlPageGenerator(Generator):
             return f'<div class="callout {kind}" role="note"><b>{kind.capitalize()}</b>{body}</div>\n'
 
         text = ALERT.sub(alert, text + "\n")
-        html = markdown.markdown(text, extensions=["fenced_code", "sane_lists", "tables"])
+        html = markdown.markdown(text, extensions=["fenced_code", "sane_lists", "tables", "attr_list"])
         # Links to other sites open in a new tab, as everywhere on the site.
         html = re.sub(r'<a href="(https?://[^"]*)">', r'<a href="\1" target="_blank" rel="noopener">', html)
-        # Every code block gets a Copy button, wired up by app.js.
+        # Every code block gets a Copy button, wired up by app.js. A fence
+        # written as ```{ .bash .edit } can be typed into, and Copy copies
+        # what is there now.
+        html = re.sub(
+            r'<pre class="edit"><code([^>]*)>(.*?)</code></pre>',
+            r'<div class="code editable"><div class="cbar"><span class="edit-tag">Editable</span><button class="mini copy" type="button" data-copy>Copy</button></div><pre><code\1 contenteditable="plaintext-only" spellcheck="false">\2</code></pre></div>',
+            html,
+            flags=re.S,
+        )
         return re.sub(
             r"<pre>(.*?)</pre>",
             r'<div class="code"><pre>\1</pre><button class="mini copy" type="button" data-copy>Copy</button></div>',
