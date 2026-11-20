@@ -245,7 +245,7 @@ class YamlPageGenerator(Generator):
             inner = re.sub(r"(ffplay -f v4l2 /dev/video)(\d+)\b", lambda f: f.group(1) + field("front", "index", f.group(2)), inner)
             # The dataset's name, wherever a command takes it; the recording's
             # resume flag and episode count.
-            inner = re.sub(r"(repo[_-]id[= ])(seeed_rebot_b601_rs/test)\b",
+            inner = re.sub(r"(repo[_-]id[= ]|lerobot/)(seeed_rebot_b601_rs/test)\b",
                            lambda f: f.group(1) + field("dataset", "repo_id", f.group(2), numeric=False), inner)
             inner = re.sub(r"(--resume=)(true|false)\b",
                            lambda f: f.group(1) + field("record", "resume", f.group(2), numeric=False), inner)

@@ -67,6 +67,7 @@ Keys while recording: **right arrow** ends the episode early, **left arrow** rec
 ```bash
 lerobot-dataset-viz \
     --repo-id seeed_rebot_b601_rs/test \
+    --root $HOME/.cache/huggingface/lerobot/seeed_rebot_b601_rs/test \
     --episode-index 0
 ```
 
@@ -81,5 +82,6 @@ lerobot-replay \
     --robot.port=can0 \
     --robot.id=follower1 \
     --dataset.repo_id=seeed_rebot_b601_rs/test \
+    --dataset.root=$HOME/.cache/huggingface/lerobot/seeed_rebot_b601_rs/test \
     --dataset.episode=0
 ```

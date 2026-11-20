@@ -7,6 +7,7 @@ Train an ACT policy on the dataset you recorded. Use the same `repo_id` as when 
 ```bash
 lerobot-train \
     --dataset.repo_id=seeed_rebot_b601_rs/test \
+    --dataset.root=$HOME/.cache/huggingface/lerobot/seeed_rebot_b601_rs/test \
     --policy.type=act \
     --policy.push_to_hub=false \
     --output_dir=outputs/train/act_rebot_test \
