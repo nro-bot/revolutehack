@@ -228,9 +228,10 @@ class YamlPageGenerator(Generator):
         # with camera settings (`front: {type: opencv, index_or_path: 0, ...}`)
         # the camera's Id and rotation become fields that can be typed into;
         # the rest of the command stays as it is.
-        def field(name, which, value):
-            return (f'<span class="val" contenteditable="plaintext-only" spellcheck="false" inputmode="numeric" '
-                    f'data-cam="{name}" data-field="{which}" aria-label="{name} camera {which}">{value}</span>')
+        def field(name, which, value, numeric=True):
+            mode = ' inputmode="numeric"' if numeric else ""
+            return (f'<span class="val" contenteditable="plaintext-only" spellcheck="false"{mode} '
+                    f'data-cam="{name}" data-field="{which}" aria-label="{name} {which}">{value}</span>')
 
         def camera(m):
             name, body = m.group(1), m.group(2)
@@ -240,6 +241,14 @@ class YamlPageGenerator(Generator):
 
         def block(m):
             inner = re.sub(r"\b(front|side):\s*\{([^}]*)\}", camera, m.group(1))
+            # The dataset's name, wherever a command takes it; the recording's
+            # resume flag and episode count.
+            inner = re.sub(r"(repo[_-]id[= ])(seeed_rebot_b601_rs/test)\b",
+                           lambda f: f.group(1) + field("dataset", "repo_id", f.group(2), numeric=False), inner)
+            inner = re.sub(r"(--resume=)(true|false)\b",
+                           lambda f: f.group(1) + field("record", "resume", f.group(2), numeric=False), inner)
+            inner = re.sub(r"(--dataset\.num_episodes=)(\d+)\b",
+                           lambda f: f.group(1) + field("record", "num_episodes", f.group(2)), inner)
             if inner != m.group(1):
                 return ('<div class="code editable"><div class="cbar"><span class="edit-tag">Editable fields</span>'
                         '<button class="mini copy" type="button" data-copy>Copy</button></div><pre>' + inner + "</pre></div>")

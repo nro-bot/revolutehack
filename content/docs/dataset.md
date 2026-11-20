@@ -22,7 +22,8 @@ lerobot-record \
     --dataset.single_task="Grab the black cube" \
     --dataset.push_to_hub=false \
     --dataset.episode_time_s=30 \
-    --dataset.reset_time_s=30
+    --dataset.reset_time_s=30 \
+    --resume=false
 ```
 
 Two cameras:
@@ -43,7 +44,8 @@ lerobot-record \
     --dataset.single_task="Grab the black cube" \
     --dataset.push_to_hub=false \
     --dataset.episode_time_s=30 \
-    --dataset.reset_time_s=30
+    --dataset.reset_time_s=30 \
+    --resume=false
 ```
 
 `repo_id` is any name you like. The dataset is saved under `~/.cache/huggingface/lerobot/`.
@@ -54,7 +56,7 @@ Keys while recording:
 - **Left arrow**: cancel the episode and record it again.
 - **Esc**: stop, encode the videos and finish.
 
-To continue an interrupted recording, run the same command with `--resume=true`, with `--dataset.num_episodes` set to how many more episodes to add.
+To continue an interrupted recording, set `resume` to `true` and `num_episodes` to how many more episodes to add.
 
 > [!TIP]
 > Keep the cameras fixed, grasp the same way every time, and keep the object in view. Aim for 50 or more episodes. You should be able to do the task yourself from the camera images alone.
