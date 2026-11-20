@@ -26,15 +26,10 @@ Press `c` to start the calibration.
 
 ```bash
 sudo dmesg | grep ttyUSB
-```
 
-The last line shows ttyUSB as "disconnected": remove brltty, then unplug and replug the arm.
-
-```bash
+# Last line shows ttyUSB as "disconnected": remove brltty, then replug the arm
 sudo apt remove brltty
-```
 
-```bash
 sudo chmod 666 /dev/ttyUSB0
 ```
 
