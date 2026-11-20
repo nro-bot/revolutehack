@@ -51,6 +51,7 @@ lerobot-record \
 - `repo_id`: the dataset's name. Saved under `~/.cache/huggingface/lerobot/`.
 - `single_task`: what the episodes show, in a few words.
 - `num_episodes`: how many to record.
+- `episode_time_s`, `reset_time_s`: seconds per episode, and to put things back between episodes.
 - `resume`: `true` continues an interrupted recording; `num_episodes` is then how many more to add.
 - `index_or_path`, `rotation`: the cameras, as in Camera Setup.
 

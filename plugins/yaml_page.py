@@ -255,6 +255,8 @@ class YamlPageGenerator(Generator):
             if "--resume=" in inner:  # the record commands only
                 inner = re.sub(r"(--dataset\.num_episodes=)(\d+)\b",
                                lambda f: f.group(1) + field("record", "num_episodes", f.group(2)), inner)
+                inner = re.sub(r"(--dataset\.(episode_time_s|reset_time_s)=)(\d+)\b",
+                               lambda f: f.group(1) + field("record", f.group(2), f.group(3)), inner)
             # The task, wherever it is written; the training run's name and
             # length; the evaluation's own dataset and episode count.
             inner = re.sub(r"(--dataset\.single_task=&quot;)([^&]+)(&quot;)",  # quotes are escaped in the HTML
