@@ -56,7 +56,4 @@ source .venv/bin/activate
 # Install LeRobot and the Seeed plugins
 uv pip install -e ".[all]"
 uv pip install lerobot-robot-seeed-b601 lerobot-teleoperator-rebot-arm-102
-
-# Activate environment
-source .venv/bin/activate
 ```
