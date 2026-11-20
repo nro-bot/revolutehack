@@ -110,7 +110,7 @@
 <ol class="steps">
   {% for g in groups %}
   {% if g.title %}<li class="grp" aria-hidden="true">{{ g.title|e }}</li>{% endif %}
-  {% if loop.first %}{% for ab in about %}<li class="about"><a href="#{{ ab.id }}"><span class="num">i</span><span>{{ ab.title|e }}</span>{{ icon('right') }}</a></li>{% endfor %}{% endif %}
+  {% if loop.first %}{% for ab in about %}<li class="about"><a href="#{{ ab.id }}"><span>{{ ab.title|e }}</span>{{ icon('right') }}</a></li>{% endfor %}{% endif %}
   {% for st in g.steps %}
   <li><a href="#{{ st.id }}"><span class="num">{{ st.number }}</span><span>{{ st.title|e }}</span>{{ icon('right') }}</a></li>
   {% endfor %}

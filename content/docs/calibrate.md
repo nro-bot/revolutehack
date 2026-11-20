@@ -1,8 +1,5 @@
 # Robot Calibration
 
-> [!NOTE]
-> These names are for the current Seeed fork of LeRobot, which has the reBot arm built in. Seeed's wiki uses an older setup with two plugin packages, where the follower is `seeed_b601_rs_follower` with `--robot.can_adapter=socketcan` and the leader is `rebot_arm_102_leader`. Use whichever your install knows: `lerobot-calibrate --help` lists the types.
-
 ## 1. Follower Arm
 
 ```bash

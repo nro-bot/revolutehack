@@ -146,15 +146,20 @@ class YamlPageGenerator(Generator):
         docs_dir = os.path.join(self.path, "docs")
         # `steps` is a list of groups ({group: title, files: [...]}) or, for a
         # list without headings, of file names.
+        # Within a group, a file name is one step; a list of names is a set of
+        # alternatives that share one number.
+        def entries(files):
+            return [[str(f) for f in e] if isinstance(e, list) else [str(e)] for e in files or []]
+
         groups = []
         for item in data.get("steps") or []:
             if isinstance(item, dict):
-                groups.append({"title": item.get("group") or "", "files": [str(f) for f in item.get("files") or []]})
+                groups.append({"title": item.get("group") or "", "entries": entries(item.get("files"))})
             elif groups and not groups[-1]["title"]:
-                groups[-1]["files"].append(str(item))
+                groups[-1]["entries"] += entries([item])
             else:
-                groups.append({"title": "", "files": [str(item)]})
-        names = [f for g in groups for f in g["files"]]
+                groups.append({"title": "", "entries": entries([item])})
+        names = [f for g in groups for e in g["entries"] for f in e]
 
         def read(name):
             path = os.path.join(docs_dir, name)
@@ -171,8 +176,15 @@ class YamlPageGenerator(Generator):
 
         steps = [s for s in (read(n) for n in names) if s]
         by_file = {s["file"]: s for s in steps}
+        number = 0
         for g in groups:
-            g["steps"] = [by_file[f] for f in g["files"] if f in by_file]
+            g["steps"] = []
+            for e in g["entries"]:
+                number += 1
+                for f in e:
+                    if f in by_file:
+                        by_file[f]["number"] = number
+                        g["steps"].append(by_file[f])
         data["groups"] = groups
         # The About entries: pages like the steps, but not numbered.
         about_names = data.get("about") or []
@@ -185,9 +197,8 @@ class YamlPageGenerator(Generator):
             for name in sorted(os.listdir(docs_dir)):
                 if name.endswith(".md") and name not in names and name not in [str(n) for n in about_names]:
                     log.warning("content/docs/%s is not listed in _tutorial.yaml, so it is not built", name)
-        total = len(steps)
+        total = number
         for i, step in enumerate(steps):
-            step["number"] = i + 1
             step["total"] = total
             step["prev"] = steps[i - 1] if i else None
             step["next"] = steps[i + 1] if i + 1 < total else None
@@ -206,6 +217,8 @@ class YamlPageGenerator(Generator):
 
         text = ALERT.sub(alert, text + "\n")
         html = markdown.markdown(text, extensions=["fenced_code", "sane_lists", "tables"])
+        # Links to other sites open in a new tab, as everywhere on the site.
+        html = re.sub(r'<a href="(https?://[^"]*)">', r'<a href="\1" target="_blank" rel="noopener">', html)
         # Every code block gets a Copy button, wired up by app.js.
         return re.sub(
             r"<pre>(.*?)</pre>",

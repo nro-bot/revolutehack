@@ -2,15 +2,15 @@
 
 ## What is a reBot Arm?
 
-The reBot Arm B601-RS is a six-joint robot arm made by Seeed, launched as an open-source arm to lower the barrier to learning embodied intelligence.
+The [reBot Arm B601-RS](https://wiki.seeedstudio.com/rebot_arm_b601_rs_lerobot/) is a six-joint robot arm made by Seeed, launched as an open-source arm to lower the barrier to learning embodied intelligence.
 
 ## What is LeRobot?
 
-LeRobot is Hugging Face's open-source robot learning library, written in PyTorch. It focuses on imitation learning and reinforcement learning, and provides pretrained models, datasets of human demonstrations, and simulation environments.
+[LeRobot](https://github.com/huggingface/lerobot) is Hugging Face's open-source robot learning library, written in PyTorch. It focuses on imitation learning and reinforcement learning, and provides pretrained models, datasets of human demonstrations, and simulation environments.
 
 ## Teleoperate, record, train
 
-1. You move the leader arm by hand, and the follower copies it in real time.
+1. You move the [leader arm](https://www.seeedstudio.com/StarAi-Arm-Violin-p-6571.html) by hand, and the [follower](https://wiki.seeedstudio.com/rebot_arm_b601_rs_lerobot/) copies it in real time.
 2. While you do that, cameras and joint positions are recorded as episodes. One episode is one attempt at the task, like "grab the black cube".
 3. You train a neural network on those episodes.
 4. The trained network then looks through the cameras and moves the arm by itself.

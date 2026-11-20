@@ -1252,9 +1252,9 @@ textarea {
   letter-spacing: 0.08em;
   color: var(--mute);
 }
-.steps .about .num {
-  font: 400 italic 16px/1 var(--f-type);
-  text-transform: lowercase;
+/* An About entry has no number: its name starts where a numbered one does. */
+.steps .about a {
+  grid-template-columns: minmax(0, 1fr) 20px;
 }
 .steps a.cur .num {
   background: var(--ink);
