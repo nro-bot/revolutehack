@@ -28,7 +28,7 @@ uv venv --python 3.12
 source .venv/bin/activate
 ```
 
-Driver older than 580 only: the CUDA 12 build of PyTorch (stays on torch 2.14).
+NVIDIA driver older than 580: install PyTorch for CUDA 12 first.
 
 ```bash
 uv pip install --torch-backend cu126 torch torchvision
