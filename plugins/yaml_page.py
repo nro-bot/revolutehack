@@ -241,6 +241,8 @@ class YamlPageGenerator(Generator):
 
         def block(m):
             inner = re.sub(r"\b(front|side):\s*\{([^}]*)\}", camera, m.group(1))
+            # The camera watched with ffplay is the front camera.
+            inner = re.sub(r"(ffplay -f v4l2 /dev/video)(\d+)\b", lambda f: f.group(1) + field("front", "index", f.group(2)), inner)
             # The dataset's name, wherever a command takes it; the recording's
             # resume flag and episode count.
             inner = re.sub(r"(repo[_-]id[= ])(seeed_rebot_b601_rs/test)\b",
