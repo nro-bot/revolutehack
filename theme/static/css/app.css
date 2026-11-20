@@ -1390,7 +1390,8 @@ textarea {
   order: 2;
   margin: 0;
   padding: 4px 14px 14px;
-  overflow-x: auto;
+  white-space: pre-wrap; /* long lines wrap; nothing scrolls sideways */
+  overflow-wrap: anywhere;
   font: 13.5px/1.5 var(--f-type);
   tab-size: 4;
 }
