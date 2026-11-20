@@ -32,7 +32,11 @@ conda activate lerobot
 conda install -y ffmpeg -c conda-forge
 ```
 
-NVIDIA driver older than 580: install PyTorch for CUDA 12 first.
+NVIDIA GPU (optional): check the driver version. Older than 580: install PyTorch for CUDA 12 first.
+
+```bash
+nvidia-smi --query-gpu=driver_version --format=csv,noheader
+```
 
 ```bash
 pip install --index-url https://download.pytorch.org/whl/cu126 torch torchvision
