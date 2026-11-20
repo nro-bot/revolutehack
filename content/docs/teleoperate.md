@@ -27,3 +27,5 @@ lerobot-teleoperate \
     --teleop.port=/dev/ttyUSB0 \
     --teleop.id=leader1
 ```
+
+Press `Ctrl` + `C` to stop.
