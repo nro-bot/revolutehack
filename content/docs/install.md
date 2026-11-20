@@ -42,9 +42,6 @@ uv pip install --index-url https://download.pytorch.org/whl/cpu torchcodec
 uv pip install -e ".[all]"
 ```
 
-> [!NOTE]
-> The reBot arm is built into this fork, so no extra plugin packages are needed.
-
 ### 3 - Conda
 
 ```bash
@@ -75,3 +72,6 @@ pip install --index-url https://download.pytorch.org/whl/cpu torchcodec
 cd ~/rebot_lerobot/lerobot
 pip install -e ".[all]"
 ```
+
+> [!NOTE]
+> The reBot arm is built into this fork, so no extra plugin packages are needed.
