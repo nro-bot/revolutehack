@@ -144,7 +144,17 @@ class YamlPageGenerator(Generator):
         `steps` gives. The file's first heading is the step's title. Each
         step is a page inside the Tutorial card, with the id `tutorial-<name>`."""
         docs_dir = os.path.join(self.path, "docs")
-        names = [str(n) for n in data.get("steps") or []]
+        # `steps` is a list of groups ({group: title, files: [...]}) or, for a
+        # list without headings, of file names.
+        groups = []
+        for item in data.get("steps") or []:
+            if isinstance(item, dict):
+                groups.append({"title": item.get("group") or "", "files": [str(f) for f in item.get("files") or []]})
+            elif groups and not groups[-1]["title"]:
+                groups[-1]["files"].append(str(item))
+            else:
+                groups.append({"title": "", "files": [str(item)]})
+        names = [f for g in groups for f in g["files"]]
 
         def read(name):
             path = os.path.join(docs_dir, name)
@@ -160,6 +170,10 @@ class YamlPageGenerator(Generator):
             return {"slug": slug, "id": f"tutorial-{slug}", "file": name, "title": title, "html": self._render_markdown(body)}
 
         steps = [s for s in (read(n) for n in names) if s]
+        by_file = {s["file"]: s for s in steps}
+        for g in groups:
+            g["steps"] = [by_file[f] for f in g["files"] if f in by_file]
+        data["groups"] = groups
         # The About entries: pages like the steps, but not numbered.
         about_names = data.get("about") or []
         if isinstance(about_names, str):

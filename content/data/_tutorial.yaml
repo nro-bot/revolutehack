@@ -15,8 +15,8 @@
 #  picture goes in content/images/ and is written as
 #  ![what it shows](/images/<file>).
 #
-#  To add a step: put its .md file in content/docs/ and add its name to
-#  `steps`, in the place it belongs. A file that is not listed is not built,
+#  To add a step: put its .md file in content/docs/ and add its name under
+#  the group it belongs to in `steps`, in the place it belongs. A file that is not listed is not built,
 #  and the build says so.
 # =============================================================================
 
@@ -28,14 +28,19 @@ about:
   - about.md
   - requirements.md
 
-# The steps, in order: one Markdown file each, in content/docs/.
+# The steps, in order: one Markdown file each, in content/docs/. They are
+# grouped under headings in the list; the numbering runs on across groups.
 steps:
-  - install.md
-  - calibrate.md
-  - teleoperate.md
-  - cameras.md
-  - dataset.md
-  - train.md
+  - group: "Setup"
+    files:
+      - install.md
+      - calibrate.md
+  - group: "Usage"
+    files:
+      - teleoperate.md
+      - cameras.md
+      - dataset.md
+      - train.md
 
 # Where the steps come from: a link, always in view under the open step.
 source:

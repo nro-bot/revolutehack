@@ -1225,6 +1225,16 @@ textarea {
   height: 20px;
   stroke-width: 2.8;
 }
+/* A group heading in the list: Setup, Usage. */
+.steps .grp {
+  padding: 16px 0 2px;
+  border-bottom: 0;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--mute);
+}
 .steps .about .num {
   font: 400 italic 16px/1 var(--f-type);
   text-transform: lowercase;

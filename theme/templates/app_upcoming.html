@@ -24,7 +24,7 @@
     <section class="panel" id="tutorial" aria-label="Tutorials">
       <div class="card big tcard" id="tcard">
         <h2 class="ch">{{ tutorial.title|e }}</h2>
-        {{ ui.tutorial_steps(tutorial.steps_data, tutorial.about) }}
+        {{ ui.tutorial_steps(tutorial.groups, tutorial.about) }}
         <div class="tpanel">
           <div class="thead">
             <a class="backb" href="#tutorial">{{ ui.icon('left') }}<span>Back</span></a>
