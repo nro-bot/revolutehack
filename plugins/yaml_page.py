@@ -209,6 +209,12 @@ class YamlPageGenerator(Generator):
         body = text[heading.end():] if heading else text
         return {"slug": slug, "id": f"tutorial-{slug}", "file": name, "title": title, "html": self._render_markdown(body)}
 
+    # The fork's command-line scripts, and where each one lives.
+    LEROBOT_SRC = "https://github.com/Seeed-Projects/lerobot/blob/main/src/lerobot/scripts/"
+    LEROBOT_SCRIPTS = {"lerobot-calibrate", "lerobot-teleoperate", "lerobot-record", "lerobot-replay",
+                       "lerobot-train", "lerobot-eval", "lerobot-dataset-viz", "lerobot-find-cameras",
+                       "lerobot-find-port", "lerobot-setup-motors"}
+
     @staticmethod
     def _render_markdown(text):
         """Markdown to HTML, the way GitHub shows it: fenced code blocks (each
@@ -268,8 +274,17 @@ class YamlPageGenerator(Generator):
             if "eval_test" in inner:
                 inner = re.sub(r"(--dataset\.num_episodes=)(\d+)\b",
                                lambda f: f.group(1) + field("eval", "num_episodes", f.group(2)), inner)
-            if inner != m.group(1):
-                return ('<div class="code editable"><div class="cbar"><span class="edit-tag">Editable fields</span>'
+            # The LeRobot command the block runs, linked to its source in the
+            # fork, so each use of a command leads to what it does.
+            fn = re.search(r"(?m)^(?:<code[^>]*>)?(lerobot-[a-z-]+)\b", inner)
+            link = ""
+            if fn and fn.group(1) in YamlPageGenerator.LEROBOT_SCRIPTS:
+                link = (f'<a class="fn" href="{YamlPageGenerator.LEROBOT_SRC}{fn.group(1).replace("-", "_")}.py" '
+                        f'target="_blank" rel="noopener">{fn.group(1)}</a>')
+            editable = inner != m.group(1)
+            if editable or link:
+                tag = '<span class="edit-tag">Editable fields</span>' if editable else ""
+                return (f'<div class="code{" editable" if editable else ""}"><div class="cbar"><span class="cleft">{tag}{link}</span>'
                         '<button class="mini copy" type="button" data-copy>Copy</button></div><pre>' + inner + "</pre></div>")
             return '<div class="code"><pre>' + inner + '</pre><button class="mini copy" type="button" data-copy>Copy</button></div>'
 
