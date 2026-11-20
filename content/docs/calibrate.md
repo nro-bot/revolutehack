@@ -16,6 +16,8 @@ lerobot-calibrate \
     --robot.id=follower1
 ```
 
+Press `c` to start the calibration.
+
 ## 2. Leader Arm
 
 ```bash
