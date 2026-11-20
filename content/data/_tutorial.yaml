@@ -22,8 +22,8 @@
 
 title: "Tutorials"
 
-# Entries at the top of the list that are not numbered steps: what the arm
-# and LeRobot are, and what you need before starting.
+# Entries at the top of the first group that are not numbered steps: what
+# the arm and LeRobot are, and what you need before starting.
 about:
   - about.md
   - requirements.md
@@ -31,7 +31,7 @@ about:
 # The steps, in order: one Markdown file each, in content/docs/. They are
 # grouped under headings in the list; the numbering runs on across groups.
 steps:
-  - group: "Setup"
+  - group: "System Setup"
     files:
       - install.md
       - calibrate.md

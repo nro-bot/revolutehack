@@ -1228,6 +1228,9 @@ textarea {
 /* A group heading in the list: Setup, Usage. */
 .steps .grp {
   padding: 16px 0 2px;
+}
+.steps .grp:first-child {
+  padding-top: 0;
   border-bottom: 0;
   font-weight: 700;
   font-size: 12px;
