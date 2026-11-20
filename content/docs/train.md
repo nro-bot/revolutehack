@@ -12,7 +12,6 @@ lerobot-train \
     --output_dir=outputs/train/act_rebot_test \
     --job_name=act_rebot_test \
     --policy.device=cuda \
-    --wandb.enable=false \
     --steps=300000
 ```
 
