@@ -247,9 +247,22 @@ class YamlPageGenerator(Generator):
                            lambda f: f.group(1) + field("dataset", "repo_id", f.group(2), numeric=False), inner)
             inner = re.sub(r"(--resume=)(true|false)\b",
                            lambda f: f.group(1) + field("record", "resume", f.group(2), numeric=False), inner)
-            if "--resume=" in inner:  # the record commands only, not the evaluation run
+            if 'data-cam="dataset"' in inner:  # commands on this dataset: the episode to view or replay
+                inner = re.sub(r"(--episode-index |--dataset\.episode=)(\d+)\b",
+                               lambda f: f.group(1) + field("dataset", "episode", f.group(2)), inner)
+            if "--resume=" in inner:  # the record commands only
                 inner = re.sub(r"(--dataset\.num_episodes=)(\d+)\b",
                                lambda f: f.group(1) + field("record", "num_episodes", f.group(2)), inner)
+            # The task, wherever it is written; the training run's name and
+            # length; the evaluation's own dataset and episode count.
+            inner = re.sub(r"(--dataset\.single_task=&quot;)([^&]+)(&quot;)",  # quotes are escaped in the HTML
+                           lambda f: f.group(1) + field("dataset", "task", f.group(2), numeric=False) + f.group(3), inner)
+            inner = re.sub(r"\b(act_rebot_test)\b", lambda f: field("train", "job", f.group(1), numeric=False), inner)
+            inner = re.sub(r"(--steps=)(\d+)\b", lambda f: f.group(1) + field("train", "steps", f.group(2)), inner)
+            inner = re.sub(r"\b(seeed_rebot_b601_rs/eval_test)\b", lambda f: field("eval", "repo_id", f.group(1), numeric=False), inner)
+            if "eval_test" in inner:
+                inner = re.sub(r"(--dataset\.num_episodes=)(\d+)\b",
+                               lambda f: f.group(1) + field("eval", "num_episodes", f.group(2)), inner)
             if inner != m.group(1):
                 return ('<div class="code editable"><div class="cbar"><span class="edit-tag">Editable fields</span>'
                         '<button class="mini copy" type="button" data-copy>Copy</button></div><pre>' + inner + "</pre></div>")

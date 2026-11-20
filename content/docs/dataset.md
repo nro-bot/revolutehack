@@ -4,7 +4,7 @@
 
 Set up the ports and cameras first, as in Camera Setup. Then record five episodes of one task.
 
-One camera:
+### One camera
 
 ```bash
 lerobot-record \
@@ -26,7 +26,7 @@ lerobot-record \
     --resume=false
 ```
 
-Two cameras:
+### Two cameras
 
 ```bash
 lerobot-record \

@@ -418,7 +418,7 @@ if (camFields.length) {
   for (const f of camFields) {
     f.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); f.blur(); } });
     f.addEventListener('input', () => {
-      const v = f.textContent.replace(/\s+/g, '');
+      const v = f.textContent.replace(/\s+/g, ' ').trim();
       cams = { ...cams, [f.dataset.cam]: { ...cams[f.dataset.cam], [f.dataset.field]: v } };
       try { localStorage.setItem(KEY, JSON.stringify(cams)); } catch {}
       apply(f);
