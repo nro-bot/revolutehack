@@ -31,7 +31,7 @@ lerobot-record \
     --robot.motor_family=rs \
     --robot.port=can0 \
     --robot.id=follower1 \
-    --robot.cameras="{ front: {type: opencv, index_or_path: 0, width: 640, height: 480, fps: 30, fourcc: MJPG}, side: {type: opencv, index_or_path: 2, width: 640, height: 480, fps: 30, fourcc: MJPG}}" \
+    --robot.cameras="{ front: {type: opencv, index_or_path: 0, width: 640, height: 480, fps: 30, fourcc: MJPG, rotation: 0}, side: {type: opencv, index_or_path: 2, width: 640, height: 480, fps: 30, fourcc: MJPG, rotation: 0}}" \
     --display_data=false \
     --dataset.repo_id=seeed_rebot_b601_rs/eval_test \
     --dataset.single_task="Grab the black cube" \

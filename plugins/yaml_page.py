@@ -229,7 +229,7 @@ class YamlPageGenerator(Generator):
         # what is there now.
         html = re.sub(
             r'<pre class="edit"><code([^>]*)>(.*?)</code></pre>',
-            r'<div class="code editable"><div class="cbar"><span class="edit-tag">Editable</span><button class="mini copy" type="button" data-copy>Copy</button></div><pre><code\1 contenteditable="plaintext-only" spellcheck="false">\2</code></pre></div>',
+            r'<div class="code editable"><div class="cbar"><span class="edit-tag">Editable</span><button class="mini copy" type="button" data-copy>Copy</button></div><pre class="edit"><code\1 contenteditable="plaintext-only" spellcheck="false">\2</code></pre></div>',
             html,
             flags=re.S,
         )
