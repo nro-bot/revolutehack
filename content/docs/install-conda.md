@@ -1,4 +1,4 @@
-# LeRobot Installation (Conda)
+# Conda
 
 ## 1. System Packages
 

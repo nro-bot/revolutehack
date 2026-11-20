@@ -1,4 +1,4 @@
-# LeRobot Installation (uv)
+# UV
 
 ## 1. System Packages
 
