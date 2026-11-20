@@ -771,7 +771,10 @@ textarea {
    shorter screen than that (an iPhone SE, or a phone on its side) the page
    is laid out the ordinary way and scrolls. */
 @supports selector(:has(*)) {
-  @media (min-height: 640px) {
+  /* A tall enough phone, or any wide screen that is not very short: on a
+     wide screen the cards scroll inside themselves, so a laptop window at
+     a large display scaling still fits. */
+  @media (min-height: 640px), ((min-width: 700px) and (min-height: 480px)) {
     .sheet.fit {
       height: calc(100dvh - var(--chrome));
       grid-template-rows: auto minmax(0, 1fr);
