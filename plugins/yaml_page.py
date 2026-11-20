@@ -247,8 +247,9 @@ class YamlPageGenerator(Generator):
                            lambda f: f.group(1) + field("dataset", "repo_id", f.group(2), numeric=False), inner)
             inner = re.sub(r"(--resume=)(true|false)\b",
                            lambda f: f.group(1) + field("record", "resume", f.group(2), numeric=False), inner)
-            inner = re.sub(r"(--dataset\.num_episodes=)(\d+)\b",
-                           lambda f: f.group(1) + field("record", "num_episodes", f.group(2)), inner)
+            if "--resume=" in inner:  # the record commands only, not the evaluation run
+                inner = re.sub(r"(--dataset\.num_episodes=)(\d+)\b",
+                               lambda f: f.group(1) + field("record", "num_episodes", f.group(2)), inner)
             if inner != m.group(1):
                 return ('<div class="code editable"><div class="cbar"><span class="edit-tag">Editable fields</span>'
                         '<button class="mini copy" type="button" data-copy>Copy</button></div><pre>' + inner + "</pre></div>")
