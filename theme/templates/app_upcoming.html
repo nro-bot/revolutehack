@@ -24,19 +24,19 @@
     <section class="panel" id="tutorial" aria-label="Tutorials">
       <div class="card big tcard" id="tcard">
         <h2 class="ch">{{ tutorial.title|e }}</h2>
-        {{ ui.tutorial_steps(tutorial.steps_data) }}
+        {{ ui.tutorial_steps(tutorial.groups, tutorial.about) }}
         <div class="tpanel">
           <div class="thead">
             <a class="backb" href="#tutorial">{{ ui.icon('left') }}<span>Back</span></a>
             <nav class="strip" aria-label="Steps">
-              {% for st in tutorial.steps_data %}<a class="tchip" href="#{{ st.id }}">{{ st.number }}. {{ st.title|e }}</a>{% endfor %}
+              {% for pg in tutorial.pages %}<a class="tchip" href="#{{ pg.id }}">{% if pg.label %}{{ pg.label }}. {% endif %}{{ pg.title|e }}</a>{% endfor %}
             </nav>
           </div>
           <div class="tview">
             <div class="ttrack">
-              {% for st in tutorial.steps_data %}
+              {% for pg in tutorial.pages %}
               {# Built from the Markdown file, so not escaped here. #}
-              <article class="tpage" id="{{ st.id }}" aria-label="{{ st.title|e }}" data-tab="tutorial"><div class="md">{{ st.html }}</div></article>
+              <article class="tpage" id="{{ pg.id }}" aria-label="{{ pg.title|e }}" data-tab="tutorial"><div class="md">{{ pg.html }}</div></article>
               {% endfor %}
             </div>
           </div>
@@ -74,6 +74,15 @@
           {% if place %}<p class="meet">Meet @ {{ ui.map_link(place.map, place.map.title, place.map.title ~ ': open the map') }}</p>{% endif %}
         </div>
         {{ ui.agenda(page.agenda) }}
+        {% if page.tracks_data %}
+        <div class="tracks">
+          <h3 class="day">{{ (page.tracks.title or 'Tracks')|e }}</h3>
+          {% for t in page.tracks_data %}
+          {# Built from the Markdown file, so not escaped here. #}
+          <details class="track" id="track-{{ t.slug }}"><summary>{{ t.title|e }}</summary><div class="md">{{ t.html }}</div></details>
+          {% endfor %}
+        </div>
+        {% endif %}
       </div>
     </section>
 

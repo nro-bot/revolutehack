@@ -144,36 +144,81 @@ class YamlPageGenerator(Generator):
         `steps` gives. The file's first heading is the step's title. Each
         step is a page inside the Tutorial card, with the id `tutorial-<name>`."""
         docs_dir = os.path.join(self.path, "docs")
-        names = [str(n) for n in data.get("steps") or []]
-        steps = []
-        for name in names:
-            path = os.path.join(docs_dir, name)
-            if not os.path.exists(path):
-                log.error("_tutorial.yaml lists %s, but there is no such file in %s", name, docs_dir)
-                continue
-            with open(path, encoding="utf-8") as fh:
-                text = fh.read()
-            heading = re.match(r"\s*#\s+(.+?)\s*\n", text)
-            title = heading.group(1).strip() if heading else os.path.splitext(name)[0].replace("-", " ").title()
-            body = text[heading.end():] if heading else text
-            slug = os.path.splitext(name)[0]
-            steps.append({"slug": slug, "id": f"tutorial-{slug}", "file": name, "title": title, "html": self._render_markdown(body)})
+        # `steps` is a list of groups ({group: title, files: [...]}) or, for a
+        # list without headings, of file names.
+        # Within a group, a file name is one step; a list of names is a set of
+        # alternatives that share one number.
+        def entries(files):
+            return [[str(f) for f in e] if isinstance(e, list) else [str(e)] for e in files or []]
+
+        groups = []
+        for item in data.get("steps") or []:
+            if isinstance(item, dict):
+                groups.append({"title": item.get("group") or "", "entries": entries(item.get("files"))})
+            elif groups and not groups[-1]["title"]:
+                groups[-1]["entries"] += entries([item])
+            else:
+                groups.append({"title": "", "entries": entries([item])})
+        names = [f for g in groups for e in g["entries"] for f in e]
+
+        read = lambda name: self._read_doc(docs_dir, name, "_tutorial.yaml")  # noqa: E731
+
+        steps = [s for s in (read(n) for n in names) if s]
+        by_file = {s["file"]: s for s in steps}
+        number = 0
+        for g in groups:
+            g["steps"] = []
+            for e in g["entries"]:
+                number += 1
+                for k, f in enumerate(e):
+                    if f in by_file:
+                        by_file[f]["number"] = number
+                        by_file[f]["label"] = f"{number}{'abcdefgh'[k]}" if len(e) > 1 else str(number)
+                        g["steps"].append(by_file[f])
+        data["groups"] = groups
+        # The About entries: pages like the steps, but not numbered.
+        about_names = data.get("about") or []
+        if isinstance(about_names, str):
+            about_names = [about_names]
+        about = [a for a in (read(str(n)) for n in about_names) if a]
+        data["about"] = about
+        data["pages"] = about + steps
         if os.path.isdir(docs_dir):
             for name in sorted(os.listdir(docs_dir)):
-                if name.endswith(".md") and name not in names:
+                if name.endswith(".md") and name not in names and name not in [str(n) for n in about_names]:
                     log.warning("content/docs/%s is not listed in _tutorial.yaml, so it is not built", name)
-        total = len(steps)
+        total = number
         for i, step in enumerate(steps):
-            step["number"] = i + 1
             step["total"] = total
             step["prev"] = steps[i - 1] if i else None
             step["next"] = steps[i + 1] if i + 1 < total else None
         data["steps_data"] = steps
 
+    def _read_doc(self, folder, name, listed_in):
+        """A Markdown file as a page: its first heading is the title, the rest
+        is rendered. None, with an error logged, if the file is missing."""
+        path = os.path.join(folder, name)
+        if not os.path.exists(path):
+            log.error("%s lists %s, but there is no such file in %s", listed_in, name, folder)
+            return None
+        with open(path, encoding="utf-8") as fh:
+            text = fh.read()
+        heading = re.match(r"\s*#\s+(.+?)\s*\n", text)
+        slug = os.path.splitext(name)[0]
+        title = heading.group(1).strip() if heading else slug.replace("-", " ").title()
+        body = text[heading.end():] if heading else text
+        return {"slug": slug, "id": f"tutorial-{slug}", "file": name, "title": title, "html": self._render_markdown(body)}
+
+    # The fork's command-line scripts, and where each one lives.
+    LEROBOT_SRC = "https://github.com/Seeed-Projects/lerobot/blob/main/src/lerobot/scripts/"
+    LEROBOT_SCRIPTS = {"lerobot-calibrate", "lerobot-teleoperate", "lerobot-record", "lerobot-replay",
+                       "lerobot-train", "lerobot-eval", "lerobot-dataset-viz", "lerobot-find-cameras",
+                       "lerobot-find-port", "lerobot-setup-motors"}
+
     @staticmethod
     def _render_markdown(text):
         """Markdown to HTML, the way GitHub shows it: fenced code blocks (each
-        with a Copy button), and "> [!CAUTION]" alerts as callouts."""
+        with a Copy button), tables, and "> [!CAUTION]" alerts as callouts."""
 
         def alert(match):
             kind = match.group(1).lower()
@@ -182,14 +227,87 @@ class YamlPageGenerator(Generator):
             return f'<div class="callout {kind}" role="note"><b>{kind.capitalize()}</b>{body}</div>\n'
 
         text = ALERT.sub(alert, text + "\n")
-        html = markdown.markdown(text, extensions=["fenced_code", "sane_lists"])
-        # Every code block gets a Copy button, wired up by app.js.
-        return re.sub(
-            r"<pre>(.*?)</pre>",
-            r'<div class="code"><pre>\1</pre><button class="mini copy" type="button" data-copy>Copy</button></div>',
-            html,
-            flags=re.S,
-        )
+        html = markdown.markdown(text, extensions=["fenced_code", "sane_lists", "tables", "attr_list"])
+        # Links to other sites open in a new tab, as everywhere on the site.
+        html = re.sub(r'<a href="(https?://[^"]*)">', r'<a href="\1" target="_blank" rel="noopener">', html)
+        # Every code block gets a Copy button, wired up by app.js. In a block
+        # with camera settings (`front: {type: opencv, index_or_path: 0, ...}`)
+        # the camera's Id and rotation become fields that can be typed into;
+        # the rest of the command stays as it is.
+        def field(name, which, value, numeric=True):
+            mode = ' inputmode="numeric"' if numeric else ""
+            return (f'<span class="val" contenteditable="plaintext-only" spellcheck="false"{mode} '
+                    f'data-cam="{name}" data-field="{which}" aria-label="{name} {which}">{value}</span>')
+
+        def camera(m):
+            name, body = m.group(1), m.group(2)
+            body = re.sub(r"(index_or_path:\s*)([^,}\s]+)", lambda f: f.group(1) + field(name, "index", f.group(2)), body)
+            body = re.sub(r"(rotation:\s*)([^,}\s]+)", lambda f: f.group(1) + field(name, "rotation", f.group(2)), body)
+            return f"{name}: {{{body}}}"
+
+        def block(m):
+            inner = re.sub(r"\b(front|side):\s*\{([^}]*)\}", camera, m.group(1))
+            # The camera watched with ffplay is the front camera.
+            inner = re.sub(r"(ffplay -f v4l2 /dev/video)(\d+)\b", lambda f: f.group(1) + field("front", "index", f.group(2)), inner)
+            # The dataset's name, wherever a command takes it; the recording's
+            # resume flag and episode count.
+            inner = re.sub(r"(repo[_-]id[= ]|lerobot/)(seeed_rebot_b601_rs/test)\b",
+                           lambda f: f.group(1) + field("dataset", "repo_id", f.group(2), numeric=False), inner)
+            inner = re.sub(r"(--resume=)(true|false)\b",
+                           lambda f: f.group(1) + field("record", "resume", f.group(2), numeric=False), inner)
+            if 'data-cam="dataset"' in inner:  # commands on this dataset: the episode to view or replay
+                inner = re.sub(r"(--episode-index |--dataset\.episode=)(\d+)\b",
+                               lambda f: f.group(1) + field("dataset", "episode", f.group(2)), inner)
+            if "--resume=" in inner:  # the record commands only
+                inner = re.sub(r"(--dataset\.num_episodes=)(\d+)\b",
+                               lambda f: f.group(1) + field("record", "num_episodes", f.group(2)), inner)
+                inner = re.sub(r"(--dataset\.(episode_time_s|reset_time_s)=)(\d+)\b",
+                               lambda f: f.group(1) + field("record", f.group(2), f.group(3)), inner)
+            # The task, wherever it is written; the training run's name and
+            # length; the evaluation's own dataset and episode count.
+            inner = re.sub(r"(--dataset\.single_task=&quot;)([^&]+)(&quot;)",  # quotes are escaped in the HTML
+                           lambda f: f.group(1) + field("dataset", "task", f.group(2), numeric=False) + f.group(3), inner)
+            inner = re.sub(r"\b((act|smolvla|pi0|pi05)_rebot_test)\b",
+                           lambda f: field("train", "job_" + f.group(2), f.group(1), numeric=False), inner)
+            inner = re.sub(r"(--steps=)(\d+)\b", lambda f: f.group(1) + field("train", "steps", f.group(2)), inner)
+            inner = re.sub(r"\b(seeed_rebot_b601_rs/eval_test)\b", lambda f: field("eval", "repo_id", f.group(1), numeric=False), inner)
+            if "eval_test" in inner:
+                inner = re.sub(r"(--dataset\.num_episodes=)(\d+)\b",
+                               lambda f: f.group(1) + field("eval", "num_episodes", f.group(2)), inner)
+            # The LeRobot command the block runs, linked to its source in the
+            # fork, so each use of a command leads to what it does.
+            fn = re.search(r"(?m)^(?:<code[^>]*>)?(lerobot-[a-z-]+)\b", inner)
+            link = ""
+            if fn and fn.group(1) in YamlPageGenerator.LEROBOT_SCRIPTS:
+                link = (f'<a class="fn" href="{YamlPageGenerator.LEROBOT_SRC}{fn.group(1).replace("-", "_")}.py" '
+                        f'target="_blank" rel="noopener">{fn.group(1)}</a>')
+            editable = inner != m.group(1)
+            if editable or link:
+                tag = '<span class="edit-tag">Editable fields</span>' if editable else ""
+                return (f'<div class="code{" editable" if editable else ""}"><div class="cbar"><span class="cleft">{tag}{link}</span>'
+                        '<button class="mini copy" type="button" data-copy>Copy</button></div><pre>' + inner + "</pre></div>")
+            return '<div class="code"><pre>' + inner + '</pre><button class="mini copy" type="button" data-copy>Copy</button></div>'
+
+        html = re.sub(r"<pre>(.*?)</pre>", block, html, flags=re.S)
+
+        # A run of "### " sections between <!-- tabs --> and <!-- /tabs -->
+        # becomes a row of tabs with one panel each. app.js switches them,
+        # and keeps the same choice across every tab row with those names.
+        def tabs(m):
+            parts = re.split(r"<h3>(.*?)</h3>", m.group(1))
+            names = parts[1::2]
+            bodies = parts[2::2]
+            if not names:
+                return m.group(1)
+            buttons = "".join(
+                f'<button class="stab-btn" type="button" role="tab" data-tab="{n}" aria-selected="{"true" if i == 0 else "false"}">{n}</button>'
+                for i, n in enumerate(names))
+            panels = "".join(
+                f'<div class="stab" role="tabpanel" data-tab="{n}"{"" if i == 0 else " hidden"}>{b}</div>'
+                for i, (n, b) in enumerate(zip(names, bodies)))
+            return f'<div class="subtabs"><div class="stabs" role="tablist">{buttons}</div>{panels}</div>'
+
+        return re.sub(r"<!-- tabs -->(.*?)<!-- /tabs -->", tabs, html, flags=re.S)
 
     def _prepare_projects(self, data):
         """Fill in each project's poster, optional preview clip, and neighbours."""
@@ -221,6 +339,10 @@ class YamlPageGenerator(Generator):
         if layout == "upcoming":
             for item in (data.get("hardware") or {}).get("items") or []:
                 self._add_youtube(item)
+            # The tracks under the agenda: Markdown files in content/tracks/.
+            tracks_dir = os.path.join(self.path, "tracks")
+            files = (data.get("tracks") or {}).get("files") or []
+            data["tracks_data"] = [t for t in (self._read_doc(tracks_dir, str(f), "page.yaml") for f in files) if t]
         elif layout == "previous":
             photos = data.get("photos") or {}
             if photos.get("folder"):

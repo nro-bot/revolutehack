@@ -9,26 +9,44 @@
 #
 #  The steps themselves are Markdown files in content/docs/. Each file's
 #  first heading ("# ...") is the step's title; everything under it is the
-#  step. Fenced code blocks ("```bash") get a Copy button. A GitHub-style
-#  alert ("> [!CAUTION]" and the lines after it) becomes a callout. A
+#  step. Fenced code blocks ("```bash") get a Copy button, tables are
+#  drawn as tables, and a GitHub-style alert ("> [!CAUTION]" and the lines
+#  after it) becomes a callout. A
 #  picture goes in content/images/ and is written as
 #  ![what it shows](/images/<file>).
 #
-#  To add a step: put its .md file in content/docs/ and add its name to
-#  `steps`, in the place it belongs. A file that is not listed is not built,
+#  To add a step: put its .md file in content/docs/ and add its name under
+#  the group it belongs to in `steps`, in the place it belongs. A file that is not listed is not built,
 #  and the build says so.
 # =============================================================================
 
 title: "Tutorials"
 
-# The steps, in order: one Markdown file each, in content/docs/.
+# Entries at the top of the first group that are not numbered steps: what
+# the arm and LeRobot are, and what you need before starting.
+about:
+  - about.md
+  - requirements.md
+
+# The steps, in order: one Markdown file each, in content/docs/. They are
+# grouped under headings in the list; the numbering runs on across groups.
+# A list in place of a file name is a set of alternatives (such as two ways
+# to install) that share one number and are told apart by a letter: 1a, 1b.
 steps:
-  - install.md
-  - calibrate.md
-  - teleoperate.md
-  - cameras.md
-  - dataset.md
-  - train.md
+  - group: "System Setup"
+    files: []
+  - group: "Installation"
+    files:
+      # Alternatives share a number and get a letter each: 1a, 1b.
+      - [install-uv.md, install-conda.md]
+  - group: "Usage"
+    files:
+      - calibrate.md
+      - teleoperate.md
+      - cameras.md
+      - dataset.md
+      - train.md
+      - sim.md
 
 # Where the steps come from: a link, always in view under the open step.
 source:

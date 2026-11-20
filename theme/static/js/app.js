@@ -373,7 +373,7 @@ if (clips.length && !reducedMotion) {
 for (const button of $$('[data-copy]')) {
   button.addEventListener('click', async () => {
     const label = button.textContent;
-    const code = button.parentElement.querySelector('code');
+    const code = (button.closest('.code') || button.parentElement).querySelector('code');
     try {
       await navigator.clipboard.writeText(button.dataset.copy || code?.textContent || '');
       button.textContent = 'Copied';
@@ -397,6 +397,66 @@ function canGoBack() {
 function syncBack() {
   const onHome = document.body.classList.contains('page-upcoming');
   for (const back of $$('[data-back]')) back.setAttribute('aria-disabled', String(onHome && !canGoBack()));
+}
+
+// Camera settings in the tutorial's commands: the camera's Id and rotation
+// are fields that can be typed into. A value typed in one command carries
+// over to every other command that names the same camera, and is kept in
+// the browser for the next visit.
+const camFields = $$('.code .val');
+if (camFields.length) {
+  const KEY = 'tutorial-cameras';
+  // A value as it should be used: single spaces, and no slash left on the
+  // end of a dataset's name, which LeRobot rejects.
+  const clean = (field, v) => {
+    v = v.replace(/\s+/g, ' ').trim();
+    return field === 'repo_id' ? v.replace(/\/+$/, '') : v;
+  };
+  let cams = {};
+  try { cams = JSON.parse(localStorage.getItem(KEY)) || {}; } catch {}
+  for (const cam of Object.values(cams)) for (const k of Object.keys(cam)) cam[k] = clean(k, String(cam[k]));
+  const apply = (except) => {
+    for (const f of camFields) {
+      const v = cams[f.dataset.cam]?.[f.dataset.field];
+      if (f !== except && v !== undefined && f.textContent !== v) f.textContent = v;
+    }
+  };
+  apply(null);
+  for (const f of camFields) {
+    f.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); f.blur(); } });
+    f.addEventListener('input', () => {
+      const v = clean(f.dataset.field, f.textContent);
+      cams = { ...cams, [f.dataset.cam]: { ...cams[f.dataset.cam], [f.dataset.field]: v } };
+      try { localStorage.setItem(KEY, JSON.stringify(cams)); } catch {}
+      apply(f);
+    });
+  }
+}
+
+// Sub-tabs inside a tutorial step (the model to train, say). Picking a tab
+// picks the same-named tab in every other row that has it, and the choice
+// is kept for the next visit.
+const subtabs = $$('.subtabs');
+if (subtabs.length) {
+  const KEY = 'tutorial-tab';
+  const pick = (name) => {
+    for (const group of subtabs) {
+      if (!group.querySelector(`.stab-btn[data-tab="${CSS.escape(name)}"]`)) continue;
+      for (const b of group.querySelectorAll('.stab-btn')) b.setAttribute('aria-selected', String(b.dataset.tab === name));
+      for (const p of group.querySelectorAll('.stab')) p.hidden = p.dataset.tab !== name;
+    }
+  };
+  let saved = null;
+  try { saved = localStorage.getItem(KEY); } catch {}
+  if (saved) pick(saved);
+  for (const group of subtabs) {
+    group.addEventListener('click', (e) => {
+      const b = e.target.closest('.stab-btn');
+      if (!b) return;
+      pick(b.dataset.tab);
+      try { localStorage.setItem(KEY, b.dataset.tab); } catch {}
+    });
+  }
 }
 
 // ---- 7. Tutorial ------------------------------------------------------------
@@ -440,11 +500,12 @@ if (tcard) {
     if (i >= 0 && i < pages.length) location.hash = `#${pages[i].id}`;
   };
 
-  // A sideways swipe (or drag with the mouse) follows the finger, then snaps
-  // to the nearest step. Up and down is left to the page's own scrolling.
+  // A sideways swipe follows the finger, then snaps to the nearest step. Up
+  // and down is left to the page's own scrolling. A mouse is not a finger:
+  // dragging with it selects text, as anywhere else.
   let x0 = 0, y0 = 0, dx = 0, t0 = 0, dragging = null, pointer = null;
   track.addEventListener('pointerdown', (e) => {
-    if (e.button !== 0 || e.target.closest('button, a, pre')) return;
+    if (e.pointerType === 'mouse' || e.button !== 0 || e.target.closest('button, a, pre')) return;
     dragging = 'maybe'; x0 = e.clientX; y0 = e.clientY; dx = 0; t0 = performance.now(); pointer = e.pointerId;
   });
   track.addEventListener('pointermove', (e) => {
@@ -472,7 +533,7 @@ if (tcard) {
   track.addEventListener('pointerup', settle);
   track.addEventListener('pointercancel', settle);
   tcard.addEventListener('keydown', (e) => {
-    if (e.target.closest('input, textarea')) return;
+    if (e.target.closest('input, textarea, [contenteditable]')) return;
     if (e.key === 'ArrowRight') stepTo(cur + 1);
     if (e.key === 'ArrowLeft') stepTo(cur - 1);
   });

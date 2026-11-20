@@ -19,11 +19,13 @@ sudo ip link set can0 up
 
 ```bash
 lerobot-teleoperate \
-    --robot.type=seeed_b601_rs_follower \
+    --robot.type=rebot_b601_follower \
+    --robot.motor_family=rs \
     --robot.port=can0 \
     --robot.id=follower1 \
-    --robot.can_adapter=socketcan \
-    --teleop.type=rebot_arm_102_leader \
+    --teleop.type=rebot_102_leader \
     --teleop.port=/dev/ttyUSB0 \
-    --teleop.id=rebot_arm_102_leader
+    --teleop.id=leader1
 ```
+
+Press `Ctrl` + `C` to stop.

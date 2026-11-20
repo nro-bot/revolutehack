@@ -7,28 +7,37 @@
 sudo ip link set can0 down 2>/dev/null
 sudo ip link set can0 type can bitrate 1000000
 sudo ip link set can0 up
+```
 
+```bash
 # Calibrate
 lerobot-calibrate \
-    --robot.type=seeed_b601_rs_follower \
+    --robot.type=rebot_b601_follower \
+    --robot.motor_family=rs \
     --robot.port=can0 \
-    --robot.id=follower1 \
-    --robot.can_adapter=socketcan
+    --robot.id=follower1
 ```
+
+Press `c` to start the calibration.
 
 ## 2. Leader Arm
 
+### Serial port
+
 ```bash
-# If the last line shows ttyUSB as "disconnected", remove brltty
 sudo dmesg | grep ttyUSB
+
+# Last line shows ttyUSB as "disconnected": remove brltty, then replug the arm
 sudo apt remove brltty
 
-# Grant access to the serial port
 sudo chmod 666 /dev/ttyUSB0
+```
 
-# Calibrate
+### Calibrate
+
+```bash
 lerobot-calibrate \
-    --teleop.type=rebot_arm_102_leader \
+    --teleop.type=rebot_102_leader \
     --teleop.port=/dev/ttyUSB0 \
-    --teleop.id=rebot_arm_102_leader
+    --teleop.id=leader1
 ```

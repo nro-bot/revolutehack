@@ -558,6 +558,46 @@ textarea {
 }
 
 
+/* Tracks under the agenda: one line each, unfolding to its notes. */
+.tracks {
+  justify-self: stretch;
+}
+.track {
+  border-bottom: 1px solid var(--ink);
+}
+.track summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 6px 0;
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+}
+.track summary::-webkit-details-marker {
+  display: none;
+}
+.track summary::before {
+  content: "+";
+  flex: none;
+  width: 18px;
+  font: 400 24px/1 var(--f-mast);
+}
+.track[open] summary::before {
+  content: "\2212";
+}
+.track .md {
+  padding: 2px 0 16px 28px;
+  font-size: 14.5px;
+}
+.track .md h2 {
+  margin-top: 6px;
+  padding-top: 0;
+  border-top: 0;
+  font: 700 12px/1.3 var(--f-type);
+  letter-spacing: 0.06em;
+}
 .dash {
   justify-self: stretch;
   display: grid;
@@ -771,7 +811,10 @@ textarea {
    shorter screen than that (an iPhone SE, or a phone on its side) the page
    is laid out the ordinary way and scrolls. */
 @supports selector(:has(*)) {
-  @media (min-height: 640px) {
+  /* A tall enough phone, or any wide screen that is not very short: on a
+     wide screen the cards scroll inside themselves, so a laptop window at
+     a large display scaling still fits. */
+  @media (min-height: 640px), ((min-width: 700px) and (min-height: 480px)) {
     .sheet.fit {
       height: calc(100dvh - var(--chrome));
       grid-template-rows: auto minmax(0, 1fr);
@@ -780,7 +823,7 @@ textarea {
     }
     .fit .one {
       grid-template-rows: auto minmax(0, 1fr);
-      overflow: hidden;
+      overflow: clip;
     }
     .fit .panel {
       grid-template-rows: minmax(0, 1fr);
@@ -797,6 +840,9 @@ textarea {
       overflow-y: auto;
       overscroll-behavior: contain;
       scrollbar-width: thin;
+    }
+    .fit .tview {
+      height: 100%;
     }
   }
   /* Most phones: the browser's own bars leave about 650 to 750 px. The card
@@ -1065,8 +1111,10 @@ textarea {
   flex-direction: column;
   align-items: stretch;
 }
+/* Clipped, not hidden: a hidden box can still be scrolled by a drag
+   selection in some browsers, which would shift the pages. */
 .fit .card.big.tcard {
-  overflow: hidden;
+  overflow: clip;
 }
 .tcard > .ch {
   flex: none;
@@ -1142,10 +1190,15 @@ textarea {
   text-decoration-thickness: 3px;
   text-underline-offset: 4px;
 }
+/* The pages scroll inside a bounded box. In the fit layout the box is what
+   is left of the card; elsewhere (a short window, where the page scrolls)
+   it is a fixed share of the screen, so a drag selection scrolls the step
+   and not the whole page. */
 .tview {
+  min-width: 0; /* clip is not a scroll box, so the grid would size this to all the pages */
   min-height: 0;
-  height: 100%;
-  overflow: hidden;
+  height: min(62vh, 720px);
+  overflow: clip;
 }
 .ttrack {
   display: flex;
@@ -1165,8 +1218,9 @@ textarea {
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: thin;
-  /* The address points here; the slide, not a scroll, brings it into view. */
-  scroll-margin: 100vh 0 0 100vw;
+  /* No scroll-margin here: the boxes around the page are clipped, so the
+     address's target cannot scroll anything, and a scroll-margin makes a
+     selection dragged inside the page scroll it to the top. */
 }
 .tfoot {
   padding-top: 8px;
@@ -1216,6 +1270,7 @@ textarea {
   place-items: center;
   width: 30px;
   height: 30px;
+  letter-spacing: -0.02em; /* "1a" fits the box */
   border: 2px solid var(--ink);
   background: var(--white);
   font: 400 16px/1 var(--f-mast);
@@ -1225,20 +1280,40 @@ textarea {
   height: 20px;
   stroke-width: 2.8;
 }
+/* A group heading in the list: System Setup, Usage. */
+.steps .grp {
+  padding: 16px 0 2px;
+  border-bottom: 0;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--mute);
+}
+.steps .grp:first-child {
+  padding-top: 0;
+}
+/* An About entry has no number: its name starts where a numbered one does. */
+.steps .about a {
+  grid-template-columns: minmax(0, 1fr) 20px;
+}
 .steps a.cur .num {
   background: var(--ink);
   color: var(--paper);
   box-shadow: inset 0 0 0 2px var(--hi);
 }
-/* A step's text, as written in its Markdown file. */
+/* A step's text, as written in its Markdown file. Flowing blocks with
+   margins, not a grid: in a grid, a selection dragged through a gap jumps
+   to the first block and scrolls the step to it. */
 .md {
   justify-self: stretch;
-  display: grid;
-  gap: 14px;
 }
 .md > * {
   min-width: 0;
   margin: 0;
+}
+.md > * + * {
+  margin-top: 14px;
 }
 .md h2 {
   margin-top: 8px;
@@ -1256,13 +1331,42 @@ textarea {
   font: 700 16px/1.3 var(--f-type);
   text-transform: uppercase;
 }
+.md ul {
+  list-style: disc;
+}
+.md ol {
+  list-style: decimal;
+}
 .md ul,
 .md ol {
-  display: grid;
-  gap: 4px;
   padding-left: 22px;
 }
+.md li + li {
+  margin-top: 4px;
+}
 .md a {
+  font-weight: 700;
+}
+/* A table from the Markdown: plain rules, the first column bold. */
+.md table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.md th,
+.md td {
+  padding: 7px 10px 7px 0;
+  border-bottom: 1px solid var(--ink);
+  text-align: left;
+  vertical-align: top;
+}
+.md th {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.md td:first-child {
   font-weight: 700;
 }
 .md code {
@@ -1276,7 +1380,8 @@ textarea {
    scrolls sideways is never hidden under it. */
 .code {
   justify-self: stretch;
-  display: grid;
+  display: flex;
+  flex-direction: column;
   border: 2px solid var(--ink);
   background: var(--white);
   box-shadow: 3px 3px 0 var(--ink);
@@ -1285,8 +1390,9 @@ textarea {
   order: 2;
   margin: 0;
   padding: 4px 14px 14px;
-  overflow-x: auto;
-  font: 13.5px/1.5 var(--f-type);
+  white-space: pre-wrap; /* long lines wrap; nothing scrolls sideways */
+  overflow-wrap: anywhere;
+  font: 12.5px/1.5 var(--f-type); /* 40 characters across a phone card: a flag line fits */
   tab-size: 4;
 }
 .code pre code {
@@ -1294,19 +1400,98 @@ textarea {
   background: none;
   font: inherit;
 }
+/* An editable block: a bar with the Editable tag and the Copy button. */
+.code .cbar {
+  order: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: -2px -2px 0 -2px;
+}
+.code .cleft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding-left: 14px;
+}
+/* The command's name, linked to its source. */
+.code .fn {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--mute);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.code .fn:hover {
+  color: var(--ink);
+}
+.code .edit-tag {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--mute);
+}
+.code.editable:focus-within {
+  box-shadow: 3px 3px 0 var(--hi);
+}
+/* Sub-tabs inside a step: one row of names, one panel showing. */
+.subtabs {
+  margin-top: 14px;
+}
+.stabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin-bottom: 12px;
+  border-bottom: 2px solid var(--ink);
+}
+.stab-btn {
+  padding: 8px 2px;
+  border: 0;
+  background: none;
+  font: 700 12px/1 var(--f-type);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--mute);
+  cursor: pointer;
+}
+.stab-btn[aria-selected="true"] {
+  color: var(--ink);
+  box-shadow: inset 0 -3px 0 var(--hi);
+}
+.stab > * + * {
+  margin-top: 14px;
+}
+/* A field inside a command: the one part that can be typed into. */
+.code .val {
+  display: inline-block;
+  min-width: 1.2em;
+  padding: 0 3px;
+  background: var(--hi);
+  border-bottom: 2px solid var(--ink);
+  outline: none;
+  cursor: text;
+}
+.code .val:focus {
+  background: var(--white);
+  box-shadow: 0 0 0 2px var(--ink);
+}
 .code .copy {
   order: 1;
-  justify-self: end;
+  align-self: flex-end;
   margin: -2px -2px 0 0;
   min-height: 28px;
   padding: 2px 8px;
   font-size: 11px;
 }
+.code .cbar .copy {
+  margin: 0;
+}
 /* A "> [!CAUTION]" alert from the Markdown. */
 .callout {
   justify-self: stretch;
-  display: grid;
-  gap: 6px;
   padding: 12px 14px;
   border: 2px dashed var(--ink);
 }
@@ -1315,7 +1500,11 @@ textarea {
   border-style: solid;
   background: var(--hi);
 }
+.callout > * + * {
+  margin-top: 6px;
+}
 .callout > b {
+  display: block;
   font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -2376,6 +2565,9 @@ a.mini {
     justify-content: flex-start;
     gap: 28px;
     padding: 12px var(--gut);
+  }
+  .code pre {
+    font-size: 13.5px;
   }
   .chip {
     gap: 7px;

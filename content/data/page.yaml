@@ -79,19 +79,29 @@ hardware:
       credit: "Image: Arducam, via Core Electronics"
 
 # ---- Agenda -----------------------------------------------------------------
-#  PLACEHOLDER until the schedule is set. One row per item:
+#  From the event's Luma page (the Register link). One row per item:
 #     when   the time, in the left column
 #     what   what happens
 #     note   optional, a smaller line under it
 #  Keep it to about four rows a day so the card fits a phone screen.
-#  For reference, the August 2026 hackathon ran: Friday 10:00 AM intro
-#  tutorial, 12:01 PM opening ceremony, 2:00 PM hacking begins, 10:00 PM
-#  hacking ends for the day; Saturday 10:00 AM doors open, 3:00 PM demos
-#  and judging, 4:15 PM awards, 5:00 PM wrap.
 agenda:
   - day: "Friday, Nov. 20"
     rows:
-      - { when: "TBA", what: "Full schedule coming soon" }
+      - { when: "6:00 PM", what: "Pre-hackathon setup", note: "Optional. Teams can come the night before to set up their arm." }
   - day: "Saturday, Nov. 21"
     rows:
-      - { when: "TBA", what: "Full schedule coming soon" }
+      - { when: "10:00 AM", what: "Hacking begins" }
+      - { when: "4:00 PM", what: "Open house and demos", note: "Teams show what they built. Open to everyone." }
+      - { when: "5:00 PM", what: "Wrap" }
+
+# ---- Tracks -----------------------------------------------------------------
+#  Topics a team can pick, shown under the agenda. Each is a Markdown file in
+#  content/tracks/: its first heading is the track's name, and the rest is
+#  shown when the track is tapped. Links in it open in a new tab.
+tracks:
+  title: "Tracks"
+  files:
+    - sim-to-real.md
+    - gravity-compensation.md
+    - object-tracking.md
+    - 3d-modeling.md
