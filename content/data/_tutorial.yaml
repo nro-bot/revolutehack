@@ -22,9 +22,11 @@
 
 title: "Tutorials"
 
-# An About entry at the top of the list, not numbered: what the arm and
-# LeRobot are, what you need, the specifications and the safety rules.
-about: about.md
+# Entries at the top of the list that are not numbered steps: what the arm
+# and LeRobot are, and what you need before starting.
+about:
+  - about.md
+  - requirements.md
 
 # The steps, in order: one Markdown file each, in content/docs/.
 steps:

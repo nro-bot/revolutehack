@@ -160,13 +160,16 @@ class YamlPageGenerator(Generator):
             return {"slug": slug, "id": f"tutorial-{slug}", "file": name, "title": title, "html": self._render_markdown(body)}
 
         steps = [s for s in (read(n) for n in names) if s]
-        # The About entry: a page like the steps, but not numbered.
-        about = read(str(data["about"])) if data.get("about") else None
+        # The About entries: pages like the steps, but not numbered.
+        about_names = data.get("about") or []
+        if isinstance(about_names, str):
+            about_names = [about_names]
+        about = [a for a in (read(str(n)) for n in about_names) if a]
         data["about"] = about
-        data["pages"] = ([about] if about else []) + steps
+        data["pages"] = about + steps
         if os.path.isdir(docs_dir):
             for name in sorted(os.listdir(docs_dir)):
-                if name.endswith(".md") and name not in names and name != (about or {}).get("file"):
+                if name.endswith(".md") and name not in names and name not in [str(n) for n in about_names]:
                     log.warning("content/docs/%s is not listed in _tutorial.yaml, so it is not built", name)
         total = len(steps)
         for i, step in enumerate(steps):

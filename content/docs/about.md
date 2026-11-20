@@ -15,13 +15,6 @@ LeRobot is Hugging Face's open-source robot learning library, written in PyTorch
 3. You train a neural network on those episodes.
 4. The trained network then looks through the cameras and moves the arm by itself.
 
-## What you need
-
-- Ubuntu 22.04 or 24.04
-- Python 3.12 or newer
-- PyTorch 2.7 to 2.15, installed for you. The default build needs NVIDIA driver 580.65 or newer; an older driver can use the CUDA 12 build, which stops at torch 2.14.
-- An NVIDIA GPU, optional. Teleoperation and recording run on the CPU; training needs the GPU.
-
 ## Specifications
 
 | Item | Spec |
