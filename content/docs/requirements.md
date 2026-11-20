@@ -8,7 +8,7 @@ Ubuntu 22.04 or 24.04, Python 3.12 or newer, ffmpeg. NVIDIA GPU optional: needed
 sudo apt update && sudo apt install -y git curl ffmpeg
 ```
 
-## 2. NVIDIA Driver
+## 2. NVIDIA Driver (optional)
 
 PyTorch's default build: driver 580.65 or newer.
 

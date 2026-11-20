@@ -798,6 +798,9 @@ textarea {
       overscroll-behavior: contain;
       scrollbar-width: thin;
     }
+    .fit .tview {
+      height: 100%;
+    }
   }
   /* Most phones: the browser's own bars leave about 650 to 750 px. The card
      is tightened so everything still fits, and the photo takes whatever
@@ -1144,9 +1147,13 @@ textarea {
   text-decoration-thickness: 3px;
   text-underline-offset: 4px;
 }
+/* The pages scroll inside a bounded box. In the fit layout the box is what
+   is left of the card; elsewhere (a short window, where the page scrolls)
+   it is a fixed share of the screen, so a drag selection scrolls the step
+   and not the whole page. */
 .tview {
   min-height: 0;
-  height: 100%;
+  height: min(62vh, 720px);
   overflow: clip;
 }
 .ttrack {
