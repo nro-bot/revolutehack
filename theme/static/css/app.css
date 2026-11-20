@@ -1256,6 +1256,12 @@ textarea {
   font: 700 16px/1.3 var(--f-type);
   text-transform: uppercase;
 }
+.md ul {
+  list-style: disc;
+}
+.md ol {
+  list-style: decimal;
+}
 .md ul,
 .md ol {
   display: grid;
@@ -1263,6 +1269,28 @@ textarea {
   padding-left: 22px;
 }
 .md a {
+  font-weight: 700;
+}
+/* A table from the Markdown: plain rules, the first column bold. */
+.md table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.md th,
+.md td {
+  padding: 7px 10px 7px 0;
+  border-bottom: 1px solid var(--ink);
+  text-align: left;
+  vertical-align: top;
+}
+.md th {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.md td:first-child {
   font-weight: 700;
 }
 .md code {

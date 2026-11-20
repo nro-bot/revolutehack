@@ -173,7 +173,7 @@ class YamlPageGenerator(Generator):
     @staticmethod
     def _render_markdown(text):
         """Markdown to HTML, the way GitHub shows it: fenced code blocks (each
-        with a Copy button), and "> [!CAUTION]" alerts as callouts."""
+        with a Copy button), tables, and "> [!CAUTION]" alerts as callouts."""
 
         def alert(match):
             kind = match.group(1).lower()
@@ -182,7 +182,7 @@ class YamlPageGenerator(Generator):
             return f'<div class="callout {kind}" role="note"><b>{kind.capitalize()}</b>{body}</div>\n'
 
         text = ALERT.sub(alert, text + "\n")
-        html = markdown.markdown(text, extensions=["fenced_code", "sane_lists"])
+        html = markdown.markdown(text, extensions=["fenced_code", "sane_lists", "tables"])
         # Every code block gets a Copy button, wired up by app.js.
         return re.sub(
             r"<pre>(.*?)</pre>",
