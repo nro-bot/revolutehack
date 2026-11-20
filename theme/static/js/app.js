@@ -406,8 +406,15 @@ function syncBack() {
 const camFields = $$('.code .val');
 if (camFields.length) {
   const KEY = 'tutorial-cameras';
+  // A value as it should be used: single spaces, and no slash left on the
+  // end of a dataset's name, which LeRobot rejects.
+  const clean = (field, v) => {
+    v = v.replace(/\s+/g, ' ').trim();
+    return field === 'repo_id' ? v.replace(/\/+$/, '') : v;
+  };
   let cams = {};
   try { cams = JSON.parse(localStorage.getItem(KEY)) || {}; } catch {}
+  for (const cam of Object.values(cams)) for (const k of Object.keys(cam)) cam[k] = clean(k, String(cam[k]));
   const apply = (except) => {
     for (const f of camFields) {
       const v = cams[f.dataset.cam]?.[f.dataset.field];
@@ -418,7 +425,7 @@ if (camFields.length) {
   for (const f of camFields) {
     f.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); f.blur(); } });
     f.addEventListener('input', () => {
-      const v = f.textContent.replace(/\s+/g, ' ').trim();
+      const v = clean(f.dataset.field, f.textContent);
       cams = { ...cams, [f.dataset.cam]: { ...cams[f.dataset.cam], [f.dataset.field]: v } };
       try { localStorage.setItem(KEY, JSON.stringify(cams)); } catch {}
       apply(f);
