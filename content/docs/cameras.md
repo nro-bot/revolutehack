@@ -1,5 +1,7 @@
 # Camera Setup
 
+More on cameras: [Add Cameras](https://wiki.seeedstudio.com/rebot_arm_b601_rs_lerobot/#add-cameras) on Seeed's wiki, the [cameras guide](https://github.com/Seeed-Projects/lerobot/blob/main/docs/source/cameras.mdx) in the Seeed LeRobot repository, and [LeRobot's cameras page](https://huggingface.co/docs/lerobot/cameras).
+
 ## 1. Find the Cameras
 
 Find the camera indices (use `realsense` instead of `opencv` for Intel RealSense cameras):
