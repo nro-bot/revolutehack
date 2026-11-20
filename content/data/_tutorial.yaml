@@ -32,11 +32,11 @@ about:
 # grouped under headings in the list; the numbering runs on across groups.
 steps:
   - group: "System Setup"
+    files: []
+  - group: "Usage"
     files:
       - install.md
       - calibrate.md
-  - group: "Usage"
-    files:
       - teleoperate.md
       - cameras.md
       - dataset.md
