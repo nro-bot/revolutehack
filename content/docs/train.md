@@ -37,6 +37,7 @@ lerobot-record \
     --dataset.single_task="Grab the black cube" \
     --dataset.num_episodes=10 \
     --dataset.push_to_hub=false \
+    --dataset.no_stamp=true \
     --policy.path=outputs/train/act_rebot_test/checkpoints/last/pretrained_model
 ```
 
