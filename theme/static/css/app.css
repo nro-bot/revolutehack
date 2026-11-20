@@ -1239,18 +1239,18 @@ textarea {
   height: 20px;
   stroke-width: 2.8;
 }
-/* A group heading in the list: Setup, Usage. */
+/* A group heading in the list: System Setup, Usage. */
 .steps .grp {
   padding: 16px 0 2px;
-}
-.steps .grp:first-child {
-  padding-top: 0;
   border-bottom: 0;
   font-weight: 700;
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--mute);
+}
+.steps .grp:first-child {
+  padding-top: 0;
 }
 /* An About entry has no number: its name starts where a numbered one does. */
 .steps .about a {
