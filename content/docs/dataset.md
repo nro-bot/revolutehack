@@ -2,7 +2,30 @@
 
 ## 1. Record
 
-Set up the ports and cameras first, as in Camera Setup. Then record five episodes of one task:
+Set up the ports and cameras first, as in Camera Setup. Then record five episodes of one task.
+
+One camera:
+
+```bash
+lerobot-record \
+    --robot.type=rebot_b601_follower \
+    --robot.motor_family=rs \
+    --robot.port=can0 \
+    --robot.id=follower1 \
+    --robot.cameras="{ front: {type: opencv, index_or_path: 0, width: 640, height: 480, fps: 30, fourcc: MJPG, rotation: 0}}" \
+    --teleop.type=rebot_102_leader \
+    --teleop.port=/dev/ttyUSB0 \
+    --teleop.id=leader1 \
+    --display_data=true \
+    --dataset.repo_id=seeed_rebot_b601_rs/test \
+    --dataset.num_episodes=5 \
+    --dataset.single_task="Grab the black cube" \
+    --dataset.push_to_hub=false \
+    --dataset.episode_time_s=30 \
+    --dataset.reset_time_s=30
+```
+
+Two cameras:
 
 ```bash
 lerobot-record \

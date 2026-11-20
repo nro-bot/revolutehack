@@ -7,6 +7,29 @@
 lerobot-find-cameras opencv
 ```
 
+Live view of every camera in Rerun, to pick the right one by eye. `Ctrl` + `C` stops it.
+
+```bash
+python - <<'EOF'
+import rerun as rr
+from lerobot.cameras.opencv import OpenCVCamera, OpenCVCameraConfig
+
+rr.init("cameras", spawn=True)
+cams = []
+for info in OpenCVCamera.find_cameras():
+    cam = OpenCVCamera(OpenCVCameraConfig(index_or_path=info["id"]))
+    try:
+        cam.connect(warmup=False)
+    except Exception:
+        continue
+    cams.append((str(info["id"]).replace("/dev/", ""), cam))
+print("Showing:", [name for name, _ in cams])
+while True:
+    for name, cam in cams:
+        rr.log(f"camera/{name}", rr.Image(cam.read()))
+EOF
+```
+
 This lists every camera, including a laptop's built-in webcam, and saves a test image from each to `outputs/captured_images`. Open the images to see which `Id` is the USB camera on the robot.
 
 ## 2. Teleoperate with One Camera
