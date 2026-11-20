@@ -17,7 +17,7 @@ PyTorch's default build: driver 580.65 or newer.
 nvidia-smi --query-gpu=driver_version --format=csv,noheader
 ```
 
-### 2A. Driver older than 580: update it
+Driver older than 580: update it, or install the CUDA 12 build of PyTorch during the installation step.
 
 ```bash
 # Remove the old driver first: its packages conflict with the new ones
@@ -26,13 +26,4 @@ sudo apt autoremove
 
 sudo apt install -y nvidia-driver-580-open
 sudo reboot
-```
-
-### 2B. Driver older than 580: keep it, use the CUDA 12 build of PyTorch
-
-Run before installing LeRobot. Stays on torch 2.14.
-
-```bash
-uv pip install --torch-backend cu126 torch torchvision
-uv pip install --index-url https://download.pytorch.org/whl/cpu torchcodec
 ```

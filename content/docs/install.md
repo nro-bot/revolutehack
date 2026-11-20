@@ -30,7 +30,16 @@ conda activate lerobot
 
 # Install ffmpeg (if video errors occur, use ffmpeg=7.1.1 instead)
 conda install -y ffmpeg -c conda-forge
+```
 
+Driver older than 580 only: the CUDA 12 build of PyTorch (stays on torch 2.14).
+
+```bash
+pip install --index-url https://download.pytorch.org/whl/cu126 torch torchvision
+pip install --index-url https://download.pytorch.org/whl/cpu torchcodec
+```
+
+```bash
 # Install LeRobot
 cd ~/rebot_lerobot/lerobot
 pip install -e ".[all]"
@@ -48,10 +57,19 @@ sudo apt install -y ffmpeg
 cd ~/rebot_lerobot/lerobot
 uv venv --python 3.12
 source .venv/bin/activate
+```
 
+Driver older than 580 only: the CUDA 12 build of PyTorch (stays on torch 2.14).
+
+```bash
+uv pip install --torch-backend cu126 torch torchvision
+uv pip install --index-url https://download.pytorch.org/whl/cpu torchcodec
+```
+
+```bash
 # Install LeRobot
 uv pip install -e ".[all]"
 ```
 
 > [!NOTE]
-> The reBot arm is built into this fork, so no extra plugin packages are needed. If LeRobot warns that your NVIDIA driver is too old, either update the driver to 580 or newer, or before installing LeRobot take the CUDA 12 build of PyTorch: `uv pip install --torch-backend cu126 torch torchvision` and `uv pip install --index-url https://download.pytorch.org/whl/cpu torchcodec`.
+> The reBot arm is built into this fork, so no extra plugin packages are needed.
