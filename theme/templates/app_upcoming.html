@@ -29,7 +29,7 @@
           <div class="thead">
             <a class="backb" href="#tutorial">{{ ui.icon('left') }}<span>Back</span></a>
             <nav class="strip" aria-label="Steps">
-              {% for pg in tutorial.pages %}<a class="tchip" href="#{{ pg.id }}">{% if pg.number %}{{ pg.number }}. {% endif %}{{ pg.title|e }}</a>{% endfor %}
+              {% for pg in tutorial.pages %}<a class="tchip" href="#{{ pg.id }}">{% if pg.label %}{{ pg.label }}. {% endif %}{{ pg.title|e }}</a>{% endfor %}
             </nav>
           </div>
           <div class="tview">

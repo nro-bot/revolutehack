@@ -181,9 +181,10 @@ class YamlPageGenerator(Generator):
             g["steps"] = []
             for e in g["entries"]:
                 number += 1
-                for f in e:
+                for k, f in enumerate(e):
                     if f in by_file:
                         by_file[f]["number"] = number
+                        by_file[f]["label"] = f"{number}{'abcdefgh'[k]}" if len(e) > 1 else str(number)
                         g["steps"].append(by_file[f])
         data["groups"] = groups
         # The About entries: pages like the steps, but not numbered.

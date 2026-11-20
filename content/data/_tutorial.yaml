@@ -31,14 +31,16 @@ about:
 # The steps, in order: one Markdown file each, in content/docs/. They are
 # grouped under headings in the list; the numbering runs on across groups.
 # A list in place of a file name is a set of alternatives (such as two ways
-# to install) that share one number.
+# to install) that share one number and are told apart by a letter: 1a, 1b.
 steps:
   - group: "System Setup"
     files: []
+  - group: "Installation"
+    files:
+      # Alternatives share a number and get a letter each: 1a, 1b.
+      - [install-uv.md, install-conda.md]
   - group: "Usage"
     files:
-      # Alternatives share a number: either one is step 1.
-      - [install-uv.md, install-conda.md]
       - calibrate.md
       - teleoperate.md
       - cameras.md

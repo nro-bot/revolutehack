@@ -1230,6 +1230,7 @@ textarea {
   place-items: center;
   width: 30px;
   height: 30px;
+  letter-spacing: -0.02em; /* "1a" fits the box */
   border: 2px solid var(--ink);
   background: var(--white);
   font: 400 16px/1 var(--f-mast);
